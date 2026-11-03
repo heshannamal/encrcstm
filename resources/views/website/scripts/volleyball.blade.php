@@ -77,7 +77,7 @@
  document.querySelectorAll('.switch a:not(.active)').forEach(function(a){a.addEventListener('click',function(e){e.preventDefault();});});
 
  /* logo returns to the home page (closes the overlay when embedded) */
- function goHome(){ if(window.parent!==window){ window.parent.postMessage('encore:home','*'); } else { window.location.href='encore-custom-mockup.html'; } }
+ function goHome(){ if(window.parent!==window){ window.parent.postMessage('encore:home','*'); } else { window.location.href=@json(route('home')); } }
  var homeLink=document.getElementById('homeLink');
  if(homeLink) homeLink.addEventListener('click',function(e){ e.preventDefault(); goHome(); });
 
