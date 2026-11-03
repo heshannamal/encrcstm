@@ -1,6 +1,6 @@
 <!-- NAV -->
 <nav class="nav" id="nav">
- <a href="#" class="homelink" id="homeLink" aria-label="Encore Custom home"><img class="logo" src="{{ asset('assets/reference/297053b134d4897782f2.png') }}" alt="Encore Custom"></a>
+ <a href="{{ route('home') }}" class="homelink" id="homeLink" aria-label="Encore Custom home"><img class="logo" src="{{ asset('assets/reference/297053b134d4897782f2.png') }}" alt="Encore Custom"></a>
  <div class="rt">
   <a class="nl" href="{{ route('sports.volleyball') }}#kit">The kit</a>
   
