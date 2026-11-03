@@ -6,4 +6,5 @@ use App\Http\Controllers\WebsiteController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [WebsiteController::class, 'index'])->name('home');
-Route::get('/volleyball', [WebsiteController::class, 'volleyball'])->name('volleyball');
+Route::get('/sports/volleyball', [WebsiteController::class, 'volleyball'])->name('sports.volleyball');
+Route::get('/volleyball', [WebsiteController::class, 'legacyVolleyball'])->name('volleyball.legacy');

@@ -1,0 +1,23 @@
+<!-- PROOF -->
+<section class="section proofsec" style="padding-top:clamp(50px,6vw,90px);background:radial-gradient(90% 70% at 10% 30%,rgba(231,0,51,.07),transparent 55%)">
+ <div class="proof-bg" id="proofBg" aria-hidden="true">
+  <img data-q="2" src="{{ asset('assets/reference/323419a71a6cd337d12a.png') }}" alt="">
+ </div>
+ <div class="wrap">
+  
+  <div class="proof-mark reveal">“</div>
+  <div class="proof-track reveal d1" id="proofTrack">
+      <div class="quote on"><p><span class="lead">The team at Encore continues to impress.  We at XR Soccer training know we are going to get quality fabric that the players like, and designs that the organization loves, within our budget and shipped on time.</span> We know that the team has taken the time to get to know and perfect the designs we like, so the collaboration is effortless and the product never fails to meet expectations.  And, they are quick to help you out anytime you need them. Truly a great partnership</p><div class="who"><span class="wtx">Xavi R · <b>XR Soccer Training</b></span><img class="tlogo" src="{{ asset('assets/reference/4eb02411b2286843206a.png') }}" alt="XR Soccer Training logo"></div></div>
+   <div class="quote"><p><span class="lead">My experience with Encore was nothing but the best! Their team, patient during my off-season, ensured timely gear delivery as my season approached.</span> Encore’s commitment to excellence shone when faced with low jersey stock. Rather than providing second-hand items, they went above and beyond, sending usable alternatives until our ordered jerseys were back in stock. Their persistence and drive for excellence left my team more than satisfied. The jerseys are top-notch—breathable, flexible, and durable. Encore’s exceptional customer service and commitment make them the go-to for anyone seeking a high-quality purchase with a smooth communication process.</p><div class="who"><span class="wtx">Sincerely, a Satisfied Customer · <b>Joe 0 - 59'ers Soccer</b></span><img class="tlogo" src="{{ asset('assets/reference/402e9ec23e0427624107.png') }}" alt="Andrean Soccer logo"></div></div>
+   <div class="quote"><p><span class="lead">Once again, I want to thank you for supporting the U21 Uganda team. I really can’t express how grateful I am. Your donation was so huge for us.</span> Our players absolutely loved their uniforms and will treasure them forever. They were so proud to wear the Uganda uniform and represent their country. You’ve touched the lives of many young men who you may never meet but whose lives you’ve forever impacted. One more time, on behalf of all of the players, I want to say “thank you”. It was the experience of a lifetime and we could not have done it without you</p><div class="who"><span class="wtx">Jeramy P · <b>Uganda National Lacrosse</b></span><img class="tlogo" src="{{ asset('assets/reference/4ad20db74a9f558c7729.png') }}" alt="Uganda National Lacrosse logo"></div></div>
+   <div class="quote"><p><span class="lead">The customer service Encore has provided our canoe club has gone and beyond our expectations. From top to bottom Encore helped us every step of the way from design through order competition.</span> I can’t imagine an easier more fluid system for any team that wants to get gear made without the hassle of having to run the project themselves. encore worked with us to get the materials specifically right for both the water and sun. Product is superb!</p><div class="who"><span class="wtx">Tim O'Dwyer · <b>Hui Mahina Poepoe and He'e Nalu O'Marin</b></span><img class="tlogo" src="{{ asset('assets/reference/9434ff1cf5aa21e3722b.png') }}" alt="He'e Nalu Outrigger logo"></div></div>
+   <div class="quote"><p><span class="lead">USA Lacrosse and Encore have worked with one another for a number of years. This relationship has been successful in helping programs get the uniforms that are needed the right way!</span> Encore has helped us put together uniforms for our ULA organizations and other programs that work with us by walking them through the process of the type of uniforms, material, the overall concept,as well as working with them and their budget. This is a company that will do their best to make sure you end up with what you wanted and needed.</p><div class="who"><span class="wtx">Donovan Dennis · <b>Manager, Diversity, Equity &amp; Inclusion</b></span><img class="tlogo" src="{{ asset('assets/reference/8d3ee934e1119077bbfc.png') }}" alt="US Lacrosse logo"></div></div>
+  </div>
+  <div class="proof-nav">
+   <button id="pPrev" aria-label="Previous">←</button>
+   <button id="pNext" aria-label="Next">→</button>
+   <div class="proof-dots" id="proofDots"></div>
+  </div>
+ </div>
+</section>
+
