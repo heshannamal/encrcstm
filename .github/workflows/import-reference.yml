@@ -108,8 +108,9 @@ jobs:
           
           Install PHP 8.2+, run `composer install --no-dev --optimize-autoloader`, configure `.env` for production and run `php artisan optimize`. Set the domain document root to the Laravel `public/` directory. The reference includes a few original placeholder links that are intentionally unchanged.
           MD
-      - name: Validate Laravel files
+      - name: Install project dependencies and validate Laravel files
         run: |
+          composer install --no-interaction --prefer-dist
           php -l app/Http/Controllers/WebsiteController.php
           php artisan route:list --path=volleyball
           php artisan route:list --path=/
