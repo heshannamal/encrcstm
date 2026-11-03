@@ -6,6 +6,8 @@ on:
     paths:
       - 'app/**'
       - 'resources/site/**'
+      - 'resources/views/website/**'
+      - 'config/site.php'
       - 'public/assets/reference/**'
       - 'routes/**'
       - 'tests/Feature/EncoreWebsiteTest.php'
