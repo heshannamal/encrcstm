@@ -51,6 +51,7 @@ final class EncoreCatalogService
 
                 $name = data_get($relation, 'category_name')
                     ?? data_get($relation, 'product_category_name')
+                    ?? data_get($relation, 'categories.product_category_name')
                     ?? data_get($relation, 'categories.name')
                     ?? data_get($relation, 'category.name')
                     ?? data_get($relation, 'name');
