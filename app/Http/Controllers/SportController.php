@@ -5,12 +5,11 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Services\EncoreCatalogService;
-use App\Services\EncoreProductService;
 use Illuminate\Contracts\View\View;
 
 final class SportController
 {
-    public function show(string $sport, EncoreCatalogService $catalog, EncoreProductService $products): View
+    public function show(string $sport, EncoreCatalogService $catalog): View
     {
         $sports = config('sports', []);
         abort_unless(isset($sports[$sport]), 404);
@@ -42,29 +41,6 @@ final class SportController
 
         $id = (int) $details['id'];
 
-        if (app()->environment('local')) {
-            $query = [
-                'selectedSport' => $id,
-                'selectedCategory' => 5,
-                'selectedGender' => 'All',
-                'selectedStyle' => 0,
-                'search' => '',
-                'sales_channel_id' => config('services.encore.sales_channel_id'),
-            ];
-
-            \Illuminate\Support\Facades\Cache::forget(
-                'encore:products:'.sha1(json_encode($query))
-            );
-
-            dd([
-                'sport' => $sport,
-                'sport_id' => $id,
-                'api_url' => rtrim((string) config('services.encore.base_url'), '/').'/get_products',
-                'api_key_configured' => filled(config('services.encore.api_key')),
-                'api_token_configured' => filled(config('services.encore.api_token')),
-                'products' => $products->products($id),
-            ]);
-        }
 
         $page = array_replace_recursive($details, [
             'slug' => $sport,
