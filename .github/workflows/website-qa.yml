@@ -8,6 +8,8 @@ on:
       - 'resources/site/**'
       - 'resources/views/website/**'
       - 'config/site.php'
+      - 'config/services.php'
+      - 'config/encore.php'
       - 'public/assets/reference/**'
       - 'routes/**'
       - 'tests/Feature/EncoreWebsiteTest.php'
