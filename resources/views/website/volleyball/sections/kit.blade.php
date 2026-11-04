@@ -18,7 +18,7 @@
      <div class="kslide ph"><span class="plab">Long sleeve</span></div>
      <div class="kslide"><img src="{{ asset('assets/reference/b46204161d649c9f879a.jpg') }}" alt="Libero"></div>
      <div class="kscrim"></div>
-     <div class="kcard-info"><div class="kitcard-txt"><h3>Game Jersey + Libero</h3><div class="ktag">Home, away &amp; libero</div><p class="kdesc">Athletic through the shoulder with room to jump, and nothing that rides up on a dig. The libero contrast colorway is built right in.</p></div></div>
+     <div class="kcard-info"><div class="kitcard-txt"><h3>{{ ($sport['slug'] ?? 'volleyball') === 'volleyball' ? 'Game Jersey + Libero' : 'Game Jersey' }}</h3><div class="ktag">{{ ($sport['slug'] ?? 'volleyball') === 'volleyball' ? 'Home, away & libero' : 'Home and away options' }}</div><p class="kdesc">{{ ($sport['slug'] ?? 'volleyball') === 'volleyball' ? 'Athletic through the shoulder with room to jump, and nothing that rides up on a dig. The libero contrast colorway is built right in.' : 'Made for your team with flexible cuts, durable fabric and coordinated colors.' }}</p></div></div>
     </div>
    </div>
    <div class="kitcard kc2">
