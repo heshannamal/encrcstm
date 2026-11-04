@@ -19,6 +19,8 @@
  window.addEventListener('hashchange',route);
  document.addEventListener('click',function(e){
   var a=e.target.closest('a[href="#/volleyball"]'); if(a){ e.preventDefault(); openVB(); }
+  var sport=e.target.closest('#sportsGrid a.sitem[data-sport="Volleyball"]');
+  if(sport){ e.preventDefault(); openVB(); }
  });
  route();
 
