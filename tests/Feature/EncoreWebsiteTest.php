@@ -72,6 +72,24 @@ final class EncoreWebsiteTest extends TestCase
             ->assertSee('id="catCats"', false);
     }
 
+    public function test_every_sport_has_a_dedicated_controller_data_function(): void
+    {
+        $controller = new \ReflectionClass(\App\Http\Controllers\SportController::class);
+        $methodNames = [
+            'baseball', 'basketball', 'bmx', 'crossCountry', 'discGolf',
+            'fieldHockey', 'flagFootball', 'football', 'golf', 'hockey',
+            'lacrosse', 'mma', 'rugby', 'running', 'soccer',
+            'softball', 'swim', 'tennis', 'trackAndField', 'volleyball', 'yoga',
+        ];
+
+        $this->assertCount(count(config('sports')), $methodNames);
+
+        foreach ($methodNames as $method) {
+            $this->assertTrue($controller->hasMethod($method), "Missing sport method: {$method}");
+            $this->assertTrue($controller->getMethod($method)->isPrivate());
+        }
+    }
+
     public function test_all_sports_have_valid_routes_and_metadata(): void
     {
         foreach (config('sports') as $slug => $sport) {
