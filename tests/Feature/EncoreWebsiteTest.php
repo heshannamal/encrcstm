@@ -100,7 +100,8 @@ final class EncoreWebsiteTest extends TestCase
         \Illuminate\Support\Facades\Http::fake([
             'example.invalid/*' => \Illuminate\Support\Facades\Http::response([
                 'data' => ['data' => [
-                    ['id' => 123, 'name' => 'Demo Baseball Jersey', 'image' => 'jerseys/demo.jpg', 'price' => 45],
+                    ['id' => 123, 'name' => 'Demo Baseball Jersey', 'image' => 'jerseys/demo.jpg', 'price' => 45, 'style_id' => 20],
+                    ['id' => 124, 'name' => 'Demo Training Tee', 'image' => 'tees/demo.jpg', 'price' => 25, 'style_id' => 11],
                 ]],
             ], 200),
         ]);
@@ -112,7 +113,8 @@ final class EncoreWebsiteTest extends TestCase
             ->assertDontSee('class="sport-filters"', false);
 
         $groups = app(\App\Services\EncoreCatalogService::class)->groups(2);
-        $this->assertSame('Other Products', $groups[0]['cat']);
+        $this->assertSame('Game Uniforms', $groups[0]['cat']);
+        $this->assertSame('Tops', $groups[1]['cat']);
         $this->assertSame('Demo Baseball Jersey', $groups[0]['items'][0]['n']);
         $this->assertSame('https://encr.co/assets/jerseys/demo.jpg', $groups[0]['items'][0]['img']);
         $this->assertStringContainsString(
