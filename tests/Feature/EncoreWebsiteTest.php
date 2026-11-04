@@ -27,9 +27,9 @@ final class EncoreWebsiteTest extends TestCase
             ->assertDontSee('id="vbdoc"', false);
     }
 
-    public function test_volleyball_has_own_page_with_original_style_and_metadata(): void
+    public function test_volleyball_uses_shared_sport_route_and_original_style(): void
     {
-        $this->get(route('sports.volleyball'))
+        $this->get(route('sports.show', ['sport' => 'volleyball']))
             ->assertOk()
             ->assertSee('Volleyball, Encore Custom', false)
             ->assertSee('font-family:"Piedmont"', false)
@@ -41,9 +41,7 @@ final class EncoreWebsiteTest extends TestCase
     public function test_all_sports_have_valid_routes_and_metadata(): void
     {
         foreach (config('sports') as $slug => $sport) {
-            $route = $slug === 'volleyball'
-                ? route('sports.volleyball')
-                : route('sports.show', ['sport' => $slug]);
+            $route = route('sports.show', ['sport' => $slug]);
 
             $this->get($route)
                 ->assertOk()
@@ -52,6 +50,9 @@ final class EncoreWebsiteTest extends TestCase
         }
 
         $this->get('/sports/not-a-real-sport')->assertNotFound();
+        $this->assertFalse(\Illuminate\Support\Facades\Route::has('sports.volleyball'));
+        $this->assertFalse(\Illuminate\Support\Facades\Route::has('volleyball.legacy'));
+        $this->get('/volleyball')->assertNotFound();
     }
 
     public function test_all_reference_assets_exist_and_rendered_pages_have_usable_urls(): void
@@ -79,7 +80,7 @@ final class EncoreWebsiteTest extends TestCase
 
         $this->assertGreaterThan(0, $count);
 
-        foreach ([route('home'), route('sports.volleyball'), route('sports.show', ['sport' => 'baseball'])] as $url) {
+        foreach ([route('home'), route('sports.show', ['sport' => 'volleyball']), route('sports.show', ['sport' => 'baseball'])] as $url) {
             $html = $this->get($url)->assertOk()->getContent();
             $this->assertStringNotContainsString('src="/assets/reference/', $html);
             $this->assertStringNotContainsString('url(/assets/reference/', $html);
@@ -137,7 +138,7 @@ final class EncoreWebsiteTest extends TestCase
         $this->assertNotEmpty($clubs);
         $this->assertSame('Marin Volleyball', $clubs[0]['name']);
 
-        $this->get(route('sports.volleyball'))
+        $this->get(route('sports.show', ['sport' => 'volleyball']))
             ->assertOk()
             ->assertSee('Marin Volleyball', false)
             ->assertSee('id="logoTrack"', false)
@@ -145,9 +146,4 @@ final class EncoreWebsiteTest extends TestCase
             ->assertDontSee('class="sport-filters"', false);
     }
 
-    public function test_legacy_volleyball_url_redirects_to_named_sport_route(): void
-    {
-        $this->get('/volleyball')
-            ->assertRedirect(route('sports.volleyball'));
-    }
 }

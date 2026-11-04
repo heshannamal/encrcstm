@@ -40,8 +40,8 @@ Visit `http://127.0.0.1:8000`. For WAMP, serving from `http://localhost/encrcstm
 ### URL conventions
 
 - Homepage: `route('home')`
-- Volleyball page: `route('sports.volleyball')`
-- Legacy `/volleyball` is redirected permanently to `/sports/volleyball`.
+- Volleyball page: `route('sports.show', ['sport' => 'volleyball'])`
+- No separate volleyball route is registered; `/sports/volleyball` is handled by the shared sport route.
 - Same-page navigation uses route URLs plus fragment identifiers.
 - Local images use `asset('assets/reference/...')`.
 - Placeholder catalog/shop links are retained from the original prototype until destination routes are provided.

@@ -2,7 +2,7 @@
 
 @section('title', isset($sport) && $sport['slug'] !== 'volleyball' ? $sport['name'].' | Encore Custom' : config('site.volleyball_title'))
 @section('description', isset($sport) && $sport['slug'] !== 'volleyball' ? 'Custom '.$sport['name'].' uniforms and teamwear from Encore Custom.' : config('site.volleyball_description'))
-@section('canonical', isset($sport) && $sport['slug'] !== 'volleyball' ? route('sports.show', ['sport' => $sport['slug']]) : route('sports.volleyball'))
+@section('canonical', route('sports.show', ['sport' => $sport['slug']]))
 
 @section('page-styles')
 @include('website.styles.volleyball')

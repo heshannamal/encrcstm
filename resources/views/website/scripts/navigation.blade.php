@@ -3,7 +3,7 @@
  var host=document.getElementById('vbHost'),frame=document.getElementById('vbFrame'),
    toast=document.getElementById('toast'),tT,loaded=false;
  function openVB(){
-  if(!loaded){ frame.src = @json(route('sports.volleyball')); loaded=true; }
+  if(!loaded){ frame.src = @json(route('sports.show', ['sport' => 'volleyball'])); loaded=true; }
   host.classList.add('on'); host.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden';
   try{ if(location.hash!=='#/volleyball') history.pushState(null,'','#/volleyball'); }catch(e){}
  }

@@ -4,7 +4,7 @@
   <div class="sports-head"><div><h2 class="h-sec reveal d1">Pick your <em>sport</em></h2></div></div>
   <div class="sindex reveal d2" id="sportsGrid">
    @foreach(config('sports') as $slug => $item)
-    <a class="sitem" data-sport="{{ $item['name'] }}" href="{{ $slug === 'volleyball' ? route('sports.volleyball') : route('sports.show', ['sport' => $slug]) }}">
+    <a class="sitem" data-sport="{{ $item['name'] }}" href="{{ route('sports.show', ['sport' => $slug]) }}">
       <span class="no">{{ str_pad((string) $loop->iteration, 2, '0', STR_PAD_LEFT) }}</span>
       <span class="nm">{{ $item['name'] }}</span>
       <span class="ar">View →</span>
