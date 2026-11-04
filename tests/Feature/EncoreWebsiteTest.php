@@ -217,6 +217,69 @@ final class EncoreWebsiteTest extends TestCase
         });
     }
 
+    public function test_api_falls_back_to_v1_products_and_uses_inventory_display_fields(): void
+    {
+        \Illuminate\Support\Facades\Cache::flush();
+
+        config()->set('services.encore.api_key', 'test-api-key');
+        config()->set('services.encore.api_token', 'test-api-token');
+        config()->set('services.encore.base_url', 'https://example.invalid/api');
+        config()->set('services.encore.asset_url', 'https://encr.co/assets');
+
+        \Illuminate\Support\Facades\Http::fake([
+            'example.invalid/api/v1/get_products*' => \Illuminate\Support\Facades\Http::response([
+                'success' => false,
+            ], 500),
+            'example.invalid/api/v1/products*' => \Illuminate\Support\Facades\Http::response([
+                'success' => true,
+                'data' => [
+                    'data' => [
+                        [
+                            'id' => 987,
+                            'display_product_name' => 'Custom Lacrosse Uniform',
+                            'display_product_price' => 69.5,
+                            'display_main_image' => 'assets/products/lacrosse-uniform.jpg',
+                            'product_details' => [
+                                'product_sport' => [['sport_id' => 1]],
+                                'product_categories' => [
+                                    ['product_category_id' => 20, 'category' => ['name' => 'Game Uniforms']],
+                                ],
+                            ],
+                        ],
+                        [
+                            'id' => 988,
+                            'display_product_name' => 'Other Sport Product',
+                            'product_details' => [
+                                'product_sport' => [['sport_id' => 14]],
+                            ],
+                        ],
+                    ],
+                ],
+            ], 200),
+        ]);
+
+        $groups = app(\App\Services\EncoreCatalogService::class)->groups(1);
+
+        $this->assertCount(1, $groups);
+        $this->assertSame('Game Uniforms', $groups[0]['cat']);
+        $this->assertCount(1, $groups[0]['items']);
+        $this->assertSame('Custom Lacrosse Uniform', $groups[0]['items'][0]['n']);
+        $this->assertSame('$69.50', $groups[0]['items'][0]['p']);
+        $this->assertSame('https://encr.co/assets/products/lacrosse-uniform.jpg', $groups[0]['items'][0]['img']);
+        $this->assertStringContainsString('/productDetails/987?', $groups[0]['items'][0]['u']);
+
+        \Illuminate\Support\Facades\Http::assertSent(fn ($request) =>
+            str_contains($request->url(), '/api/v1/get_products')
+            && (int) $request['selectedSport'] === 1
+            && $request->hasHeader('API-Key', 'test-api-key')
+            && $request->hasHeader('API-Token', 'test-api-token')
+        );
+
+        \Illuminate\Support\Facades\Http::assertSent(fn ($request) =>
+            str_contains($request->url(), '/api/v1/products')
+        );
+    }
+
     public function test_clubs_are_temporary_arrays_in_each_sport_method(): void
     {
         $controller = new \ReflectionClass(\App\Http\Controllers\SportController::class);
