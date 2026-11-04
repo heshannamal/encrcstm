@@ -17,13 +17,6 @@
  window.addEventListener('message',function(e){ if(e.data==='encore:home') closeVB(true); });
  function route(){ if(location.hash==='#/volleyball') openVB(); else closeVB(false); }
  window.addEventListener('hashchange',route);
- var grid=document.getElementById('sportsGrid');
- if(grid) grid.addEventListener('click',function(e){
-  var card=e.target.closest('.sitem'); if(!card) return;
-  e.preventDefault(); e.stopPropagation();
-  if(card.getAttribute('data-sport')==='Volleyball') openVB();
-  else showToast(card.getAttribute('data-sport')+' page is coming soon. Volleyball is the live demo.');
- });
  document.addEventListener('click',function(e){
   var a=e.target.closest('a[href="#/volleyball"]'); if(a){ e.preventDefault(); openVB(); }
  });

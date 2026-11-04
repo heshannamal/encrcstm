@@ -46,10 +46,6 @@
  });},{threshold:.5});
  document.querySelectorAll('[data-count]').forEach(function(el){cio.observe(el);});
 
- /* ---------- SPORTS (the real list) ---------- */
- var sports=['Baseball','Basketball','BMX','Cross-country','Disc Golf','Field Hockey','Flag Football','Football','Golf','Hockey','Lacrosse','MMA','Rugby','Running','Soccer','Softball','Swim','Tennis','Track and Field','Volleyball','Yoga'];
- var live={'Volleyball':1};
-
  /* club logo banner (swap the .lb-name span for <img> when real logos arrive) */
  (function(){
   var lt=document.getElementById('logoTrack');
@@ -58,16 +54,6 @@
   function seg(){ return clubs.map(function(n){return '<span class="lb-item"><span class="lb-name">'+n+'</span></span>';}).join('<span class="lb-d">◆</span>')+'<span class="lb-d">◆</span>'; }
   lt.innerHTML=seg()+seg();
  })();
-
- /* sport index */
- var grid=document.getElementById('sportsGrid');
- sports.forEach(function(n,idx){
-  var a=document.createElement('a');a.className='sitem';a.setAttribute('data-sport',n);
-  a.href=(n==='Volleyball')?'#/volleyball':'#sports';
-  var no=('0'+(idx+1)).slice(-2);
-  a.innerHTML='<span class="no">'+no+'</span><span class="nm">'+n+'</span>'+(live[n]?'<span class="live">Live</span>':'')+'<span class="ar">View →</span>';
-  grid.appendChild(a);
- });
 
  /* ---------- PROOF SLIDER ---------- */
  var proofBg=document.getElementById('proofBg');

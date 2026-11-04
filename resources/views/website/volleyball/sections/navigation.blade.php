@@ -5,7 +5,7 @@
   <a class="nl" href="{{ route('sports.volleyball') }}#kit">The kit</a>
   
   <a class="nl" href="{{ route('sports.volleyball') }}#proof">Teams</a>
-  <a class="btn catalog" data-stub="catalog" href="#"><span>Catalog</span><span class="ar">→</span></a>
+  <a class="btn catalog" href="{{ route('sports.volleyball') }}#catalog"><span>Catalog</span><span class="ar">→</span></a>
   <a class="btn" data-openkit href="#"><span>Start a kit</span><span class="ar">→</span></a>
  </div>
  <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
