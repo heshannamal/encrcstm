@@ -25,9 +25,26 @@ final class EncoreProductService
             $query['page'] = $filters['page'];
         }
 
-        return Cache::remember('encore:products:'.sha1(json_encode($query)), config('services.encore.cache_seconds'), function () use ($query): array {
+        $debug = request()->boolean('debug_products');
+        $cacheKey = 'encore:products:'.sha1(json_encode($query));
+
+        if ($debug) {
+            Cache::forget($cacheKey);
+        }
+
+        return Cache::remember($cacheKey, config('services.encore.cache_seconds'), function () use ($query, $debug): array {
             if (!config('services.encore.api_key') || !config('services.encore.api_token')) {
                 Log::warning('Encore API credentials are not configured');
+
+                if ($debug) {
+                    dd([
+                        'error' => 'Encore API credentials are not configured',
+                        'api_key_configured' => (bool) config('services.encore.api_key'),
+                        'api_token_configured' => (bool) config('services.encore.api_token'),
+                        'filters' => $query,
+                    ]);
+                }
+
                 return [];
             }
 
@@ -41,6 +58,14 @@ final class EncoreProductService
                   ->timeout(config('services.encore.timeout'))
                   ->retry(2, 300, throw: false)
                   ->get(rtrim(config('services.encore.base_url'), '/').'/get_products', $query);
+
+                if ($debug) {
+                    dd([
+                        'status' => $response->status(),
+                        'filters' => $query,
+                        'response' => $response->json() ?? $response->body(),
+                    ]);
+                }
 
                 if (!$response->successful()) {
                     Log::warning('Encore products API failed', ['status' => $response->status()]);
@@ -56,6 +81,14 @@ final class EncoreProductService
                 return is_array($items) ? array_values(array_filter($items, 'is_array')) : [];
             } catch (Throwable $exception) {
                 Log::warning('Encore products API unavailable', ['error' => $exception->getMessage()]);
+
+                if ($debug) {
+                    dd([
+                        'error' => $exception->getMessage(),
+                        'filters' => $query,
+                    ]);
+                }
+
                 return [];
             }
         });
