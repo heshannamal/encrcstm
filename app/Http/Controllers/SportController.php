@@ -46,13 +46,13 @@ final class SportController
             'id' => $id,
             'sports' => $sports,
             'seo' => ['canonical' => route('sports.show', ['sport' => $sport])],
-            'catalog' => ['groups' => $catalog->groups($id)],
-            'full_catalog_url' => 'https://encr.co/product_filter?'.http_build_query([
+            'catalog' => ['groups' => $details['catalog']['groups'] ?? $catalog->groups($id)],
+            'full_catalog_url' => $details['full_catalog_url'] ?? ('https://encr.co/product_filter?'.http_build_query([
                 'selectedGender' => 'All',
                 'selectedCategory' => 5,
                 'selectedSport' => $id,
                 'selectedStyle' => 0,
-            ]),
+            ])),
         ]);
 
         return view('website.sports.show', ['page' => $page]);
@@ -73,6 +73,7 @@ final class SportController
             'contrast' => $this->contrast(false),
             'proof' => $this->proof(),
             'clubs' => [],
+            'catalog' => [],
             'contact' => $this->contact(),
             'seo' => [
                 'title' => config('sports.baseball.name').' | Encore Custom',
@@ -96,6 +97,7 @@ final class SportController
             'contrast' => $this->contrast(false),
             'proof' => $this->proof(),
             'clubs' => [],
+            'catalog' => [],
             'contact' => $this->contact(),
             'seo' => [
                 'title' => config('sports.basketball.name').' | Encore Custom',
@@ -119,6 +121,7 @@ final class SportController
             'contrast' => $this->contrast(false),
             'proof' => $this->proof(),
             'clubs' => [],
+            'catalog' => [],
             'contact' => $this->contact(),
             'seo' => [
                 'title' => config('sports.bmx.name').' | Encore Custom',
@@ -142,6 +145,7 @@ final class SportController
             'contrast' => $this->contrast(false),
             'proof' => $this->proof(),
             'clubs' => [],
+            'catalog' => [],
             'contact' => $this->contact(),
             'seo' => [
                 'title' => config('sports.cross-country.name').' | Encore Custom',
@@ -165,6 +169,7 @@ final class SportController
             'contrast' => $this->contrast(false),
             'proof' => $this->proof(),
             'clubs' => [],
+            'catalog' => [],
             'contact' => $this->contact(),
             'seo' => [
                 'title' => config('sports.disc-golf.name').' | Encore Custom',
@@ -188,6 +193,7 @@ final class SportController
             'contrast' => $this->contrast(false),
             'proof' => $this->proof(),
             'clubs' => [],
+            'catalog' => [],
             'contact' => $this->contact(),
             'seo' => [
                 'title' => config('sports.field-hockey.name').' | Encore Custom',
@@ -211,6 +217,7 @@ final class SportController
             'contrast' => $this->contrast(false),
             'proof' => $this->proof(),
             'clubs' => [],
+            'catalog' => [],
             'contact' => $this->contact(),
             'seo' => [
                 'title' => config('sports.flag-football.name').' | Encore Custom',
@@ -234,6 +241,7 @@ final class SportController
             'contrast' => $this->contrast(false),
             'proof' => $this->proof(),
             'clubs' => [],
+            'catalog' => [],
             'contact' => $this->contact(),
             'seo' => [
                 'title' => config('sports.football.name').' | Encore Custom',
@@ -257,6 +265,7 @@ final class SportController
             'contrast' => $this->contrast(false),
             'proof' => $this->proof(),
             'clubs' => [],
+            'catalog' => [],
             'contact' => $this->contact(),
             'seo' => [
                 'title' => config('sports.golf.name').' | Encore Custom',
@@ -280,6 +289,7 @@ final class SportController
             'contrast' => $this->contrast(false),
             'proof' => $this->proof(),
             'clubs' => [],
+            'catalog' => [],
             'contact' => $this->contact(),
             'seo' => [
                 'title' => config('sports.hockey.name').' | Encore Custom',
@@ -303,6 +313,7 @@ final class SportController
             'contrast' => $this->contrast(false),
             'proof' => $this->proof(),
             'clubs' => [],
+            'catalog' => [],
             'contact' => $this->contact(),
             'seo' => [
                 'title' => config('sports.lacrosse.name').' | Encore Custom',
@@ -326,6 +337,7 @@ final class SportController
             'contrast' => $this->contrast(false),
             'proof' => $this->proof(),
             'clubs' => [],
+            'catalog' => [],
             'contact' => $this->contact(),
             'seo' => [
                 'title' => config('sports.mma.name').' | Encore Custom',
@@ -349,6 +361,7 @@ final class SportController
             'contrast' => $this->contrast(false),
             'proof' => $this->proof(),
             'clubs' => [],
+            'catalog' => [],
             'contact' => $this->contact(),
             'seo' => [
                 'title' => config('sports.rugby.name').' | Encore Custom',
@@ -372,6 +385,7 @@ final class SportController
             'contrast' => $this->contrast(false),
             'proof' => $this->proof(),
             'clubs' => [],
+            'catalog' => [],
             'contact' => $this->contact(),
             'seo' => [
                 'title' => config('sports.running.name').' | Encore Custom',
@@ -395,6 +409,7 @@ final class SportController
             'contrast' => $this->contrast(false),
             'proof' => $this->proof(),
             'clubs' => [],
+            'catalog' => [],
             'contact' => $this->contact(),
             'seo' => [
                 'title' => config('sports.soccer.name').' | Encore Custom',
@@ -418,6 +433,7 @@ final class SportController
             'contrast' => $this->contrast(false),
             'proof' => $this->proof(),
             'clubs' => [],
+            'catalog' => [],
             'contact' => $this->contact(),
             'seo' => [
                 'title' => config('sports.softball.name').' | Encore Custom',
@@ -441,6 +457,7 @@ final class SportController
             'contrast' => $this->contrast(false),
             'proof' => $this->proof(),
             'clubs' => [],
+            'catalog' => [],
             'contact' => $this->contact(),
             'seo' => [
                 'title' => config('sports.swim.name').' | Encore Custom',
@@ -464,6 +481,7 @@ final class SportController
             'contrast' => $this->contrast(false),
             'proof' => $this->proof(),
             'clubs' => [],
+            'catalog' => [],
             'contact' => $this->contact(),
             'seo' => [
                 'title' => config('sports.tennis.name').' | Encore Custom',
@@ -487,6 +505,7 @@ final class SportController
             'contrast' => $this->contrast(false),
             'proof' => $this->proof(),
             'clubs' => [],
+            'catalog' => [],
             'contact' => $this->contact(),
             'seo' => [
                 'title' => config('sports.track-and-field.name').' | Encore Custom',
@@ -521,6 +540,7 @@ final class SportController
                 ['name' => 'Holy Angels School', 'logo' => null],
                 ['name' => 'Antelope Volleyball Club', 'logo' => null],
             ],
+            'catalog' => [],
             'contact' => $this->contact(),
             'seo' => [
                 'title' => config('site.volleyball_title'),
@@ -544,6 +564,7 @@ final class SportController
             'contrast' => $this->contrast(false),
             'proof' => $this->proof(),
             'clubs' => [],
+            'catalog' => [],
             'contact' => $this->contact(),
             'seo' => [
                 'title' => config('sports.yoga.name').' | Encore Custom',
