@@ -89,6 +89,41 @@ final class EncoreWebsiteTest extends TestCase
         }
     }
 
+    public function test_sport_functions_contain_complete_hardcoded_page_arrays(): void
+    {
+        $controller = new \ReflectionClass(\App\Http\Controllers\SportController::class);
+        $instance = $controller->newInstance();
+
+        $methods = [
+            'baseball', 'basketball', 'bmx', 'crossCountry', 'discGolf',
+            'fieldHockey', 'flagFootball', 'football', 'golf', 'hockey',
+            'lacrosse', 'mma', 'rugby', 'running', 'soccer', 'softball',
+            'swim', 'tennis', 'trackAndField', 'volleyball', 'yoga',
+        ];
+
+        foreach ($methods as $method) {
+            $page = $controller->getMethod($method)->invoke($instance);
+
+            foreach (['slug', 'name', 'id', 'hero', 'kit_heading', 'kits', 'contrast', 'proof', 'clubs', 'catalog', 'contact', 'seo'] as $key) {
+                $this->assertArrayHasKey($key, $page, "{$method} missing {$key}");
+            }
+
+            $this->assertNotEmpty($page['hero']['slides']);
+            $this->assertNotEmpty($page['kits']);
+            $this->assertNotEmpty($page['contrast']['team_image']);
+            $this->assertArrayHasKey('quote', $page['proof']);
+            $this->assertArrayHasKey('title', $page['seo']);
+            $this->assertArrayHasKey('description', $page['seo']);
+        }
+
+        $this->assertFalse($controller->hasMethod('volleyballSlides'));
+        $this->assertFalse($controller->hasMethod('volleyballKits'));
+        $this->assertFalse($controller->hasMethod('heroFacts'));
+        $this->assertFalse($controller->hasMethod('contrast'));
+        $this->assertFalse($controller->hasMethod('proof'));
+        $this->assertFalse($controller->hasMethod('contact'));
+    }
+
     public function test_all_sports_have_valid_routes_and_metadata(): void
     {
         foreach (config('sports') as $slug => $sport) {
