@@ -13,5 +13,5 @@ return [
  'cache_seconds' => (int) env('ENCORE_API_CACHE_SECONDS',300),
  'currency_symbol' => env('ENCORE_CURRENCY_SYMBOL','$'),
  'product_detail_url' => env('ENCORE_PRODUCT_DETAIL_URL','https://encr.co/productDetails'),
- 'product_detail_parameter' => env('ENCORE_PRODUCT_DETAIL_PARAMETER','id'),
+ 'club_source' => env('ENCORE_CLUBS_SOURCE','config'),
 ];
