@@ -73,3 +73,31 @@ Adjust descriptions, social image, logo, favicon, and theme color in `config/sit
 6. Serve the website over HTTPS and confirm image responses and animation behavior.
 
 Avoid running `migrate:fresh` on production databases. The public pages do not require database migrations.
+
+## Sports pages and Encore Inventory API
+
+The homepage links to all 21 sports configured in `config/sports.php`. Each sport uses its original Encore inventory filter ID and a named route such as `route('sports.show', ['sport' => 'baseball'])`. Volleyball keeps the original custom design at `route('sports.volleyball')` and shares the new API product catalog component.
+
+Reusable sport-page Blade components:
+
+- `resources/views/website/sports/components/navigation.blade.php`
+- `resources/views/website/sports/components/slides.blade.php`
+- `resources/views/website/sports/components/kit.blade.php`
+- `resources/views/website/sports/components/catalog.blade.php`
+- `resources/views/website/sports/components/product-card.blade.php`
+- `resources/views/website/sports/components/footer.blade.php`
+
+Product requests are handled only on the server by `app/Services/EncoreProductService.php`, with response caching and safe empty states. **Never embed Encore's API token in Blade, client-side JavaScript or Git.**
+
+Copy the configuration keys from `.env.encore.example` into your existing local `.env`, and set `ENCORE_API_KEY` and `ENCORE_API_TOKEN` to your authorized credentials. Then run:
+
+```powershell
+php artisan config:clear
+php artisan cache:clear
+php artisan route:list --path=sports
+php artisan test --filter=EncoreWebsiteTest
+```
+
+The sample data describes `get_products` filtering, but does not specify the live `productDetails` URL query parameter or every product-response field. `ENCORE_PRODUCT_DETAIL_PARAMETER` defaults to `id`; confirm this matches your actual `encr.co` product-details controller and adjust as needed. `ENCORE_PRODUCT_DETAIL_URL` is also configurable.
+
+For a complete rollout, replace generic sport photography with approved sport-specific hero and kit imagery. The volleyball page retains its original visuals and animations.
