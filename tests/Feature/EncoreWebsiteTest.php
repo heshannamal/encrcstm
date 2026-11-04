@@ -86,6 +86,38 @@ final class EncoreWebsiteTest extends TestCase
         }
     }
 
+    public function test_inventory_response_builds_product_cards_and_detail_links(): void
+    {
+        \Illuminate\Support\Facades\Cache::flush();
+
+        config()->set('encore.api_key', 'test-api-key');
+        config()->set('encore.api_token', 'test-api-token');
+        config()->set('encore.base_url', 'https://example.invalid/api');
+        config()->set('encore.asset_url', 'https://encr.co/assets');
+        config()->set('encore.product_detail_url', 'https://encr.co/productDetails');
+        config()->set('encore.product_detail_parameter', 'id');
+
+        \Illuminate\Support\Facades\Http::fake([
+            'example.invalid/*' => \Illuminate\Support\Facades\Http::response([
+                'data' => ['data' => [
+                    ['id' => 123, 'name' => 'Demo Baseball Jersey', 'image' => 'jerseys/demo.jpg', 'price' => 45],
+                ]],
+            ], 200),
+        ]);
+
+        $this->get(route('sports.show', ['sport' => 'baseball']))
+            ->assertOk()
+            ->assertSee('Demo Baseball Jersey', false)
+            ->assertSee('https://encr.co/assets/jerseys/demo.jpg', false)
+            ->assertSee('https://encr.co/productDetails?id=123', false);
+
+        \Illuminate\Support\Facades\Http::assertSent(function ($request) {
+            return (int) $request['selectedSport'] === 2
+                && $request->hasHeader('API-Key', 'test-api-key')
+                && $request->hasHeader('API-Token', 'test-api-token');
+        });
+    }
+
     public function test_legacy_volleyball_url_redirects_to_named_sport_route(): void
     {
         $this->get('/volleyball')
