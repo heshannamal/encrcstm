@@ -127,6 +127,22 @@ final class EncoreWebsiteTest extends TestCase
         });
     }
 
+    public function test_club_marquee_uses_backend_list_without_new_sections(): void
+    {
+        config()->set('encore.club_source', 'config');
+        $clubs = app(\App\Services\SportClubDirectory::class)->forSport('volleyball');
+
+        $this->assertNotEmpty($clubs);
+        $this->assertSame('Marin Volleyball', $clubs[0]['name']);
+
+        $this->get(route('sports.volleyball'))
+            ->assertOk()
+            ->assertSee('Marin Volleyball', false)
+            ->assertSee('id="logoTrack"', false)
+            ->assertSee('id="catCats"', false)
+            ->assertDontSee('class="sport-filters"', false);
+    }
+
     public function test_legacy_volleyball_url_redirects_to_named_sport_route(): void
     {
         $this->get('/volleyball')
