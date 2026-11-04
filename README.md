@@ -16,34 +16,17 @@ Set up the application's `.env` and `APP_KEY` on first installation. Keep your a
 
 ## Sport page editing
 
-All sport-specific content now lives in `app/Http/Controllers/SportController.php`. Each sport has its own private array-producing method: `baseball()`, `basketball()`, `bmx()`, `crossCountry()`, `discGolf()`, `fieldHockey()`, `flagFootball()`, `football()`, `golf()`, `hockey()`, `lacrosse()`, `mma()`, `rugby()`, `running()`, `soccer()`, `softball()`, `swim()`, `tennis()`, `trackAndField()`, `volleyball()`, and `yoga()`.
+The controller `app/Http/Controllers/SportController.php` has 21 dedicated sport methods. **Every sport method contains its complete hard-coded data array**; no shared data helpers or sport-specific configuration files are required. Edit only the method for the sport you want to change.
 
-Each method returns editable arrays for `hero` (lead, accent, subtitle, slide images and positions, facts), `kit_heading`, `kits` (cards, descriptions, slides), `contrast` (text, images), `proof`, `clubs` (name and optional logo), `contact`, `seo` and optional `catalog`.
+The editable keys are `slug`, `name`, `id`, `hero` (heading, slides and facts), `kit_heading`, `kits` (all kit cards, image paths, descriptions), `contrast` (text and images), `proof` (quote and attribution), `clubs` (temporary name/logo list), `catalog`, `contact` and `seo`.
 
-The controller creates the rest of the page data: sport name/ID, all sport links, canonical URL, Encore catalog API products grouped by style, and the external full-catalog URL. To customize a particular sport's products/categories without calling the API, set `'catalog' => ['groups' => [...]]` inside that sport function. Otherwise leave `'catalog' => []` to fetch products through the API. You may also specify `'full_catalog_url' => 'https://...'` in a sport's returned array.
+The original volleyball images are included directly in each sport's array as temporary placeholders. Replace asset paths individually with a path relative to Laravel's `public/` folder, for example `assets/sports/baseball/hero-1.jpg`. The shared Blade view uses `asset()` to generate the URL.
 
-The temporary club list is now a plain `'clubs' => [...]` array inside each sport's function. Non-volleyball lists are empty by default and their original scrolling marquee is automatically hidden until you add entries. Volleyball's existing club names are included as temporary arrays. There is no club model, migration, service, or club-specific database requirement.
+Clubs are temporary hard-coded arrays inside each sport function. No club model, service or migration is needed. An empty club array hides the marquee.
 
-The original volleyball slides and kit images are shared as placeholders by `volleyballSlides()` and `volleyballKits()`. For unique imagery, replace a sport's `'slides' => $this->volleyballSlides()` or `'kits' => $this->volleyballKits(false)` with your own image arrays using paths relative to `public/`, such as `assets/sports/baseball/hero.jpg`. Do not use `asset()` inside the controller: shared Blade views resolve local asset paths using Laravel's `asset()` helper.
+For `'catalog' => []` or `'catalog' => ['groups' => null]`, product groups load automatically from the Encore inventory API for that sport ID. To supply your own catalog, set `'catalog' => ['groups' => [...]]` using the existing carousel format. The same shared Blade design is used for all sports.
 
-Example:
-
-```php
-'hero' => [
-    'lead' => 'Own the',
-    'accent' => 'field.',
-    'subtitle' => 'Custom lacrosse uniforms and teamwear.',
-    'slides' => [
-        ['image' => 'assets/sports/lacrosse/hero.jpg', 'position' => 'center'],
-    ],
-    'facts' => $this->heroFacts(),
-],
-'clubs' => [
-    ['name' => 'Your club name', 'logo' => null],
-],
-```
-
-All sports render `resources/views/website/sports/show.blade.php` and the original reusable section partials in `resources/views/website/sports/sections/`. The original fonts, animations and category carousels are preserved in `resources/views/website/styles/sport.blade.php` and `resources/views/website/scripts/sport.blade.php`. The product catalog shows `No matching products available.` when there are no API results.
+The controller's `show()` method only dispatches to the sport function, supplies the sports navigation list, canonical URL, API product groups when necessary, and the full catalog URL. Sport-specific presentation content resides entirely inside each sport function.
 
 ## Routes and deployment
 
