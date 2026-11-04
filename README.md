@@ -72,35 +72,25 @@ Adjust descriptions, social image, logo, favicon, and theme color in `config/sit
 5. Run `php artisan key:generate` on initial setup, then `php artisan optimize`.
 6. Serve the website over HTTPS and confirm image responses and animation behavior.
 
-Avoid running `migrate:fresh` on production databases. The public pages do not require database migrations.
+Avoid running `migrate:fresh` on production databases. Public pages do not require database migrations unless you enable the optional database-managed club directory.
 
-## Sports pages and Encore Inventory API
+## Sport pages and inventory API
 
-The homepage links to all 21 sports configured in `config/sports.php`. Each sport uses its original Encore inventory filter ID and a named route such as `route('sports.show', ['sport' => 'baseball'])`. Volleyball keeps the original custom design at `route('sports.volleyball')` and shares the new API product catalog component.
+All 21 sports use the **original volleyball page structure and styling**, including the same hero slider, kit rail, catalog category rows with horizontal carousel arrows, testimonials, animated club marquee, and footer. No second catalog/filter section is injected. The other sport pages are rendered from `resources/views/website/volleyball/index.blade.php` and its existing section partials; only sport-specific text, catalog data and clubs change.
 
-Reusable sport-page Blade components:
+Sport IDs are defined in `config/sports.php`; the API service is `app/Services/EncoreProductService.php`; grouped category products are prepared in `app/Services/EncoreCatalogService.php`. Product links follow Encore's actual `/productDetails/{id}?type=product|sub_product&selectedSport=...` URL pattern shown in the supplied reference. When the API yields no matching products, the existing catalog area says **No matching products available.**
 
-- `resources/views/website/sports/components/navigation.blade.php`
-- `resources/views/website/sports/components/slides.blade.php`
-- `resources/views/website/sports/components/kit.blade.php`
-- `resources/views/website/sports/components/catalog.blade.php`
-- `resources/views/website/sports/components/product-card.blade.php`
-- `resources/views/website/sports/components/footer.blade.php`
-
-Product requests are handled only on the server by `app/Services/EncoreProductService.php`, with response caching and safe empty states. **Never embed Encore's API token in Blade, client-side JavaScript or Git.**
-
-Copy the configuration keys from `.env.encore.example` into your existing local `.env`, and set `ENCORE_API_KEY` and `ENCORE_API_TOKEN` to your authorized credentials. Then run:
+API credentials must be stored **only in .env**. Copy keys from `.env.encore.example`, provide authorized `ENCORE_API_KEY` and `ENCORE_API_TOKEN`, and run:
 
 ```powershell
-php artisan config:clear
+git pull origin main
+php artisan optimize:clear
 php artisan cache:clear
 php artisan route:list --path=sports
 php artisan test --filter=EncoreWebsiteTest
 ```
 
-The sample data describes `get_products` filtering, but does not specify the live `productDetails` URL query parameter or every product-response field. `ENCORE_PRODUCT_DETAIL_PARAMETER` defaults to `id`; confirm this matches your actual `encr.co` product-details controller and adjust as needed. `ENCORE_PRODUCT_DETAIL_URL` is also configurable.
-
-For a complete rollout, replace generic sport photography with approved sport-specific hero and kit imagery. The volleyball page retains its original visuals and animations.
+The API response examples do not document every production field; verify live product images, style mappings and detail links with your configured credentials before deployment. The existing volleyball imagery remains a visual placeholder on other sports until approved sport-specific images are supplied.
 
 ## Sliding club logos
 
