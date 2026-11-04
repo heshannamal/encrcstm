@@ -103,3 +103,34 @@ The original volleyball catalog layout, category carousel arrows, and expansion 
 All 21 sports now share `website.sports.show` and `website.sports.sections/*`. There is no volleyball-only layout. `SportController` assembles a single `$page` array containing sport metadata, hero images, kit slides and descriptions, grouped product categories and product links, proof quote, club marquee data, SEO metadata and contact information.
 
 Change editorial defaults and sport-specific overrides in `config/sport_pages.php` (read by the controller), clubs in `config/clubs.php` or the optional `sport_clubs` database table, and inventory categories/products via the existing API service. Where approved sport artwork isn't provided, original reference images remain the fallback. The original animation code and styling are reused unchanged except for accepting controller-provided catalog and club data.
+
+
+## Per-sport controller functions
+
+`SportController::show()` dispatches each sport to a dedicated private method:
+`baseball()`, `basketball()`, `bmx()`, `crossCountry()`, `discGolf()`,
+`fieldHockey()`, `flagFootball()`, `football()`, `golf()`, `hockey()`,
+`lacrosse()`, `mma()`, `rugby()`, `running()`, `soccer()`, `softball()`,
+`swim()`, `tennis()`, `trackAndField()`, `volleyball()`, and `yoga()`.
+
+Each returns a complete `$page` data array via `buildSportPage($slug, $catalog, $clubs, $custom)`. The fourth argument lets you customize **hero text and images, kit slides/cards, contrast copy, proof content, contact, SEO, clubs, catalog, and full catalog URL** just for that sport. Unspecified values inherit `config/sport_pages.php` defaults and the configured sport overrides. All routes continue to render the same `website.sports.show` Blade page.
+
+Example inside `lacrosse()`:
+
+```php
+return $this->buildSportPage('lacrosse', $catalog, $clubs, [
+    'hero' => [
+        'accent' => 'field.',
+        'subtitle' => 'Custom lacrosse kit for your club.',
+        'slides' => [
+            ['image' => 'assets/sports/lacrosse/hero.jpg', 'position' => 'center'],
+        ],
+    ],
+    'proof' => [
+        'quote' => 'An approved customer quotation.',
+        'attribution' => 'Approved club name',
+    ],
+]);
+```
+
+Replace the example values with approved images and real quotes; do not hardcode API keys. Product and club data are still fetched by the backend services for each sport by default.
