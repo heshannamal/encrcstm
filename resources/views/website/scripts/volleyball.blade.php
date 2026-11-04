@@ -77,7 +77,7 @@
    b.addEventListener('mouseleave',function(){b.style.transform='';});
   });
  }
- document.querySelectorAll('.switch a:not(.active)').forEach(function(a){a.addEventListener('click',function(e){e.preventDefault();});});
+ // Allow sport links to navigate to their Laravel routes.
 
  /* logo returns to the home page (closes the overlay when embedded) */
  function goHome(){ if(window.parent!==window){ window.parent.postMessage('encore:home','*'); } else { window.location.href=@json(route('home')); } }
