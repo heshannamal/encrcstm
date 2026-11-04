@@ -19,28 +19,28 @@ final class EncoreProductService
             'selectedGender' => $filters['gender'] ?? 'All',
             'selectedStyle' => $filters['style'] ?? 0,
             'search' => $filters['search'] ?? '',
-            'sales_channel_id' => config('encore.sales_channel_id'),
+            'sales_channel_id' => config('services.encore.sales_channel_id'),
         ];
         if (isset($filters['page'])) {
             $query['page'] = $filters['page'];
         }
 
-        return Cache::remember('encore:products:'.sha1(json_encode($query)), config('encore.cache_seconds'), function () use ($query): array {
-            if (!config('encore.api_key') || !config('encore.api_token')) {
+        return Cache::remember('encore:products:'.sha1(json_encode($query)), config('services.encore.cache_seconds'), function () use ($query): array {
+            if (!config('services.encore.api_key') || !config('services.encore.api_token')) {
                 Log::warning('Encore API credentials are not configured');
                 return [];
             }
 
             try {
                 $response = Http::withHeaders([
-                    'API-Key' => config('encore.api_key'),
-                    'API-Token' => config('encore.api_token'),
-                    'Inventory-Type-Id' => (string) config('encore.inventory_type_id'),
-                    'Sales-Channel-Id' => (string) config('encore.sales_channel_id'),
+                    'API-Key' => config('services.encore.api_key'),
+                    'API-Token' => config('services.encore.api_token'),
+                    'Inventory-Type-Id' => (string) config('services.encore.inventory_type_id'),
+                    'Sales-Channel-Id' => (string) config('services.encore.sales_channel_id'),
                 ])->acceptJson()
-                  ->timeout(config('encore.timeout'))
+                  ->timeout(config('services.encore.timeout'))
                   ->retry(2, 300, throw: false)
-                  ->get(rtrim(config('encore.base_url'), '/').'/get_products', $query);
+                  ->get(rtrim(config('services.encore.base_url'), '/').'/get_products', $query);
 
                 if (!$response->successful()) {
                     Log::warning('Encore products API failed', ['status' => $response->status()]);
@@ -71,7 +71,7 @@ final class EncoreProductService
         if (!is_string($image)) {
             $image = null;
         } elseif ($image !== '' && !preg_match('~^https?://~i', $image)) {
-            $image = rtrim(config('encore.asset_url'), '/').'/'.ltrim($image, '/');
+            $image = rtrim(config('services.encore.asset_url'), '/').'/'.ltrim($image, '/');
         }
 
         $price = data_get($item,'price') ?? data_get($item,'selling_price')
@@ -79,7 +79,7 @@ final class EncoreProductService
 
         $url = null;
         if (is_scalar($id) && (string) $id !== '') {
-            $base = config('encore.product_detail_url');
+            $base = config('services.encore.product_detail_url');
             $type = data_get($item,'type')
                 ?? data_get($item,'product_type')
                 ?? (data_get($item,'sub_product_id') ? 'sub_product' : 'product');

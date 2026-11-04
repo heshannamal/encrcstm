@@ -31,3 +31,7 @@ The controller's `show()` method only dispatches to the sport function, supplies
 ## Routes and deployment
 
 `route('home')` renders the homepage and `route('sports.show', ['sport' => 'volleyball'])` renders any sport through the single dynamic route. For cPanel, use a PHP version compatible with your `composer.lock`, install dependencies, configure `.env`, and point your site's document root to Laravel's `public/` directory.
+
+## Inventory API settings
+
+Encore API configuration is in `config/services.php`, under the `encore` key. Supply credentials via `.env` using `ENCORE_API_KEY` and `ENCORE_API_TOKEN`; never commit credentials. The inventory services read configuration through `config('services.encore.api_key')` and related keys. After updating the environment run `php artisan optimize:clear`.

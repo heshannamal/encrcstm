@@ -45,7 +45,7 @@ final class EncoreCatalogService
 
             $groups[$category][] = [
                 'n' => $card['name'],
-                'p' => $card['price'] === null ? '' : config('encore.currency_symbol').$card['price'],
+                'p' => $card['price'] === null ? '' : config('services.encore.currency_symbol').$card['price'],
                 'img' => $card['image'],
                 'u' => $card['url'],
             ];

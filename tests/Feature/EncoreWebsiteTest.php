@@ -179,11 +179,11 @@ final class EncoreWebsiteTest extends TestCase
     {
         \Illuminate\Support\Facades\Cache::flush();
 
-        config()->set('encore.api_key', 'test-api-key');
-        config()->set('encore.api_token', 'test-api-token');
-        config()->set('encore.base_url', 'https://example.invalid/api');
-        config()->set('encore.asset_url', 'https://encr.co/assets');
-        config()->set('encore.product_detail_url', 'https://encr.co/productDetails');
+        config()->set('services.encore.api_key', 'test-api-key');
+        config()->set('services.encore.api_token', 'test-api-token');
+        config()->set('services.encore.base_url', 'https://example.invalid/api');
+        config()->set('services.encore.asset_url', 'https://encr.co/assets');
+        config()->set('services.encore.product_detail_url', 'https://encr.co/productDetails');
 
         \Illuminate\Support\Facades\Http::fake([
             'example.invalid/*' => \Illuminate\Support\Facades\Http::response([
