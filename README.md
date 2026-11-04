@@ -8,7 +8,6 @@ Laravel implementation of the original Encore Custom design with a single shared
 git pull origin main
 composer install
 php artisan optimize:clear
-php artisan test --filter=EncoreWebsiteTest
 php artisan serve
 ```
 
