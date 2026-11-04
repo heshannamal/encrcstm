@@ -280,6 +280,89 @@ final class EncoreWebsiteTest extends TestCase
         );
     }
 
+    public function test_catalog_subproducts_open_the_correct_external_product_detail_page(): void
+    {
+        $service = app(\App\Services\EncoreProductService::class);
+
+        $subProduct = $service->card([
+            'id' => 2,
+            'parent_product_id' => 2,
+            'sub_product_no' => 'PRO-2.1',
+            'product_name' => 'Original Product Name',
+            'display_product_name' => "Men's DezTek Lite Collegiate Performance Tee",
+            'display_product_price' => 30,
+            'display_main_image' => 'https://inventory.encr.co/public/storage/product_display_settings/example.jpg',
+            '_sport_id' => 1,
+        ]);
+
+        $this->assertSame("Men's DezTek Lite Collegiate Performance Tee", $subProduct['name']);
+        $this->assertSame('30.00', $subProduct['price']);
+        $this->assertSame(
+            'https://inventory.encr.co/public/storage/product_display_settings/example.jpg',
+            $subProduct['image']
+        );
+
+        $this->assertSame(
+            'https://encr.co/productDetails/2?type=sub_product&selectedGender=All&selectedCategory=5&selectedSport=1&selectedStyle=0',
+            $subProduct['url']
+        );
+
+        $parent = $service->card([
+            'id' => 13,
+            'product_name' => 'Parent Product',
+            '_sport_id' => 1,
+        ]);
+        $this->assertStringContainsString('/productDetails/13?type=product&', $parent['url']);
+
+        $explicit = $service->card([
+            'id' => 22,
+            'type' => 'product',
+            'sub_product_no' => 'PRO-22',
+            '_sport_id' => 3,
+        ]);
+        $this->assertStringContainsString('/productDetails/22?type=product&', $explicit['url']);
+    }
+
+    public function test_inventory_nested_category_label_is_read_correctly(): void
+    {
+        \Illuminate\Support\Facades\Cache::flush();
+
+        config()->set('services.encore.api_key', 'test-api-key');
+        config()->set('services.encore.api_token', 'test-api-token');
+        config()->set('services.encore.base_url', 'https://example.invalid/api');
+
+        \Illuminate\Support\Facades\Http::fake([
+            'example.invalid/*' => \Illuminate\Support\Facades\Http::response([
+                'success' => true,
+                'data' => [
+                    [
+                        'id' => 2,
+                        'sub_product_no' => 'PRO-2.1',
+                        'display_product_name' => 'Demo Lacrosse Product',
+                        'display_product_price' => 30,
+                        'product_details' => [
+                            'product_categories' => [[
+                                'product_category_id' => 11,
+                                'categories' => [
+                                    'id' => 11,
+                                    'product_category_name' => 'Tops',
+                                ],
+                            ]],
+                        ],
+                    ],
+                ],
+            ], 200),
+        ]);
+
+        $groups = app(\App\Services\EncoreCatalogService::class)->groups(1);
+        $this->assertCount(1, $groups);
+        $this->assertSame('Tops', $groups[0]['cat']);
+        $this->assertStringContainsString(
+            '/productDetails/2?type=sub_product&',
+            $groups[0]['items'][0]['u']
+        );
+    }
+
     public function test_clubs_are_temporary_arrays_in_each_sport_method(): void
     {
         $controller = new \ReflectionClass(\App\Http\Controllers\SportController::class);
