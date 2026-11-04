@@ -19,12 +19,14 @@ final class SportController
         abort_unless(array_key_exists($sport, $sports), 404);
 
         $info = $sports[$sport];
+        $overrides = config("sport_pages.overrides.{$sport}", []);
         $content = array_replace_recursive(
             config('sport_pages.defaults', []),
-            config("sport_pages.overrides.{$sport}", [])
+            $overrides
         );
 
-        if ($sport !== 'volleyball') {
+        // Use generic copy only when no sport-specific kit content exists.
+        if ($sport !== 'volleyball' && !isset($overrides['kits'][0])) {
             $content['kits'][0]['title'] = 'Game Jersey';
             $content['kits'][0]['tag'] = 'Home and away options';
             $content['kits'][0]['description'] = 'Made for your team with flexible cuts, durable fabric and coordinated colors.';
