@@ -80,8 +80,17 @@ final class EncoreProductService
         $url = null;
         if (is_scalar($id) && (string) $id !== '') {
             $base = config('encore.product_detail_url');
-            $url = $base.(str_contains($base, '?') ? '&' : '?')
-                .http_build_query([config('encore.product_detail_parameter') => (string) $id]);
+            $type = data_get($item,'type')
+                ?? data_get($item,'product_type')
+                ?? (data_get($item,'sub_product_id') ? 'sub_product' : 'product');
+            $type = in_array($type,['product','sub_product'],true) ? $type : 'product';
+            $url = rtrim($base,'/').'/'.rawurlencode((string) $id).'?'.http_build_query([
+                'type' => $type,
+                'selectedGender' => 'All',
+                'selectedCategory' => 5,
+                'selectedSport' => $item['_sport_id'] ?? 11,
+                'selectedStyle' => 0,
+            ]);
         }
 
         return [

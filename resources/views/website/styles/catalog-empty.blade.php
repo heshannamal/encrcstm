@@ -1,0 +1,1 @@
+.cat-empty{padding:55px 16px;text-align:center;background:transparent}.cat-empty h3{font-family:var(--disp);font-weight:800;font-size:clamp(20px,2.2vw,30px);color:var(--ink);margin:0}.lb-item img{display:block;max-height:56px;max-width:180px;width:auto;object-fit:contain}

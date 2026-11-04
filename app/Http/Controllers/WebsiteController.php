@@ -14,17 +14,14 @@ final class WebsiteController
         return view('website.home.index');
     }
 
-    public function volleyball(\Illuminate\Http\Request $request, \App\Services\EncoreProductService $inventory): View
+    public function volleyball(\App\Services\EncoreCatalogService $catalog): View
     {
-        $filters = $request->validate([
-            'category' => ['nullable','integer','in:1,2,3,5'],
-            'style' => ['nullable','integer','min:0'],
-            'gender' => ['nullable','string','max:25'],
-            'search' => ['nullable','string','max:100'],
-            'page' => ['nullable','integer','min:1'],
+        return view('website.volleyball.index', [
+            'sport' => config('sports.volleyball') + ['slug'=>'volleyball'],
+            'sports' => config('sports'),
+            'catalogGroups' => $catalog->groups(11),
+            'clubList' => config('clubs.volleyball', []),
         ]);
-        $products = array_map([$inventory,'card'], $inventory->products(11, $filters));
-        return view('website.volleyball.index', compact('products', 'filters'));
     }
 
     public function legacyVolleyball(): RedirectResponse

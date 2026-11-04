@@ -76,12 +76,12 @@
 <section class="section light" id="catalog">
  <div class="wrap">
   
-  <h2 class="h-sec reveal d1">Volleyball <em>Catalog</em></h2>
+  <h2 class="h-sec reveal d1">{{ $sport['name'] ?? 'Volleyball' }} <em>Catalog</em></h2>
   
   <div class="catcats reveal d2" id="catCats"></div>
   <div class="cat-actions reveal">
    <button class="cat-expand" id="catMore" type="button"><span id="catMoreLabel">More categories</span></button>
-   <a class="btn catalog" href="https://encr.co/product_filter?selectedGender=All&selectedCategory=5&selectedSport=11&selectedStyle=0" target="_blank" rel="noopener"><span>View the full catalog</span><span class="ar">→</span></a>
+   <a class="btn catalog" href="{{ 'https://encr.co/product_filter?'.http_build_query(['selectedGender'=>'All','selectedCategory'=>5,'selectedSport'=>$sport['id'] ?? 11,'selectedStyle'=>0]) }}" target="_blank" rel="noopener"><span>View the full catalog</span><span class="ar">→</span></a>
   </div>
  </div>
 </section>

@@ -13,8 +13,8 @@
  </div>
  <div class="wrap hero-inner">
   
-  <h1>Own the <span class="r">net.</span></h1>
-  <p class="hero-sub">Match kits engineered for the jump, the dig and the long season. Designed and made in our own factory, built to your program's identity.</p>
+  <h1>Own the <span class="r">{{ ($sport['slug'] ?? 'volleyball') === 'volleyball' ? 'net.' : strtolower($sport['name']).'.' }}</span></h1>
+  <p class="hero-sub">{{ ($sport['slug'] ?? 'volleyball') === 'volleyball' ? "Match kits engineered for the jump, the dig and the long season. Designed and made in our own factory, built to your program's identity." : 'Custom '.strtolower($sport['name']).' kits made for your team. Designed and made in our own factory, built to your program\'s identity.' }}</p>
   <div class="hero-cta">
    <a class="btn" data-openkit href="#"><span>Start a kit</span><span class="ar">→</span></a>
   </div>
