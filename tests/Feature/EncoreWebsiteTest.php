@@ -27,6 +27,24 @@ final class EncoreWebsiteTest extends TestCase
             ->assertDontSee('id="vbdoc"', false);
     }
 
+    public function test_site_cta_links_point_to_configured_external_services(): void
+    {
+        $this->assertSame('https://dev.encr.co/', config('site.builder_url'));
+        $this->assertSame('https://encr.co/customer_catalog', config('site.team_url'));
+        $this->assertStringContainsString('selectedCategory=3', config('site.lifestyle_url'));
+        $this->assertStringNotContainsString('_token=', config('site.lifestyle_url'));
+
+        $home = $this->get(route('home'))->assertOk();
+        $home->assertSee('href="'.config('site.builder_url').'"', false);
+        $home->assertSee('href="'.config('site.team_url').'"', false);
+        $home->assertSee('href="'.e(config('site.lifestyle_url')).'"', false);
+
+        $this->get(route('sports.show', ['sport' => 'volleyball']))
+            ->assertOk()
+            ->assertSee('href="'.config('site.builder_url').'"', false)
+            ->assertSee('href="'.config('site.team_url').'"', false);
+    }
+
     public function test_volleyball_uses_shared_sport_route_and_original_style(): void
     {
         $this->get(route('sports.show', ['sport' => 'volleyball']))
