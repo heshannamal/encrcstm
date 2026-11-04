@@ -50,6 +50,8 @@ final class EncoreWebsiteTest extends TestCase
         }
 
         $this->get('/sports/not-a-real-sport')->assertNotFound();
+        $this->assertFileDoesNotExist(resource_path('views/website/volleyball/index.blade.php'));
+        $this->assertFileExists(resource_path('views/website/sports/show.blade.php'));
         $this->assertFalse(\Illuminate\Support\Facades\Route::has('sports.volleyball'));
         $this->assertFalse(\Illuminate\Support\Facades\Route::has('volleyball.legacy'));
         $this->get('/volleyball')->assertNotFound();
@@ -59,8 +61,8 @@ final class EncoreWebsiteTest extends TestCase
     {
         $paths = [
             resource_path('views/website/styles/home.blade.php'),
-            resource_path('views/website/styles/volleyball.blade.php'),
-            resource_path('views/website/volleyball/sections/hero.blade.php'),
+            resource_path('views/website/styles/sport.blade.php'),
+            resource_path('views/website/sports/sections/hero.blade.php'),
             resource_path('views/website/home/sections/hero.blade.php'),
         ];
 

@@ -30,7 +30,7 @@ Visit `http://127.0.0.1:8000`. For WAMP, serving from `http://localhost/encrcstm
 | `resources/views/website/layouts/app.blade.php` | Shared HTML, font imports, scripts and content slots |
 | `resources/views/website/partials/meta.blade.php` | Title, description, canonical, Open Graph, Twitter and structured data |
 | `resources/views/website/home/sections/` | Homepage content by section |
-| `resources/views/website/volleyball/sections/` | Volleyball content by section |
+| `resources/views/website/sports/sections/` | Volleyball content by section |
 | `resources/views/website/styles/` | Original page-specific CSS and font declarations |
 | `resources/views/website/scripts/` | Original animations and event logic |
 | `config/site.php` | Centralized brand, SEO and image configuration |
@@ -76,7 +76,7 @@ Avoid running `migrate:fresh` on production databases. Public pages do not requi
 
 ## Sport pages and inventory API
 
-All 21 sports use the **original volleyball page structure and styling**, including the same hero slider, kit rail, catalog category rows with horizontal carousel arrows, testimonials, animated club marquee, and footer. No second catalog/filter section is injected. The other sport pages are rendered from `resources/views/website/volleyball/index.blade.php` and its existing section partials; only sport-specific text, catalog data and clubs change.
+All 21 sports use the **original volleyball page structure and styling**, including the same hero slider, kit rail, catalog category rows with horizontal carousel arrows, testimonials, animated club marquee, and footer. No second catalog/filter section is injected. The other sport pages are rendered from `resources/views/website/sports/show.blade.php` and its existing section partials; only sport-specific text, catalog data and clubs change.
 
 Sport IDs are defined in `config/sports.php`; the API service is `app/Services/EncoreProductService.php`; grouped category products are prepared in `app/Services/EncoreCatalogService.php`. Product links follow Encore's actual `/productDetails/{id}?type=product|sub_product&selectedSport=...` URL pattern shown in the supplied reference. When the API yields no matching products, the existing catalog area says **No matching products available.**
 
@@ -97,3 +97,9 @@ The API response examples do not document every production field; verify live pr
 Club names and optional logos come from the Laravel backend, while the original infinite marquee animation remains unchanged. By default edit `config/clubs.php` (use `name` and an optional `logo` URL). To manage club records in MySQL, run `php artisan migrate`, set `ENCORE_CLUBS_SOURCE=database`, and maintain rows in the `sport_clubs` table (`sport_slug`, `name`, optional `logo_url`, `is_active`, `sort_order`). The database mode falls back to configured defaults when it contains no matching active entries. Clear cache after edits with `php artisan cache:clear`. This adds backend data support without any new frontend section.
 
 The original volleyball catalog layout, category carousel arrows, and expansion interaction are unchanged. Its data now comes from `EncoreCatalogService` and the configured product API. Ensure `ENCORE_API_TOKEN` is set only in your local environment.
+
+## Backend-controlled sport layout
+
+All 21 sports now share `website.sports.show` and `website.sports.sections/*`. There is no volleyball-only layout. `SportController` assembles a single `$page` array containing sport metadata, hero images, kit slides and descriptions, grouped product categories and product links, proof quote, club marquee data, SEO metadata and contact information.
+
+Change editorial defaults and sport-specific overrides in `config/sport_pages.php` (read by the controller), clubs in `config/clubs.php` or the optional `sport_clubs` database table, and inventory categories/products via the existing API service. Where approved sport artwork isn't provided, original reference images remain the fallback. The original animation code and styling are reused unchanged except for accepting controller-provided catalog and club data.

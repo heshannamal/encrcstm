@@ -1,2 +1,0 @@
-<!-- FABRIC LIBRARY (the fix) -->
-
