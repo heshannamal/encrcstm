@@ -28,15 +28,51 @@ final class EncoreCatalogService
                 continue; // Product cannot lead to the real detail page.
             }
 
+            $relations = data_get($raw, 'product_details.product_categories')
+                ?? data_get($raw, 'productDetails.productCategories')
+                ?? [];
+
+            if (is_array($relations) && !array_is_list($relations)) {
+                $relations = [$relations];
+            }
+
+            $relatedCategory = null;
+            $relatedId = null;
+
+            foreach (is_array($relations) ? $relations : [] as $relation) {
+                if (!is_array($relation)) {
+                    continue;
+                }
+
+                $id = data_get($relation, 'product_category_id')
+                    ?? data_get($relation, 'categories.id')
+                    ?? data_get($relation, 'category.id')
+                    ?? data_get($relation, 'id');
+
+                $name = data_get($relation, 'category_name')
+                    ?? data_get($relation, 'product_category_name')
+                    ?? data_get($relation, 'categories.name')
+                    ?? data_get($relation, 'category.name')
+                    ?? data_get($relation, 'name');
+
+                if ($id !== null || filled($name)) {
+                    $relatedId = $id;
+                    $relatedCategory = $name;
+                    break;
+                }
+            }
+
             $styleId = data_get($raw, 'product_style_id')
                 ?? data_get($raw, 'style_id')
                 ?? data_get($raw, 'style.id')
-                ?? data_get($raw, 'product_style.id');
+                ?? data_get($raw, 'product_style.id')
+                ?? $relatedId;
 
             $category = data_get($raw, 'style_name')
                 ?? data_get($raw, 'product_style_name')
                 ?? data_get($raw, 'style.name')
                 ?? data_get($raw, 'product_style.name')
+                ?? $relatedCategory
                 ?? data_get($raw, 'category_name')
                 ?? (self::STYLES[(int) $styleId] ?? 'Other Products');
 
