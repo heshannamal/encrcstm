@@ -191,8 +191,8 @@ h1,h2,h3,h4{margin:0;font-family:var(--disp);font-weight:800;line-height:.95;let
 @keyframes rowbob{0%,100%{transform:translateX(0)}50%{transform:translateX(7px)}}
 .catcard{flex:0 0 calc((100% - 54px)/4);display:flex;flex-direction:column;border:1px solid rgba(51,63,72,.16);background:#fff;overflow:hidden;text-decoration:none;transition:transform .25s var(--ease),border-color .25s var(--ease),box-shadow .25s var(--ease)}
 .catcard:hover{transform:translateY(-4px);border-color:var(--red);box-shadow:0 18px 38px -22px rgba(51,63,72,.45)}
-.catcard .im{aspect-ratio:3/4;background:#f1f2f4;overflow:hidden}
-.catcard .im img{width:100%;height:100%;object-fit:contain;display:block}
+.catcard .im{position:relative;display:block;flex-shrink:0;width:100%;aspect-ratio:3/4;background:#f1f2f4;overflow:hidden}
+.catcard .im img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;display:block}
 .catcard .meta{padding:14px 15px;display:flex;flex-direction:column;gap:7px;flex:1}
 .catcard .nm{font-family:var(--body);font-size:13.5px;color:var(--ink);line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:2.5em}
 .catcard .pr{font-family:var(--mono);font-size:12.5px;color:var(--red);letter-spacing:.04em;margin-top:auto;font-weight:700}
