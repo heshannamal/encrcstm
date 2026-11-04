@@ -101,3 +101,9 @@ php artisan test --filter=EncoreWebsiteTest
 The sample data describes `get_products` filtering, but does not specify the live `productDetails` URL query parameter or every product-response field. `ENCORE_PRODUCT_DETAIL_PARAMETER` defaults to `id`; confirm this matches your actual `encr.co` product-details controller and adjust as needed. `ENCORE_PRODUCT_DETAIL_URL` is also configurable.
 
 For a complete rollout, replace generic sport photography with approved sport-specific hero and kit imagery. The volleyball page retains its original visuals and animations.
+
+## Sliding club logos
+
+Club names and optional logos come from the Laravel backend, while the original infinite marquee animation remains unchanged. By default edit `config/clubs.php` (use `name` and an optional `logo` URL). To manage club records in MySQL, run `php artisan migrate`, set `ENCORE_CLUBS_SOURCE=database`, and maintain rows in the `sport_clubs` table (`sport_slug`, `name`, optional `logo_url`, `is_active`, `sort_order`). The database mode falls back to configured defaults when it contains no matching active entries. Clear cache after edits with `php artisan cache:clear`. This adds backend data support without any new frontend section.
+
+The original volleyball catalog layout, category carousel arrows, and expansion interaction are unchanged. Its data now comes from `EncoreCatalogService` and the configured product API. Ensure `ENCORE_API_TOKEN` is set only in your local environment.

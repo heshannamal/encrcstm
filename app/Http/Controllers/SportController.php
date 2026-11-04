@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Services\EncoreCatalogService;
+use App\Services\SportClubDirectory;
 use Illuminate\Contracts\View\View;
 
 final class SportController
 {
-    public function show(string $sport, EncoreCatalogService $catalog): View
+    public function show(string $sport, EncoreCatalogService $catalog, SportClubDirectory $clubs): View
     {
         $sports = config('sports', []);
         abort_unless(isset($sports[$sport]), 404);
@@ -18,7 +19,7 @@ final class SportController
             'sport' => $sports[$sport] + ['slug'=>$sport],
             'sports' => $sports,
             'catalogGroups' => $catalog->groups((int) $sports[$sport]['id']),
-            'clubList' => config('clubs.'.$sport, config('clubs.default', [])),
+            'clubList' => $clubs->forSport($sport),
         ]);
     }
 }

@@ -14,13 +14,13 @@ final class WebsiteController
         return view('website.home.index');
     }
 
-    public function volleyball(\App\Services\EncoreCatalogService $catalog): View
+    public function volleyball(\App\Services\EncoreCatalogService $catalog, \App\Services\SportClubDirectory $clubs): View
     {
         return view('website.volleyball.index', [
             'sport' => config('sports.volleyball') + ['slug'=>'volleyball'],
             'sports' => config('sports'),
             'catalogGroups' => $catalog->groups(11),
-            'clubList' => config('clubs.volleyball', []),
+            'clubList' => $clubs->forSport('volleyball'),
         ]);
     }
 
