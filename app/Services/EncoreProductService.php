@@ -207,6 +207,15 @@ final class EncoreProductService
     public function card(array $item): array
     {
         $id = $this->first($item, ['id', 'sub_product_id', 'product_id', 'product.id']);
+        $type = $this->first($item, ['type', 'product_type']);
+
+        if (!in_array($type, ['product', 'sub_product'], true)) {
+            $type = filled($this->first($item, [
+                'sub_product_no',
+                'sub_product_id',
+                'product_display_detail.sub_product_id',
+            ])) ? 'sub_product' : 'product';
+        }
 
         $name = $this->first($item, [
             'display_product_name',
@@ -271,11 +280,6 @@ final class EncoreProductService
 
         $url = null;
         if (is_scalar($id) && (string) $id !== '') {
-            $type = $this->first($item, ['type', 'product_type']);
-            if (!in_array($type, ['product', 'sub_product'], true)) {
-                $type = filled(data_get($item, 'sub_product_id')) ? 'sub_product' : 'product';
-            }
-
             $url = rtrim((string) config('services.encore.product_detail_url'), '/')
                 .'/'.rawurlencode((string) $id).'?'.http_build_query([
                     'type' => $type,
