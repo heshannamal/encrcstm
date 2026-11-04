@@ -108,8 +108,17 @@ final class EncoreWebsiteTest extends TestCase
         $this->get(route('sports.show', ['sport' => 'baseball']))
             ->assertOk()
             ->assertSee('Demo Baseball Jersey', false)
-            ->assertSee('https://encr.co/assets/jerseys/demo.jpg', false)
-            ->assertSee('https://encr.co/productDetails?id=123', false);
+            ->assertSee('id="catCats"', false)
+            ->assertDontSee('class="sport-filters"', false);
+
+        $groups = app(\App\Services\EncoreCatalogService::class)->groups(2);
+        $this->assertSame('Other Products', $groups[0]['cat']);
+        $this->assertSame('Demo Baseball Jersey', $groups[0]['items'][0]['n']);
+        $this->assertSame('https://encr.co/assets/jerseys/demo.jpg', $groups[0]['items'][0]['img']);
+        $this->assertStringContainsString(
+            '/productDetails/123?type=product',
+            $groups[0]['items'][0]['u']
+        );
 
         \Illuminate\Support\Facades\Http::assertSent(function ($request) {
             return (int) $request['selectedSport'] === 2
