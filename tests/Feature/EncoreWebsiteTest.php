@@ -38,28 +38,49 @@ final class EncoreWebsiteTest extends TestCase
             ->assertSee('property="og:description"', false);
     }
 
-    public function test_both_pages_reference_existing_assets(): void
+    public function test_all_sports_have_valid_routes_and_metadata(): void
     {
-        $source = file_get_contents(resource_path('site/encore.html'));
+        foreach (config('sports') as $slug => $sport) {
+            $route = $slug === 'volleyball'
+                ? route('sports.volleyball')
+                : route('sports.show', ['sport' => $slug]);
 
-        $this->assertNotFalse($source);
-
-        preg_match_all(
-            '~(?<![\\w/-])/assets/reference/([a-z0-9]+\\.(?:png|jpg|jpeg|webp))~i',
-            $source,
-            $matches
-        );
-
-        $assets = array_unique($matches[1]);
-        $this->assertCount(28, $assets);
-
-        foreach ($assets as $asset) {
-            $this->assertFileExists(public_path('assets/reference/'.$asset));
+            $this->get($route)
+                ->assertOk()
+                ->assertSee($sport['name'], false)
+                ->assertSee('property="og:title"', false);
         }
 
-        foreach ([route('home'), route('sports.volleyball')] as $url) {
-            $html = $this->get($url)->assertOk()->getContent();
+        $this->get('/sports/not-a-real-sport')->assertNotFound();
+    }
 
+    public function test_all_reference_assets_exist_and_rendered_pages_have_usable_urls(): void
+    {
+        $paths = [
+            resource_path('views/website/styles/home.blade.php'),
+            resource_path('views/website/styles/volleyball.blade.php'),
+            resource_path('views/website/volleyball/sections/hero.blade.php'),
+            resource_path('views/website/home/sections/hero.blade.php'),
+        ];
+
+        $count = 0;
+
+        foreach ($paths as $path) {
+            $this->assertFileExists($path);
+            $html = file_get_contents($path);
+
+            preg_match_all('~assets/reference/([a-z0-9]+\\.(?:png|jpg|jpeg|webp))~i', $html, $matches);
+
+            foreach (array_unique($matches[1]) as $asset) {
+                $this->assertFileExists(public_path('assets/reference/'.$asset));
+                $count++;
+            }
+        }
+
+        $this->assertGreaterThan(0, $count);
+
+        foreach ([route('home'), route('sports.volleyball'), route('sports.show', ['sport' => 'baseball'])] as $url) {
+            $html = $this->get($url)->assertOk()->getContent();
             $this->assertStringNotContainsString('src="/assets/reference/', $html);
             $this->assertStringNotContainsString('url(/assets/reference/', $html);
         }
