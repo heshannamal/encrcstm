@@ -38,6 +38,40 @@ final class EncoreWebsiteTest extends TestCase
             ->assertSee('property="og:description"', false);
     }
 
+    public function test_sport_editorial_data_is_supplied_by_backend_config(): void
+    {
+        config()->set('sport_pages.overrides.baseball', [
+            'hero' => [
+                'accent' => 'diamond.',
+                'subtitle' => 'Baseball page content from the backend',
+            ],
+            'proof' => [
+                'quote' => 'Proof content from the backend',
+                'attribution' => 'Team representative',
+            ],
+            'kits' => [
+                [
+                    'title' => 'Custom baseball kit',
+                    'tag' => 'Teamwear',
+                    'description' => 'Configured kit content',
+                    'slides' => [
+                        ['label' => 'Jersey'],
+                    ],
+                ],
+            ],
+        ]);
+
+        $this->get(route('sports.show', ['sport' => 'baseball']))
+            ->assertOk()
+            ->assertSee('diamond.', false)
+            ->assertSee('Baseball page content from the backend', false)
+            ->assertSee('Proof content from the backend', false)
+            ->assertSee('Team representative', false)
+            ->assertSee('Configured kit content', false)
+            ->assertSee('id="kitRail"', false)
+            ->assertSee('id="catCats"', false);
+    }
+
     public function test_all_sports_have_valid_routes_and_metadata(): void
     {
         foreach (config('sports') as $slug => $sport) {
