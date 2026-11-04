@@ -1,136 +1,50 @@
 # Encore Custom — Laravel website
 
-Production-oriented Blade implementation of the [Encore Custom reference](https://ec-web-final.netlify.app/). The original site CSS, custom typography, responsive breakpoints, images and animations are preserved, while navigation, metadata, controllers and templates use Laravel conventions.
+Laravel implementation of the original Encore Custom design with a single shared sport page for all 21 sports.
 
-## Requirements
-
-- PHP 8.4.1+ for the committed Composer lockfile (or re-resolve dependencies locally for PHP 8.3 using a compatible Laravel 12 release)
-- Composer 2
-- No database connection is required to display the public site
-
-## Setup
-
-```powershell
-git clone https://github.com/heshannamal/encrcstm.git
-cd encrcstm
-composer install
-Copy-Item .env.example .env
-php artisan key:generate
-php artisan serve
-```
-
-Visit `http://127.0.0.1:8000`. For WAMP, serving from `http://localhost/encrcstm/public/` also works because URLs are generated with Laravel's `route()` and `asset()` helpers.
-
-## Source structure
-
-| Path | Purpose |
-| --- | --- |
-| `routes/web.php` | Named homepage and volleyball routes |
-| `app/Http/Controllers/WebsiteController.php` | Thin controller returning Blade views |
-| `resources/views/website/layouts/app.blade.php` | Shared HTML, font imports, scripts and content slots |
-| `resources/views/website/partials/meta.blade.php` | Title, description, canonical, Open Graph, Twitter and structured data |
-| `resources/views/website/home/sections/` | Homepage content by section |
-| `resources/views/website/sports/sections/` | Volleyball content by section |
-| `resources/views/website/styles/` | Original page-specific CSS and font declarations |
-| `resources/views/website/scripts/` | Original animations and event logic |
-| `config/site.php` | Centralized brand, SEO and image configuration |
-| `public/assets/reference/` | Exact original extracted local assets |
-| `resources/site/encore.html` | Unmodified design reference retained for parity audits |
-
-### URL conventions
-
-- Homepage: `route('home')`
-- Volleyball page: `route('sports.show', ['sport' => 'volleyball'])`
-- No separate volleyball route is registered; `/sports/volleyball` is handled by the shared sport route.
-- Same-page navigation uses route URLs plus fragment identifiers.
-- Local images use `asset('assets/reference/...')`.
-- Placeholder catalog/shop links are retained from the original prototype until destination routes are provided.
-
-### Volleyball overlay
-
-The homepage opens the volleyball route inside the existing full-screen iframe overlay and keeps the `#/volleyball` hash navigation intact. The sport also has a first-class standalone URL for direct navigation, metadata, and sharing.
-
-## Tests
-
-```powershell
-php artisan optimize:clear
-php artisan test --filter=EncoreWebsiteTest
-```
-
-GitHub Actions runs these checks for page templates, controllers, routes, metadata, and public assets. They verify rendering and structure; pixel-level screenshot review is still recommended before production deployment.
-
-## Metadata
-
-Adjust descriptions, social image, logo, favicon, and theme color in `config/site.php`. Page-specific titles, descriptions, and canonical URLs are defined in their Blade page files. Set `APP_URL` to your public HTTPS domain in production.
-
-## cPanel deployment
-
-1. Use a PHP version compatible with the project's lockfile.
-2. Set the domain document root to this Laravel application's `public/` directory.
-3. Run `composer install --no-dev --optimize-autoloader`.
-4. Set production `.env` values including `APP_ENV=production`, `APP_DEBUG=false`, and `APP_URL=https://your-domain`.
-5. Run `php artisan key:generate` on initial setup, then `php artisan optimize`.
-6. Serve the website over HTTPS and confirm image responses and animation behavior.
-
-Avoid running `migrate:fresh` on production databases. Public pages do not require database migrations unless you enable the optional database-managed club directory.
-
-## Sport pages and inventory API
-
-All 21 sports use the **original volleyball page structure and styling**, including the same hero slider, kit rail, catalog category rows with horizontal carousel arrows, testimonials, animated club marquee, and footer. No second catalog/filter section is injected. The other sport pages are rendered from `resources/views/website/sports/show.blade.php` and its existing section partials; only sport-specific text, catalog data and clubs change.
-
-Sport IDs are defined in `config/sports.php`; the API service is `app/Services/EncoreProductService.php`; grouped category products are prepared in `app/Services/EncoreCatalogService.php`. Product links follow Encore's actual `/productDetails/{id}?type=product|sub_product&selectedSport=...` URL pattern shown in the supplied reference. When the API yields no matching products, the existing catalog area says **No matching products available.**
-
-API credentials must be stored **only in .env**. Copy keys from `.env.encore.example`, provide authorized `ENCORE_API_KEY` and `ENCORE_API_TOKEN`, and run:
+## Local setup
 
 ```powershell
 git pull origin main
+composer install
 php artisan optimize:clear
-php artisan cache:clear
-php artisan route:list --path=sports
 php artisan test --filter=EncoreWebsiteTest
+php artisan serve
 ```
 
-The API response examples do not document every production field; verify live product images, style mappings and detail links with your configured credentials before deployment. The existing volleyball imagery remains a visual placeholder on other sports until approved sport-specific images are supplied.
+Set up the application's `.env` and `APP_KEY` on first installation. Keep your authorized inventory API credentials in `.env`; use `.env.encore.example` for the available key names. The public sport pages do not require club database migrations.
 
-## Sliding club logos
+## Sport page editing
 
-Club names and optional logos come from the Laravel backend, while the original infinite marquee animation remains unchanged. By default edit `config/clubs.php` (use `name` and an optional `logo` URL). To manage club records in MySQL, run `php artisan migrate`, set `ENCORE_CLUBS_SOURCE=database`, and maintain rows in the `sport_clubs` table (`sport_slug`, `name`, optional `logo_url`, `is_active`, `sort_order`). The database mode falls back to configured defaults when it contains no matching active entries. Clear cache after edits with `php artisan cache:clear`. This adds backend data support without any new frontend section.
+All sport-specific content now lives in `app/Http/Controllers/SportController.php`. Each sport has its own private array-producing method: `baseball()`, `basketball()`, `bmx()`, `crossCountry()`, `discGolf()`, `fieldHockey()`, `flagFootball()`, `football()`, `golf()`, `hockey()`, `lacrosse()`, `mma()`, `rugby()`, `running()`, `soccer()`, `softball()`, `swim()`, `tennis()`, `trackAndField()`, `volleyball()`, and `yoga()`.
 
-The original volleyball catalog layout, category carousel arrows, and expansion interaction are unchanged. Its data now comes from `EncoreCatalogService` and the configured product API. Ensure `ENCORE_API_TOKEN` is set only in your local environment.
+Each method returns editable arrays for `hero` (lead, accent, subtitle, slide images and positions, facts), `kit_heading`, `kits` (cards, descriptions, slides), `contrast` (text, images), `proof`, `clubs` (name and optional logo), `contact`, `seo` and optional `catalog`.
 
-## Backend-controlled sport layout
+The controller creates the rest of the page data: sport name/ID, all sport links, canonical URL, Encore catalog API products grouped by style, and the external full-catalog URL. To customize a particular sport's products/categories without calling the API, set `'catalog' => ['groups' => [...]]` inside that sport function. Otherwise leave `'catalog' => []` to fetch products through the API. You may also specify `'full_catalog_url' => 'https://...'` in a sport's returned array.
 
-All 21 sports now share `website.sports.show` and `website.sports.sections/*`. There is no volleyball-only layout. `SportController` assembles a single `$page` array containing sport metadata, hero images, kit slides and descriptions, grouped product categories and product links, proof quote, club marquee data, SEO metadata and contact information.
+The temporary club list is now a plain `'clubs' => [...]` array inside each sport's function. Non-volleyball lists are empty by default and their original scrolling marquee is automatically hidden until you add entries. Volleyball's existing club names are included as temporary arrays. There is no club model, migration, service, or club-specific database requirement.
 
-Change editorial defaults and sport-specific overrides in `config/sport_pages.php` (read by the controller), clubs in `config/clubs.php` or the optional `sport_clubs` database table, and inventory categories/products via the existing API service. Where approved sport artwork isn't provided, original reference images remain the fallback. The original animation code and styling are reused unchanged except for accepting controller-provided catalog and club data.
+The original volleyball slides and kit images are shared as placeholders by `volleyballSlides()` and `volleyballKits()`. For unique imagery, replace a sport's `'slides' => $this->volleyballSlides()` or `'kits' => $this->volleyballKits(false)` with your own image arrays using paths relative to `public/`, such as `assets/sports/baseball/hero.jpg`. Do not use `asset()` inside the controller: shared Blade views resolve local asset paths using Laravel's `asset()` helper.
 
-
-## Per-sport controller functions
-
-`SportController::show()` dispatches each sport to a dedicated private method:
-`baseball()`, `basketball()`, `bmx()`, `crossCountry()`, `discGolf()`,
-`fieldHockey()`, `flagFootball()`, `football()`, `golf()`, `hockey()`,
-`lacrosse()`, `mma()`, `rugby()`, `running()`, `soccer()`, `softball()`,
-`swim()`, `tennis()`, `trackAndField()`, `volleyball()`, and `yoga()`.
-
-Each returns a complete `$page` data array via `buildSportPage($slug, $catalog, $clubs, $custom)`. The fourth argument lets you customize **hero text and images, kit slides/cards, contrast copy, proof content, contact, SEO, clubs, catalog, and full catalog URL** just for that sport. Unspecified values inherit `config/sport_pages.php` defaults and the configured sport overrides. All routes continue to render the same `website.sports.show` Blade page.
-
-Example inside `lacrosse()`:
+Example:
 
 ```php
-return $this->buildSportPage('lacrosse', $catalog, $clubs, [
-    'hero' => [
-        'accent' => 'field.',
-        'subtitle' => 'Custom lacrosse kit for your club.',
-        'slides' => [
-            ['image' => 'assets/sports/lacrosse/hero.jpg', 'position' => 'center'],
-        ],
+'hero' => [
+    'lead' => 'Own the',
+    'accent' => 'field.',
+    'subtitle' => 'Custom lacrosse uniforms and teamwear.',
+    'slides' => [
+        ['image' => 'assets/sports/lacrosse/hero.jpg', 'position' => 'center'],
     ],
-    'proof' => [
-        'quote' => 'An approved customer quotation.',
-        'attribution' => 'Approved club name',
-    ],
-]);
+    'facts' => $this->heroFacts(),
+],
+'clubs' => [
+    ['name' => 'Your club name', 'logo' => null],
+],
 ```
 
-Replace the example values with approved images and real quotes; do not hardcode API keys. Product and club data are still fetched by the backend services for each sport by default.
+All sports render `resources/views/website/sports/show.blade.php` and the original reusable section partials in `resources/views/website/sports/sections/`. The original fonts, animations and category carousels are preserved in `resources/views/website/styles/sport.blade.php` and `resources/views/website/scripts/sport.blade.php`. The product catalog shows `No matching products available.` when there are no API results.
+
+## Routes and deployment
+
+`route('home')` renders the homepage and `route('sports.show', ['sport' => 'volleyball'])` renders any sport through the single dynamic route. For cPanel, use a PHP version compatible with your `composer.lock`, install dependencies, configure `.env`, and point your site's document root to Laravel's `public/` directory.

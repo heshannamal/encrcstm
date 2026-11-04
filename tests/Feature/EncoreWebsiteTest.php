@@ -38,36 +38,35 @@ final class EncoreWebsiteTest extends TestCase
             ->assertSee('property="og:description"', false);
     }
 
-    public function test_sport_editorial_data_is_supplied_by_backend_config(): void
+    public function test_sport_content_is_provided_by_individual_controller_arrays(): void
     {
-        config()->set('sport_pages.overrides.baseball', [
-            'hero' => [
-                'accent' => 'diamond.',
-                'subtitle' => 'Baseball page content from the backend',
-            ],
-            'proof' => [
-                'quote' => 'Proof content from the backend',
-                'attribution' => 'Team representative',
-            ],
-            'kits' => [
-                [
-                    'title' => 'Custom baseball kit',
-                    'tag' => 'Teamwear',
-                    'description' => 'Configured kit content',
-                    'slides' => [
-                        ['label' => 'Jersey'],
-                    ],
-                ],
-            ],
-        ]);
+        $controller = new \ReflectionClass(\App\Http\Controllers\SportController::class);
+
+        foreach ([
+            'baseball' => 'diamond.',
+            'basketball' => 'court.',
+            'lacrosse' => 'field.',
+            'volleyball' => 'net.',
+        ] as $methodName => $accent) {
+            $method = $controller->getMethod($methodName);
+            $data = $method->invoke($controller->newInstance());
+
+            $this->assertSame($accent, $data['hero']['accent']);
+            $this->assertNotEmpty($data['hero']['slides']);
+            $this->assertNotEmpty($data['kits']);
+            $this->assertArrayHasKey('contrast', $data);
+            $this->assertArrayHasKey('proof', $data);
+            $this->assertArrayHasKey('clubs', $data);
+            $this->assertArrayHasKey('contact', $data);
+            $this->assertArrayHasKey('seo', $data);
+        }
+
+        $this->assertSame([], $controller->getMethod('baseball')->invoke($controller->newInstance())['clubs']);
 
         $this->get(route('sports.show', ['sport' => 'baseball']))
             ->assertOk()
             ->assertSee('diamond.', false)
-            ->assertSee('Baseball page content from the backend', false)
-            ->assertSee('Proof content from the backend', false)
-            ->assertSee('Team representative', false)
-            ->assertSee('Configured kit content', false)
+            ->assertSee('Custom baseball uniforms and teamwear designed for your program.', false)
             ->assertSee('id="kitRail"', false)
             ->assertSee('id="catCats"', false);
     }
@@ -150,7 +149,6 @@ final class EncoreWebsiteTest extends TestCase
         config()->set('encore.base_url', 'https://example.invalid/api');
         config()->set('encore.asset_url', 'https://encr.co/assets');
         config()->set('encore.product_detail_url', 'https://encr.co/productDetails');
-        config()->set('encore.product_detail_parameter', 'id');
 
         \Illuminate\Support\Facades\Http::fake([
             'example.invalid/*' => \Illuminate\Support\Facades\Http::response([
@@ -184,10 +182,11 @@ final class EncoreWebsiteTest extends TestCase
         });
     }
 
-    public function test_club_marquee_uses_backend_list_without_new_sections(): void
+    public function test_clubs_are_temporary_arrays_in_each_sport_method(): void
     {
-        config()->set('encore.club_source', 'config');
-        $clubs = app(\App\Services\SportClubDirectory::class)->forSport('volleyball');
+        $controller = new \ReflectionClass(\App\Http\Controllers\SportController::class);
+        $instance = $controller->newInstance();
+        $clubs = $controller->getMethod('volleyball')->invoke($instance)['clubs'];
 
         $this->assertNotEmpty($clubs);
         $this->assertSame('Marin Volleyball', $clubs[0]['name']);
@@ -198,6 +197,10 @@ final class EncoreWebsiteTest extends TestCase
             ->assertSee('id="logoTrack"', false)
             ->assertSee('id="catCats"', false)
             ->assertDontSee('class="sport-filters"', false);
+
+        $this->get(route('sports.show', ['sport' => 'baseball']))
+            ->assertOk()
+            ->assertSee('var clubs=[]', false);
     }
 
 }
