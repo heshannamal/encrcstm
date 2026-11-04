@@ -6,6 +6,7 @@
 
 @section('page-styles')
 @include('website.styles.volleyball')
+@include('website.styles.sports')
 @endsection
 
 @section('content')
@@ -17,6 +18,7 @@
 @include('website.volleyball.sections.kit')
 @include('website.volleyball.sections.libero')
 @include('website.volleyball.sections.fabric')
+@include('website.sports.components.catalog', ['sport' => ['slug' => 'volleyball', 'name' => 'Volleyball'], 'products' => $products ?? [], 'filters' => $filters ?? []])
 @include('website.volleyball.sections.start_options')
 @include('website.volleyball.sections.testimonials')
 @include('website.volleyball.sections.club_logos')
