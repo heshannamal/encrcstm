@@ -13,4 +13,7 @@ return [
     'social_image' => 'assets/reference/e321825f2aea5dc04dc6.jpg',
     'favicon' => 'assets/reference/87dff6c7274d1b7d3db8.png',
     'email' => 'info@encorecustom.com',
+    'builder_url' => 'https://dev.encr.co/',
+    'lifestyle_url' => 'https://encr.co/product_filter?selectedCategory=3&selectedGender=All&selectedSport=18&selectedStyle=0',
+    'team_url' => 'https://encr.co/customer_catalog',
 ];

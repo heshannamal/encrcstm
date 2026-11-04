@@ -7,7 +7,7 @@
   <a class="navlink" href="{{ route('home') }}#contact">Contact</a>
   <span class="nav-cta">
    <a class="btn catalog" href="{{ route('sports.show', ['sport' => 'volleyball']) }}#catalog"><span>Catalog</span><span class="ar">→</span></a>
-   <a class="btn shop" data-stub="shop" href="#"><span>Shop</span><span class="ar">→</span></a>
+   <a class="btn shop" href="{{ config('site.lifestyle_url') }}"><span>Shop</span><span class="ar">→</span></a>
    <a class="btn" data-openkit href="#"><span>Start a kit</span><span class="ar">→</span></a>
   </span>
  </div>
