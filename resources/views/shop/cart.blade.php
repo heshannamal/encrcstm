@@ -3,7 +3,7 @@
 @section('shop-content')
 <h1 class="ec-title">Your <span style="color:var(--ec-red)">Cart</span></h1>
 <p class="ec-sub">Review your products and quantities before checkout.</p>
-@if($error)<div class="ec-alert bad">{{ $error }}</div>@endif
+
 @if(empty($items))
  <div class="ec-empty"><h2>Your cart is empty</h2><p>Explore the collection and choose your next kit.</p><a href="{{ route('shop.catalog') }}" class="ec-btn">Browse catalog</a></div>
 @else
@@ -24,3 +24,10 @@
 </div>
 @endif
 @endsection
+@if($error)
+@push('scripts')
+<script>
+if(window.EncoreToast){window.EncoreToast(@json($error),'error');}
+</script>
+@endpush
+@endif

@@ -37,7 +37,7 @@
   <div class="ec-catalog-results"><span>{{ $items->count() }} Items</span><a href="{{ route('shop.catalog') }}">Clear ×</a></div>
  </div>
 </section>
-@if($error)<div class="ec-alert bad" role="alert">{{ $error }}</div>@endif
+
 @forelse($grouped as $category=>$products)
 <section class="ec-catalog-section">
  <button type="button" class="ec-category-toggle" aria-expanded="true" aria-controls="category-{{ $loop->index }}">
@@ -78,3 +78,10 @@ document.querySelectorAll('.ec-catalog-section').forEach(function(section){
 });
 </script>
 @endsection
+@if($error)
+@push('scripts')
+<script>
+if(window.EncoreToast){window.EncoreToast(@json($error),'error');}
+</script>
+@endpush
+@endif
