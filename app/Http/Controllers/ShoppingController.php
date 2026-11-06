@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Services\Encore\ProductApiService;
+use App\Services\EncoreProductService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Throwable;
 
 final class ShoppingController extends Controller
 {
-    public function __construct(private ProductApiService $products) {}
+    public function __construct(private ProductApiService $products, private EncoreProductService $sportProducts) {}
 
     public function catalog(Request $request)
     {
@@ -27,19 +28,16 @@ final class ShoppingController extends Controller
         $styles = [];
 
         try {
-            $response = $this->products->products($filters);
-            if (!($response['success'] ?? false)) {
-                throw new \RuntimeException($response['message'] ?? 'The inventory catalog could not be loaded.');
-            }
+            $rawItems = $this->sportProducts->products((int) $filters['selectedSport'], [
+                'category' => $filters['selectedCategory'],
+                'gender' => $filters['selectedGender'],
+                'style' => $filters['selectedStyle'],
+            ]);
 
-            $rawItems = data_get($response, 'data.data')
-                ?? data_get($response, 'data.products')
-                ?? data_get($response, 'data')
-                ?? [];
-            $items = collect(is_array($rawItems) ? $rawItems : [])
+            $items = collect($rawItems)
                 ->filter('is_array')
-                ->map(fn (array $raw) => $this->products->normalizeProduct($raw))
-                ->filter(fn (array $product) => $product['id'] > 0);
+                ->map(fn (array $raw): array => $this->products->normalizeProduct($raw))
+                ->filter(fn (array $product): bool => (int) ($product['id'] ?? 0) > 0);
 
             $search = trim((string) $request->query('search', ''));
             if ($search !== '') {
@@ -65,20 +63,32 @@ final class ShoppingController extends Controller
                 $items = $items->sortBy('name', SORT_NATURAL | SORT_FLAG_CASE)->values();
             }
 
-            $stylesResponse = $this->products->productCategories();
-            $styles = data_get($stylesResponse, 'data.data', $stylesResponse['data'] ?? []);
-            $styles = is_array($styles) ? $styles : [];
-            $categoriesResponse = $this->products->mainCategories();
-            $categories = data_get($categoriesResponse, 'data.data', $categoriesResponse['data'] ?? []);
-            $categories = is_array($categories) ? $categories : [];
+            try {
+                $stylesResponse = $this->products->productCategories();
+                $styles = data_get($stylesResponse, 'data.data', $stylesResponse['data'] ?? []);
+                $styles = is_array($styles) ? array_values(array_filter($styles, 'is_array')) : [];
+            } catch (Throwable $exception) {
+                Log::notice('Product category metadata unavailable', ['message' => $exception->getMessage()]);
+            }
+
+            try {
+                $categoriesResponse = $this->products->mainCategories();
+                $categories = data_get($categoriesResponse, 'data.data', $categoriesResponse['data'] ?? []);
+                $categories = is_array($categories) ? array_values(array_filter($categories, 'is_array')) : [];
+            } catch (Throwable $exception) {
+                Log::notice('Main category metadata unavailable', ['message' => $exception->getMessage()]);
+            }
         } catch (Throwable $exception) {
             Log::warning('Catalog unavailable', ['message' => $exception->getMessage()]);
             $error = 'Products are temporarily unavailable. Please try again.';
         }
 
         $grouped = $items->groupBy(function ($item): string {
-            $rel = data_get($item, 'raw.product_details.product_categories.0.categories.product_category_name')
+            $rel = data_get($item, 'raw.style_name')
+                ?? data_get($item, 'raw.product_style_name')
+                ?? data_get($item, 'raw.product_details.product_categories.0.categories.product_category_name')
                 ?? data_get($item, 'raw.product_details.product_categories.0.category.name')
+                ?? data_get($item, 'raw.product_details.product_categories.0.product_category_name')
                 ?? data_get($item, 'raw.category_name')
                 ?? 'Other Products';
             return (string) $rel;
