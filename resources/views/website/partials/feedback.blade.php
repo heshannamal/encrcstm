@@ -1,3 +1,12 @@
+@php
+    $encoreFlashMessages = [
+        ['message' => session('success'), 'type' => 'success'],
+        ['message' => session('warning'), 'type' => 'warning'],
+        ['message' => session('error'), 'type' => 'error'],
+        ['message' => session('status'), 'type' => 'info'],
+        ['message' => $errors->first(), 'type' => 'error'],
+    ];
+@endphp
 <style>
 #encoreFlashToast{position:fixed;left:50%;bottom:30px;max-width:min(560px,calc(100vw - 32px));width:max-content;z-index:99999;opacity:0;pointer-events:none;transform:translate(-50%,22px);transition:opacity .27s ease,transform .27s ease;background:#fff;color:#34434d;box-shadow:0 12px 35px rgba(27,39,46,.18);border-left:3px solid #e70033;padding:15px 20px;font-family:'Space Mono',monospace;font-size:11px;line-height:1.6;letter-spacing:.065em;text-transform:uppercase}
 #encoreFlashToast.is-visible{opacity:1;transform:translate(-50%,0);pointer-events:auto}
@@ -37,13 +46,7 @@
   if(!active)next();
  };
  close.addEventListener('click',hide);
- const initial=@json([
-   ['message'=>session('success'),'type'=>'success'],
-   ['message'=>session('warning'),'type'=>'warning'],
-   ['message'=>session('error'),'type'=>'error'],
-   ['message'=>session('status'),'type'=>'info'],
-   ['message'=>$errors->first(),'type'=>'error'],
- ]);
+ const initial={{ \Illuminate\Support\Js::from($encoreFlashMessages) }};
  initial.forEach(function(item){if(item.message)window.EncoreToast(item.message,item.type)});
 })();
 </script>
