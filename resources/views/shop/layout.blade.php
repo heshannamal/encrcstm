@@ -12,16 +12,10 @@
  <nav class="ec-nav" id="shopNav" aria-label="Shopping navigation">
   <a class="ec-navlink" href="{{ route('home') }}#sports">Sports</a>
   <a class="ec-navlink" href="{{ route('home') }}#contact">Contact</a>
-  <a class="ec-navbtn ec-catalog {{ request()->routeIs('shop.catalog','shop.product') ? 'active' : '' }}" href="{{ route('shop.catalog') }}"><span>Catalog</span><span>→</span></a>
-  <a class="ec-navbtn ec-shop" href="{{ route('shop.catalog', ['selectedCategory' => 3, 'selectedGender' => 'All', 'selectedSport' => 18, 'selectedStyle' => 0]) }}"><span>Shop</span><span>→</span></a>
-  <a class="ec-navbtn ec-start" href="{{ config('site.builder_url') }}"><span>Start a Kit</span><span>→</span></a>
-  <a class="ec-navlink {{ request()->routeIs('shop.cart') ? 'active' : '' }}" href="{{ route('shop.cart') }}">Cart</a>
-  @if(session('encore_user_token'))
-   <a class="ec-navlink" href="{{ route('shop.profile') }}">Profile</a>
-   <form method="POST" action="{{ route('shop.logout') }}">@csrf<button class="ec-navlink ec-signout" type="submit">Sign out</button></form>
-  @else
-   <a class="ec-navlink" href="{{ route('shop.login') }}">Sign In</a>
-  @endif
+  <a class="ec-navlink {{ request()->routeIs('shop.catalog','shop.product') ? 'active' : '' }}" href="{{ route('shop.catalog') }}">Catalog</a>
+  <a class="ec-navbtn ec-catalog" href="{{ route('shop.orders') }}"><span>Orders</span><span>→</span></a>
+  <a class="ec-navbtn ec-shop" href="{{ route('shop.profile') }}"><span>Profile</span><span>→</span></a>
+  <a class="ec-navbtn ec-start ec-nav-cart" href="{{ route('shop.cart') }}" aria-label="View shopping cart"><span>Cart</span><svg class="ec-cart-icon" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.6 13.2a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/></svg></a>
  </nav>
  <button class="ec-burger" type="button" id="ecBurger" aria-expanded="false" aria-controls="shopNav" aria-label="Toggle shopping menu"><span></span><span></span><span></span></button>
 </header>
