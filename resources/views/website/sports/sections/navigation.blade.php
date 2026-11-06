@@ -5,7 +5,7 @@
   <a class="nl" href="{{ $page['seo']['canonical'] }}#kit">The kit</a>
   
   <a class="nl" href="{{ $page['seo']['canonical'] }}#proof">Teams</a>
-  <a class="btn catalog" href="{{ $page['seo']['canonical'] }}#catalog"><span>Catalog</span><span class="ar">→</span></a>
+  <a class="btn catalog" href="{{ route('shop.catalog', ['selectedSport' => $page['id']]) }}"><span>Catalog</span><span class="ar">→</span></a>
   <a class="btn" data-openkit href="#"><span>Start a kit</span><span class="ar">→</span></a>
  </div>
  <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>

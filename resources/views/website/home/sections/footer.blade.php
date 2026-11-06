@@ -27,7 +27,7 @@
   <div class="foot-grid">
    <div class="foot-col">
     <h5>Explore</h5>
-    <a href="{{ config('site.lifestyle_url') }}">Shop lifestyle</a>
+    <a href="{{ route('shop.catalog', ['selectedCategory' => 3, 'selectedGender' => 'All', 'selectedSport' => 18, 'selectedStyle' => 0]) }}">Shop lifestyle</a>
     <a href="{{ config('site.builder_url') }}">Design a kit</a>
     <a href="{{ config('site.team_url') }}">Work with us</a>
     <a href="{{ route('home') }}#sports">Sports</a>

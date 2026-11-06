@@ -10,7 +10,7 @@
     <a href="tel:{{ $page['contact']['phone_link'] }}">{{ $page['contact']['phone_display'] }}</a>
     <a href="mailto:{{ $page['contact']['email'] }}">{{ $page['contact']['email'] }}</a>
     <a href="{{ $page['contact']['instagram'] }}" target="_blank" rel="noopener">{{ $page['contact']['instagram_label'] }}</a>
-    <a href="{{ $page['seo']['canonical'] }}#contact">{{ $page['contact']['address'] }}</a>
+    <a href="{{ config('site.team_url') }}">{{ $page['contact']['address'] }}</a>
    </div>
   </div>
   <div class="foot-bottom">
