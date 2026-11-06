@@ -3,13 +3,23 @@
 @section('shop-content')
 <section class="ec-store-top ec-store-reference">
  <div class="ec-catalog-toolbar">
-  <div class="ec-catalog-toolbar-brand">ENCORE <span>Custom</span></div>
-  <div class="ec-catalog-toolbar-title">APPAREL CATALOG</div>
+  <div class="ec-catalog-toolbar-spacer" aria-hidden="true"></div>
+  <form class="ec-catalog-search" method="GET" action="{{ route('shop.catalog') }}" role="search">
+   <input type="hidden" name="selectedCategory" value="{{ $filters['selectedCategory'] }}">
+   <input type="hidden" name="selectedGender" value="{{ $filters['selectedGender'] }}">
+   <input type="hidden" name="selectedSport" value="{{ $filters['selectedSport'] }}">
+   <input type="hidden" name="selectedStyle" value="{{ $filters['selectedStyle'] }}">
+   <label class="ec-visually-hidden" for="ecTopSearch">Search apparel</label>
+   <span class="ec-search-lens" aria-hidden="true"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="10.7" cy="10.7" r="6.9"/><path d="m16 16 5.2 5.2"/></svg></span>
+   <input id="ecTopSearch" name="search" value="{{ request('search') }}" type="search" placeholder="Search products" autocomplete="off">
+   <button type="submit">Search</button>
+  </form>
+  <h1 class="ec-catalog-toolbar-title">APPAREL CATALOG</h1>
  </div>
  <div class="ec-catalog-filterbar">
   <div class="ec-store-breadcrumb"><a href="{{ route('home') }}">Home</a> / Catalog</div>
   <form class="ec-store-filters" method="GET" action="{{ route('shop.catalog') }}" id="ecCatalogFilters">
-   <div class="ec-field ec-filter-search"><label for="shopSearch">Search</label><input id="shopSearch" class="ec-input" type="search" name="search" placeholder="Search products" value="{{ request('search') }}"></div>
+   <input type="hidden" name="search" value="{{ request('search') }}">
    <div class="ec-field"><label for="catFilter">Category</label><select id="catFilter" class="ec-select" name="selectedCategory">
     <option value="1" @selected((int)$filters['selectedCategory']===1)>Teamwear</option>
     <option value="3" @selected((int)$filters['selectedCategory']===3)>Lifestyle</option>
@@ -35,13 +45,14 @@
  </button>
  <div class="ec-product-grid" id="category-{{ $loop->index }}">
   @foreach($products as $product)
-   <a class="ec-product-card" href="{{ route('shop.product',['id'=>$product['id']]) }}">
+   <a class="ec-product-card {{ $loop->index >= 8 ? 'ec-product-extra' : '' }}" href="{{ route('shop.product',['id'=>$product['id']]) }}">
     <div class="ec-product-photo"><img loading="lazy" src="{{ $product['images'][0] ?? asset('images/product-placeholder.svg') }}" alt="{{ $product['name'] }}" onerror="this.onerror=null;this.src='{{ asset('images/product-placeholder.svg') }}'"></div>
     <div class="ec-product-caption"><span class="ec-product-name">{{ $product['name'] }}</span><span class="ec-product-cost">{{ $product['price_formatted'] }}</span></div>
     <p class="ec-product-info">This product can be customized in your team colors.</p>
    </a>
   @endforeach
  </div>
+ @if(count($products)>8)<div class="ec-show-more-wrap"><button type="button" class="ec-show-more" aria-expanded="false">Show more <span aria-hidden="true">⌄</span></button></div>@endif
 </section>
 @empty
  <div class="ec-empty"><h2>No products found</h2><p>Try another sport, category or product search.</p><a href="{{ route('shop.catalog') }}" class="ec-btn dark">Reset Filters</a></div>
@@ -53,6 +64,16 @@ document.querySelectorAll('.ec-category-toggle').forEach(function(button){
   const expanded=button.getAttribute('aria-expanded')==='true';
   button.setAttribute('aria-expanded',String(!expanded));
   if(region)region.hidden=expanded;
+ });
+});
+document.querySelectorAll('.ec-catalog-section').forEach(function(section){
+ const more=section.querySelector('.ec-show-more'), grid=section.querySelector('.ec-product-grid');
+ if(!more||!grid)return;
+ more.addEventListener('click',function(){
+  const expanded=more.getAttribute('aria-expanded')==='true';
+  grid.classList.toggle('ec-show-all',!expanded);
+  more.setAttribute('aria-expanded',String(!expanded));
+  more.innerHTML=expanded?'Show more <span aria-hidden="true">⌄</span>':'Show less <span aria-hidden="true">⌃</span>';
  });
 });
 </script>
