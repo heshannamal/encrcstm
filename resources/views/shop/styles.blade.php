@@ -134,3 +134,18 @@
 @media(max-width:1060px){.ec-store-filters{grid-template-columns:repeat(3,minmax(0,1fr))}.ec-filter-search{grid-column:span 2}.ec-product-detail-wrap{grid-template-columns:45% 1fr}}
 @media(max-width:760px){.ec-product-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.ec-product-detail-wrap{grid-template-columns:1fr}.ec-detail-panel{padding:20px 16px}.ec-product-gallery{grid-template-columns:62px 1fr}}
 @media(max-width:520px){.ec-store-heading{align-items:flex-start;flex-direction:column;gap:5px}.ec-store-filters{grid-template-columns:repeat(2,minmax(0,1fr))}.ec-filter-search{grid-column:span 2}.ec-product-grid{gap:9px}.ec-product-caption{padding:10px 9px 0}.ec-product-name,.ec-product-cost{font-size:12px}.ec-product-info{font-size:9px;margin:5px 9px 12px}.ec-category-toggle{font-size:19px}}
+
+.ec-store-heading h1{margin:0;color:#34434d;font-family:Archivo,sans-serif;font-weight:900;font-size:clamp(27px,3.5vw,45px);letter-spacing:-.045em}
+.ec-store-heading h1 em{font:400 1.25em/.9 Allura,cursive;text-transform:none;letter-spacing:0;color:#ed0036}
+.ec-store-heading>span:last-child{font:700 11px/1.4 'Space Mono',monospace;letter-spacing:.12em;color:#64717b}
+.ec-shop-footer{background:#f8f8f8;border-top:1px solid #e4e7e9;padding:36px max(5vw,25px);display:grid;grid-template-columns:1fr 1.6fr 1fr;gap:22px;align-items:start}
+.ec-shop-footer-col{display:flex;flex-direction:column;align-items:flex-start;gap:10px;color:#657483;font-size:13px}
+.ec-shop-footer-col h3{font-size:19px;color:#33414a;font-weight:500;margin:0 0 3px}
+.ec-shop-footer-col a{color:#657483;text-decoration:none}
+.ec-shop-footer-col a:hover{color:#ed0036}
+.ec-shop-footer-col p{margin:0;line-height:1.7}
+.ec-shop-footer-center{text-align:center;border-inline:1px solid #e4e7e9;padding:0 22px;color:#657483}
+.ec-shop-footer-center img{width:min(230px,90%);height:45px;object-fit:contain}
+.ec-shop-footer-center p{margin:9px 0 17px}
+.ec-shop-footer-center small{color:#a4aeb7}
+@media(max-width:700px){.ec-shop-footer{grid-template-columns:1fr 1fr}.ec-shop-footer-center{grid-column:1 / -1;grid-row:2;border:0;border-top:1px solid #e4e7e9;padding-top:23px}.ec-store-heading>span:last-child{font-size:9px}}
