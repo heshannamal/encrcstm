@@ -48,7 +48,7 @@ h1,h2,h3{margin:0;font-family:var(--disp);font-weight:800;line-height:.95;letter
 .nav{position:fixed;top:0;left:0;right:0;z-index:40;display:flex;align-items:center;justify-content:space-between;
  padding:22px var(--pad);transition:padding .35s var(--ease),background .35s var(--ease),border-color .35s var(--ease);
  border-bottom:1px solid transparent}
-.nav.scrolled{padding:12px var(--pad);background:rgba(51,63,72,.82);backdrop-filter:blur(14px);border-bottom:1px solid var(--edge)}
+.nav.scrolled{padding:11px var(--pad);background:rgba(51,63,72,.9);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--edge);box-shadow:0 7px 28px rgba(18,26,33,.14)}
 .nav .logo{height:30px;transition:height .35s var(--ease)}
 .nav.scrolled .logo{height:24px}
 .nav .links{display:flex;gap:30px;align-items:center}
