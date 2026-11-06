@@ -82,6 +82,8 @@ final class EncoreCatalogService
             if ($category === '') $category = 'Other Products';
 
             $groups[$category][] = [
+                'id' => (int) (data_get($raw, 'id') ?? data_get($raw, 'sub_product_id')),
+                'price' => $card['price'] === null ? 0.0 : (float) $card['price'],
                 'n' => $card['name'],
                 'p' => $card['price'] === null ? '' : config('services.encore.currency_symbol').$card['price'],
                 'img' => $card['image'],
