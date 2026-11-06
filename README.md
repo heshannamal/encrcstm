@@ -57,3 +57,16 @@ The module uses Encore's existing `v1/get_products`, `v1/products`, `v1/get_prod
 For a local Apache install under `/encrcstm/public`, use `http://localhost/encrcstm/public/catalog`. For `php artisan serve`, use `http://127.0.0.1:8000/catalog`. Ensure `APP_URL`, `SESSION_DRIVER`, `ENCORE_API_URL`, `ENCORE_ASSET_URL`, `ENCORE_API_KEY`, and `ENCORE_API_TOKEN` are set correctly, then run `php artisan optimize:clear`.
 
 The separate `heshannamal/encorecustom` repository was accessible when this feature was built but its `main` tree contained only `.editorconfig`. Working API patterns were therefore taken from the user's accessible `heshannamal/alcatrazoutlaws` project and catalog/product layout from the provided screenshots.
+
+## Consolidated Encore services
+
+All API services are in `app/Services` (no `app/Services/Encore` subfolder). The shopping module uses:
+
+- `EncoreProductService` — the **single** source for sport and catalog products, product details, product options, stock, and normalization
+- `EncoreApiClient` — shared authenticated HTTP client for account/cart/checkout API operations
+- `EncoreAuthApiService`, `EncoreCartApiService`, `EncoreCartMergeService`, `EncoreSessionGuard`, `EncoreOrderApiService`, `EncorePaymentApiService`, and `EncoreProfileApiService`
+
+The catalog defaults to Teamwear (`selectedCategory=1`), All genders (`selectedGender=All`), All sports (`selectedSport=18`), All styles (`selectedStyle=0`). Shop Lifestyle uses category 3. Both the sport pages and local catalog read product lists through `EncoreProductService::products()`, backed by the same `v1/get_products` API request. Product details attempt `v1/products/{id}`, with the shared catalog record used for product display fields when necessary.
+
+The new catalog and product detail UI use the apparel examples as reference, while the original site navbar, homepage, and sport-page visuals remain independent. There are no PHPUnit tests or website-testing GitHub workflows, as requested.
+
