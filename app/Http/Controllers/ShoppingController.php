@@ -32,7 +32,11 @@ final class ShoppingController extends Controller
                 throw new \RuntimeException($response['message'] ?? 'The inventory catalog could not be loaded.');
             }
 
-            $items = collect($response['data'] ?? [])
+            $rawItems = data_get($response, 'data.data')
+                ?? data_get($response, 'data.products')
+                ?? data_get($response, 'data')
+                ?? [];
+            $items = collect(is_array($rawItems) ? $rawItems : [])
                 ->filter('is_array')
                 ->map(fn (array $raw) => $this->products->normalizeProduct($raw))
                 ->filter(fn (array $product) => $product['id'] > 0);
@@ -62,9 +66,11 @@ final class ShoppingController extends Controller
             }
 
             $stylesResponse = $this->products->productCategories();
-            $styles = $stylesResponse['data'] ?? [];
+            $styles = data_get($stylesResponse, 'data.data', $stylesResponse['data'] ?? []);
+            $styles = is_array($styles) ? $styles : [];
             $categoriesResponse = $this->products->mainCategories();
-            $categories = $categoriesResponse['data'] ?? [];
+            $categories = data_get($categoriesResponse, 'data.data', $categoriesResponse['data'] ?? []);
+            $categories = is_array($categories) ? $categories : [];
         } catch (Throwable $exception) {
             Log::warning('Catalog unavailable', ['message' => $exception->getMessage()]);
             $error = 'Products are temporarily unavailable. Please try again.';

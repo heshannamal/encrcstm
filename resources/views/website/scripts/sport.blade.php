@@ -215,7 +215,7 @@
     wrap.innerHTML=G.map(function(g){
       var cards=g.items.map(function(p){
         var esc=function(v){return String(v||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}; var nm=esc(p.n); var alt=esc(p.n);
-        return '<a class="catcard" href="'+esc(p.u||'#')+'" target="_blank" rel="noopener"><span class="im">'+(p.img?'<img loading="lazy" src="'+esc(p.img)+'" alt="'+alt+'">':'')+'</span><span class="meta"><span class="nm">'+nm+'</span><span class="pr">'+esc(p.p)+'</span></span></a>';
+        return '<a class="catcard" href="'+esc(p.u||'#')+'"><span class="im">'+(p.img?'<img loading="lazy" src="'+esc(p.img)+'" alt="'+alt+'">':'')+'</span><span class="meta"><span class="nm">'+nm+'</span><span class="pr">'+esc(p.p)+'</span></span></a>';
       }).join('');
       var cat=String(g.cat||'Other Products').replace(/&/g,'&amp;').replace(/</g,'&lt;');
       return '<div class="catcat"><div class="catcat-h"><h3>'+cat+'</h3><span class="rule"></span></div><div class="rowwrap"><button class="rowarrow prev" type="button" aria-label="Scroll left"><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></button><div class="catrow">'+cards+'</div><button class="rowarrow next" type="button" aria-label="Scroll right"><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button></div></div>';

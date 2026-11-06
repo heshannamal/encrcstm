@@ -24,8 +24,9 @@ final class EncoreCatalogService
             $raw['_sport_id'] = $sportId;
             $card = $this->products->card($raw);
 
-            if (!$card['url']) {
-                continue; // Product cannot lead to the real detail page.
+            $id = data_get($raw, 'id') ?? data_get($raw, 'sub_product_id');
+            if (!is_numeric($id) || (int) $id < 1) {
+                continue;
             }
 
             $relations = data_get($raw, 'product_details.product_categories')
@@ -84,7 +85,7 @@ final class EncoreCatalogService
                 'n' => $card['name'],
                 'p' => $card['price'] === null ? '' : config('services.encore.currency_symbol').$card['price'],
                 'img' => $card['image'],
-                'u' => $card['url'],
+                'u' => route('shop.product', ['id' => (int) $id]),
             ];
         }
 
