@@ -35,7 +35,7 @@ final class ShoppingController extends Controller
 
             $items = collect($rawItems)
                 ->filter('is_array')
-                ->map(fn (array $raw): array => $this->products->normalizeProduct($raw))
+                ->map(fn (array $raw): array => $this->products->catalogCard($raw))
                 ->filter(fn (array $product): bool => (int) ($product['id'] ?? 0) > 0);
 
             $search = trim((string) $request->query('search', ''));
@@ -78,7 +78,13 @@ final class ShoppingController extends Controller
                 Log::notice('Main category metadata unavailable', ['message' => $exception->getMessage()]);
             }
         } catch (Throwable $exception) {
-            Log::warning('Catalog unavailable', ['message' => $exception->getMessage()]);
+            Log::error('Catalog product loading failed', [
+                'exception' => get_class($exception),
+                'message' => $exception->getMessage(),
+                'file' => $exception->getFile(),
+                'line' => $exception->getLine(),
+                'filters' => $filters,
+            ]);
             $error = 'Products are temporarily unavailable. Please try again.';
         }
 
