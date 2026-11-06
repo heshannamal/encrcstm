@@ -55,3 +55,14 @@
  .ec-nav .ec-navlink,.ec-nav .ec-signout{display:block;padding:12px 4px;text-align:left}
  .ec-nav .ec-navbtn{justify-content:space-between;min-height:48px}
 }
+
+.ec-catalog-title{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:clamp(40px,5vw,67px);line-height:1.1}
+.ec-catalog-script{font-family:'Allura',cursive;font-size:1.26em;font-weight:400;letter-spacing:-.015em;color:var(--ec-red);text-transform:none;line-height:.8}
+.ec-card{border-radius:8px;box-shadow:none}
+.ec-card:hover{border-color:var(--ec-red);transform:translateY(-2px)}
+.ec-cardbody{padding:14px 16px;min-height:94px;gap:7px}
+.ec-thumb{background:#f1f2f4;object-position:center top;object-fit:cover}
+.ec-category{margin-top:42px;font-size:23px;color:#34434d}
+.ec-filters{border-radius:7px}
+.ec-panel{border-radius:8px}
+@media(max-width:700px){.ec-catalog-title{font-size:clamp(34px,7vw,48px)}}

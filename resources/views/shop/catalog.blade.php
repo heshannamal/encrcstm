@@ -1,7 +1,7 @@
 @extends('shop.layout')
 @section('shop-title', 'Apparel Catalog')
 @section('shop-content')
-<h1 class="ec-title">Apparel <span style="color:var(--ec-red)">Catalog</span></h1>
+<h1 class="ec-title ec-catalog-title">Apparel <span class="ec-catalog-script">Catalog</span></h1>
 <p class="ec-sub">Explore customizable uniforms, performance wear, and lifestyle apparel.</p>
 <form method="GET" action="{{ route('shop.catalog') }}" class="ec-filters">
  <div class="ec-field"><label>Search</label><input class="ec-input" name="search" value="{{ request('search') }}" placeholder="Product name or number"></div>
