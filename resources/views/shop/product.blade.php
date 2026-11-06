@@ -1,45 +1,84 @@
 @extends('shop.layout')
-@section('shop-title', $product['name'] ?? 'Product')
+@section('shop-title', $product['name'] ?? 'Product Details')
 @section('shop-content')
-<div class="ec-flex" style="margin-bottom:26px"><a href="{{ route('shop.catalog') }}" style="color:var(--ec-navy)">Catalog</a><span>/</span><span>{{ $product['name'] }}</span></div>
-<div class="ec-product">
- <div class="ec-gallery">
-  <div class="ec-thumbs">@foreach($product['images'] ?? [] as $img)<button type="button" onclick="document.getElementById('ecMainImage').src=this.dataset.image" data-image="{{ $img }}" aria-label="View product photo {{ $loop->iteration }}"><img src="{{ $img }}" alt="Product image {{ $loop->iteration }}"></button>@endforeach</div>
-  <div>@if(!empty($product['images'][0]))<img class="ec-gallery-main" id="ecMainImage" src="{{ $product['images'][0] }}" alt="{{ $product['name'] }}">@else<div class="ec-gallery-main"></div>@endif</div>
+@php
+ $raw=$product['raw'] ?? [];
+ $details=data_get($raw,'product_details',[]);
+ $productNo=data_get($raw,'sub_product_no',data_get($details,'product_no',data_get($raw,'product_no')));
+ $description=$product['description'] ?? '';
+ $features=data_get($raw,'display_product_features',data_get($raw,'product_display_detail.product_features',data_get($raw,'product_features',data_get($details,'product_features'))));
+ $audience=data_get($raw,'display_who_we_made_this_for',data_get($raw,'product_display_detail.who_we_made_this_for',data_get($raw,'who_we_made_this_for',data_get($details,'who_we_made_this_for'))));
+ $fabricOptions=collect(data_get($details,'product_fabrics',data_get($raw,'fabrics',[])));
+ $embellishments=collect(data_get($details,'product_embellishments',data_get($raw,'embellishments',[])));
+ $sizes=collect($options['sizes'] ?? []);
+ $hasColors=count($options['colors'] ?? [])>0;
+ $imgs=$product['images'] ?? [];
+@endphp
+<div class="ec-product-breadcrumb">
+ <a href="{{ route('home') }}">Home</a> / <a href="{{ route('shop.catalog') }}">Catalog</a> /
+ <span>{{ $product['name'] }}</span>
+</div>
+<div class="ec-product-detail-wrap">
+ <div class="ec-product-media">
+  <div class="ec-product-gallery">
+   <div class="ec-gallery-thumbnails">@foreach(array_slice($imgs,0,4) as $img)<button type="button" class="ec-thumb-button {{ $loop->first?'selected':'' }}" data-gallery-src="{{ $img }}" aria-label="Show image {{ $loop->iteration }}"><img src="{{ $img }}" alt="{{ $product['name'] }} view {{ $loop->iteration }}"></button>@endforeach</div>
+   <div class="ec-gallery-feature">@if(!empty($imgs[0]))<img id="ecMainImage" src="{{ $imgs[0] }}" alt="{{ $product['name'] }}">@else<img id="ecMainImage" src="{{ asset('images/product-placeholder.svg') }}" alt="Product image unavailable">@endif</div>
+  </div>
+  @if(count($imgs)>1)<div class="ec-gallery-additional">@foreach(array_slice($imgs,1) as $img)<button type="button" data-gallery-src="{{ $img }}" aria-label="Show additional product image"><img loading="lazy" src="{{ $img }}" alt="{{ $product['name'] }} additional view {{ $loop->iteration }}"></button>@endforeach</div>@endif
  </div>
- <section class="ec-panel ec-details">
-  <span class="ec-pill">Encore Custom</span>
+ <section class="ec-detail-panel">
   <h1>{{ $product['name'] }}</h1>
-  <p class="ec-muted">Product # {{ data_get($product,'raw.sub_product_no',data_get($product,'raw.product_details.product_no','')) }}</p>
-  <p class="ec-price">{{ $product['price_formatted'] }}</p>
-  <form action="{{ route('shop.cart.add') }}" method="POST" id="ecProductForm">
+  @if(filled($productNo))<p class="ec-detail-number">Product # : {{ $productNo }}</p>@endif
+  <p class="ec-detail-price">{{ $product['price_formatted'] }}</p>
+
+  @if($fabricOptions->isNotEmpty())
+   <div class="ec-detail-choice"><strong>Fabric</strong><div class="ec-chip-list">@foreach($fabricOptions->take(8) as $fabric)<span class="ec-chip">{{ data_get($fabric,'fabric_name',data_get($fabric,'name',data_get($fabric,'fabric.name','Fabric'))) }}</span>@endforeach</div></div>
+  @endif
+  @if($embellishments->isNotEmpty())
+   <div class="ec-detail-choice"><strong>Embellishment</strong><div class="ec-chip-list">@foreach($embellishments->take(8) as $embellishment)<span class="ec-chip">{{ data_get($embellishment,'embellishment_name',data_get($embellishment,'name','Embellishment')) }}</span>@endforeach</div></div>
+  @endif
+  <a class="ec-inquire-btn" href="{{ config('site.team_url') }}">Inquire for Custom Order</a>
+
+  <form action="{{ route('shop.cart.add') }}" method="POST" class="ec-detail-buy" id="ecProductForm">
    @csrf
    <input type="hidden" name="product_id" value="{{ $product['id'] }}">
-   <div class="ec-field"><label for="ecSize">Size</label><select name="size_id" class="ec-select" id="ecSize" required><option value="">Choose a size</option>@foreach($options['sizes'] as $size)<option value="{{ data_get($size,'id') }}">{{ data_get($size,'size_name',data_get($size,'name','Size')) }}</option>@endforeach</select></div>
-   <div class="ec-field"><label for="ecColor">Color</label><select name="color_id" class="ec-select" id="ecColor" {{ count($options['colors']) ? 'required' : '' }}><option value="">@if(count($options['colors']))Select a color @elseNo color selection required @endif</option>@foreach($options['colors'] as $color)<option value="{{ data_get($color,'id') }}">{{ data_get($color,'pantone_code',data_get($color,'color_name',data_get($color,'hex'))) }}</option>@endforeach</select></div>
-   <div class="ec-field"><label>Quantity</label><input class="ec-input ec-qty" type="number" name="quantity" id="ecQuantity" value="1" min="1" max="1" required><p class="ec-muted" id="ecStock">Choose size and color to check availability.</p></div>
-   <button type="submit" class="ec-btn" id="ecAddButton" disabled>Add to cart</button><a href="{{ route('shop.cart') }}" class="ec-btn light">View cart</a>
+   <h2>Available Sizes</h2>
+   <div class="ec-size-display">@forelse($sizes as $size)<span>{{ data_get($size,'size_name',data_get($size,'name','Size')) }}</span>@empty<span>Contact our team for available sizes.</span>@endforelse</div>
+   <div class="ec-fieldset">
+    <div class="ec-field"><label for="ecSize">Select size</label><select name="size_id" id="ecSize" class="ec-select" required><option value="">Choose size</option>@foreach($sizes as $size)<option value="{{ data_get($size,'id') }}">{{ data_get($size,'size_name',data_get($size,'name','Size')) }}</option>@endforeach</select></div>
+    @if($hasColors)<div class="ec-field"><label for="ecColor">Color</label><select name="color_id" id="ecColor" class="ec-select" required><option value="">Choose color</option>@foreach($options['colors'] as $color)<option value="{{ data_get($color,'id') }}">{{ data_get($color,'color_name',data_get($color,'pantone_code',data_get($color,'hex','Color'))) }}</option>@endforeach</select></div>@else<input type="hidden" id="ecColor" value="">@endif
+   </div>
+   <div class="ec-fieldset">
+    <div class="ec-field"><label for="ecQuantity">Quantity</label><input class="ec-input" id="ecQuantity" name="quantity" type="number" min="1" max="1" value="1" required></div>
+    <div class="ec-field"><label>Stock availability</label><p class="ec-stock-label" id="ecStock">Select a size to check stock.</p></div>
+   </div>
+   <div class="ec-flex"><button class="ec-btn" type="submit" id="ecAddButton" disabled>Add to Cart</button><a class="ec-btn light" href="{{ route('shop.cart') }}">View Cart</a></div>
   </form>
-  @if(!empty($product['description']))<div class="ec-copy" style="border-top:1px solid var(--ec-line);margin-top:26px;padding-top:22px"><h3>Description</h3><p>{{ strip_tags($product['description']) }}</p></div>@endif
-  @foreach(['product_features'=>'Features','who_we_made_this_for'=>'Who we made this for'] as $key=>$label)
-   @if(filled(data_get($product,'raw.'.$key,data_get($product,'raw.product_details.'.$key))))<div class="ec-copy"><h3>{{ $label }}</h3><p>{{ strip_tags(data_get($product,'raw.'.$key,data_get($product,'raw.product_details.'.$key))) }}</p></div>@endif
-  @endforeach
+  <div class="ec-fit-panel"><h2>Fit</h2><div class="ec-fit-track"><span class="ec-fit-indicator"></span></div><div class="ec-fit-labels"><span>Runs Small</span><span>True to Size</span><span>Runs Large</span></div></div>
+  <div class="ec-detail-copy">
+   @if(filled($description))<h2>Description</h2><div>{!! nl2br(e(strip_tags((string) $description))) !!}</div>@endif
+   @if(filled($features))<h2>Product Features</h2><div>{!! nl2br(e(strip_tags(is_array($features)?implode("\n",array_filter($features,'is_scalar')):(string)$features))) !!}</div>@endif
+   @if(filled($audience))<h2>Who We Made This For</h2><div>{!! nl2br(e(strip_tags((string)$audience))) !!}</div>@endif
+  </div>
  </section>
 </div>
 <script>
 (function(){
- const combinations=@json($options['combinations']);
- const size=document.getElementById('ecSize'),color=document.getElementById('ecColor'),qty=document.getElementById('ecQuantity'),btn=document.getElementById('ecAddButton'),status=document.getElementById('ecStock');
- const hasColors=@json(count($options['colors'])>0);
- function update(){
-  const s=Number(size.value||0),c=Number(color.value||0);
-  const row=combinations.find(i=>Number(i.size_id)===s&&(!hasColors||Number(i.color_id||0)===c));
-  const stock=row?Number(row.stock_qty||0):0;
+ const image=document.getElementById('ecMainImage');
+ document.querySelectorAll('[data-gallery-src]').forEach(function(btn){btn.addEventListener('click',function(){if(image)image.src=btn.dataset.gallerySrc;document.querySelectorAll('.ec-thumb-button').forEach(function(el){el.classList.toggle('selected',el.dataset.gallerySrc===btn.dataset.gallerySrc)})})});
+ const combinations=@json($options['combinations'] ?? []);
+ const size=document.getElementById('ecSize'),color=document.getElementById('ecColor'),qty=document.getElementById('ecQuantity'),button=document.getElementById('ecAddButton'),message=document.getElementById('ecStock');
+ const hasColors=@json($hasColors);
+ function sync(){
+  const selectedSize=Number(size.value||0),selectedColor=Number(color.value||0);
+  const match=combinations.find(function(row){return Number(row.size_id)===selectedSize&&(!hasColors||Number(row.color_id||0)===selectedColor)});
+  const stock=match?Number(match.stock_qty||0):0;
   qty.max=Math.max(1,stock);if(Number(qty.value)>stock&&stock>0)qty.value=stock;
-  btn.disabled=!(s>0&&(!hasColors||c>0)&&stock>0);
-  status.textContent=stock>0?stock+' available':'Out of stock or choose an option';
+  const valid=selectedSize>0&&(!hasColors||selectedColor>0)&&stock>0;
+  button.disabled=!valid;
+  message.textContent=stock>0?stock+' available':(selectedSize?'Out of stock or no matching option':'Select a size to check stock.');
  }
- size.addEventListener('change',update);color.addEventListener('change',update);update();
+ size.addEventListener('change',sync);color.addEventListener('change',sync);qty.addEventListener('change',sync);sync();
 })();
 </script>
 @endsection
