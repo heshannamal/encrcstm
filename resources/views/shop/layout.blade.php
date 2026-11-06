@@ -7,18 +7,7 @@
 @endsection
 @section('content')
 <div class="ec-shell">
-<header class="ec-header" id="shopHeader">
- <a class="ec-brand" href="{{ route('home') }}" aria-label="Encore Custom Home"><img src="{{ asset('assets/reference/297053b134d4897782f2.png') }}" alt="Encore Custom"></a>
- <nav class="ec-nav" id="shopNav" aria-label="Shopping navigation">
-  <a class="ec-navlink" href="{{ route('home') }}#sports">Sports</a>
-  <a class="ec-navlink" href="{{ route('home') }}#contact">Contact</a>
-  <a class="ec-navlink {{ request()->routeIs('shop.catalog','shop.product') ? 'active' : '' }}" href="{{ route('shop.catalog') }}">Catalog</a>
-  <a class="ec-navbtn ec-catalog" href="{{ route('shop.orders') }}"><span>Orders</span><span>→</span></a>
-  <a class="ec-navbtn ec-shop" href="{{ route('shop.profile') }}"><span>Profile</span><span>→</span></a>
-  <a class="ec-navbtn ec-start ec-nav-cart" href="{{ route('shop.cart') }}" aria-label="View shopping cart"><span>Cart</span><svg class="ec-cart-icon" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.6 13.2a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/></svg></a>
- </nav>
- <button class="ec-burger" type="button" id="ecBurger" aria-expanded="false" aria-controls="shopNav" aria-label="Toggle shopping menu"><span></span><span></span><span></span></button>
-</header>
+@include('website.home.sections.navigation')
 <main class="ec-main">
  @yield('shop-content')
 </main>
@@ -30,15 +19,40 @@
 </div>
 <script>
 (function(){
-const header=document.getElementById('shopHeader');
-const toggle=document.getElementById('ecBurger'),nav=document.getElementById('shopNav');
+const nav=document.getElementById('nav');
+const burger=document.getElementById('burger');
+const links=document.getElementById('links');
 const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-function onScroll(){if(header)header.classList.toggle('scrolled',window.scrollY>40);}
+function onScroll(){if(nav)nav.classList.toggle('scrolled',window.scrollY>40);}
 onScroll();
 window.addEventListener('scroll',onScroll,{passive:true});
-if(toggle&&nav){
- toggle.addEventListener('click',function(){const open=nav.classList.toggle('ec-open');toggle.setAttribute('aria-expanded',String(open))});
- nav.querySelectorAll('a').forEach(function(link){link.addEventListener('click',function(){nav.classList.remove('ec-open');toggle.setAttribute('aria-expanded','false')})});
+if(burger&&links){
+ burger.setAttribute('aria-expanded','false');
+ burger.setAttribute('aria-controls','links');
+ burger.addEventListener('click',function(){
+  const isOpen=links.classList.toggle('open');
+  burger.classList.toggle('open',isOpen);
+  burger.setAttribute('aria-expanded',String(isOpen));
+ });
+ links.querySelectorAll('a').forEach(function(link){
+  link.addEventListener('click',function(){
+   links.classList.remove('open');burger.classList.remove('open');burger.setAttribute('aria-expanded','false');
+  });
+ });
+}
+if(!reduce&&'IntersectionObserver' in window){
+ const io=new IntersectionObserver(function(entries){
+  entries.forEach(function(entry){
+   if(entry.isIntersecting){
+    entry.target.classList.add('ec-in-view');
+    io.unobserve(entry.target);
+   }
+  });
+ },{threshold:.06,rootMargin:'0px 0px 60px 0px'});
+ document.querySelectorAll('.ec-catalog-section,.ec-product-detail-wrap,.ec-panel').forEach(function(el){
+  el.classList.add('ec-reveal-ready');
+  io.observe(el);
+ });
 }
 document.querySelectorAll('.ec-shell form').forEach(function(form){
  if(form.id==='ecCatalogFilters'||form.classList.contains('ec-catalog-search'))return;

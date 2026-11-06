@@ -279,3 +279,47 @@
  .ec-main .ec-summary{top:76px}
 }
 @media(prefers-reduced-motion:reduce){.ec-header,.ec-header .ec-brand img,.ec-header .ec-nav .ec-navbtn{transition:none}}
+
+/* Exact approved homepage navigation, reused from its Blade partial. */
+.ec-shell{padding-top:77px;--ink:#333F48;--paper:#F4F5F6;--red:#E70033;--red-deep:#B4002A;--edge:rgba(255,255,255,.10);--mono:"Space Mono",monospace;--ease:cubic-bezier(.2,.8,.2,1);--pad:clamp(20px,6vw,120px)}
+.ec-shell>.nav{position:fixed;top:0;left:0;right:0;z-index:1050;display:flex;align-items:center;justify-content:space-between;padding:22px var(--pad);border-bottom:1px solid transparent;background:#333F48;transition:padding .35s var(--ease),background .35s var(--ease),border-color .35s var(--ease),box-shadow .35s var(--ease)}
+.ec-shell>.nav.scrolled{padding:11px var(--pad);background:rgba(51,63,72,.9);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--edge);box-shadow:0 7px 28px rgba(18,26,33,.14)}
+.ec-shell>.nav .logo{height:30px;width:auto;max-width:none;display:block;transition:height .35s var(--ease)}
+.ec-shell>.nav.scrolled .logo{height:24px}
+.ec-shell>.nav .links{display:flex;gap:30px;align-items:center}
+.ec-shell>.nav .links>a.navlink{font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--paper);opacity:.8;position:relative;padding:6px 0;text-decoration:none;white-space:nowrap}
+.ec-shell>.nav .links>a.navlink::after{content:"";position:absolute;left:0;bottom:0;height:2px;width:0;background:var(--red);transition:width .3s var(--ease)}
+.ec-shell>.nav .links>a.navlink:hover{opacity:1}
+.ec-shell>.nav .links>a.navlink:hover::after{width:100%}
+.ec-shell>.nav .links .nav-cta{display:inline-flex;gap:10px;align-items:center}
+.ec-shell>.nav .btn{font-family:var(--mono);text-transform:uppercase;letter-spacing:.14em;font-size:12px;font-weight:700;padding:13px 22px;border:1px solid var(--red);border-radius:8px;background:var(--red);color:#fff;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:9px;transition:transform .25s var(--ease),background .25s,box-shadow .25s;will-change:transform}
+.ec-shell>.nav .btn:hover{background:var(--red-deep);box-shadow:0 10px 30px -8px rgba(231,0,51,.5)}
+.ec-shell>.nav .btn.shop,.ec-shell>.nav .btn.catalog{background:#414E59;border-color:#414E59;color:var(--paper)}
+.ec-shell>.nav .btn.shop:hover,.ec-shell>.nav .btn.catalog:hover{background:#4C5A67;box-shadow:none}
+.ec-shell>.nav .btn .ar{transition:transform .25s var(--ease)}
+.ec-shell>.nav .btn:hover .ar{transform:translateX(4px)}
+.ec-shell>.nav .ec-nav-cart{display:inline-flex;align-items:center;justify-content:center;gap:9px}
+.ec-shell>.nav .ec-nav-cart .ec-cart-icon{display:block;flex:none}
+.ec-shell>.nav .burger{display:none;flex-direction:column;gap:5px;background:none;border:0;cursor:pointer;padding:8px}
+.ec-shell>.nav .burger span{display:block;width:26px;height:2px;background:var(--paper);transition:transform .3s,opacity .3s}
+@media(min-width:901px) and (max-width:1160px){
+ .ec-shell>.nav .links{gap:12px}
+ .ec-shell>.nav .links .nav-cta{gap:7px}
+ .ec-shell>.nav .links .nav-cta .btn{font-size:10px;padding:12px 13px}
+}
+@media(max-width:900px){
+ .ec-shell>.nav .links{position:fixed;inset:0;background:var(--ink);flex-direction:column;justify-content:center;gap:26px;transform:translateY(-100%);transition:transform .5s var(--ease);z-index:39}
+ .ec-shell>.nav .links.open{transform:translateY(0)}
+ .ec-shell>.nav .links>a.navlink{font-size:16px}
+ .ec-shell>.nav .burger{display:flex;z-index:41}
+ .ec-shell>.nav .burger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+ .ec-shell>.nav .burger.open span:nth-child(2){opacity:0}
+ .ec-shell>.nav .burger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+}
+@media(prefers-reduced-motion:no-preference){
+ .ec-catalog-section.ec-reveal-ready:not(.ec-in-view),.ec-product-detail-wrap.ec-reveal-ready:not(.ec-in-view),.ec-panel.ec-reveal-ready:not(.ec-in-view){opacity:0;transform:translateY(22px)}
+ .ec-catalog-section.ec-reveal-ready,.ec-product-detail-wrap.ec-reveal-ready,.ec-panel.ec-reveal-ready{transition:opacity .55s ease,transform .55s cubic-bezier(.2,.8,.2,1)}
+}
+@media(prefers-reduced-motion:reduce){
+ .ec-shell>.nav,.ec-shell>.nav .logo,.ec-shell>.nav .btn,.ec-shell>.nav .btn .ar,.ec-shell>.nav .links{transition:none}
+}
