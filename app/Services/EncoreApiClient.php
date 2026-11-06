@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Encore;
+namespace App\Services;
 
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Client\PendingRequest;

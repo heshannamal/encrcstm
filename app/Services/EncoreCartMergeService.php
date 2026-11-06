@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Services\Encore;
+namespace App\Services;
 
 use Illuminate\Support\Str;
 use Throwable;
 
-class CartMergeService
+class EncoreCartMergeService
 {
     public function __construct(
-        protected CartApiService $cart,
-        protected ProductApiService $products
+        protected EncoreCartApiService $cart,
+        protected EncoreProductService $products
     ) {
     }
 

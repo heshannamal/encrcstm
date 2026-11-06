@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Services\Encore\CartApiService;
-use App\Services\Encore\CartMergeService;
-use App\Services\Encore\ProductApiService;
+use App\Services\EncoreCartApiService;
+use App\Services\EncoreCartMergeService;
+use App\Services\EncoreProductService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Throwable;
@@ -14,9 +14,9 @@ use Throwable;
 final class ShopCartController extends Controller
 {
     public function __construct(
-        private CartApiService $cart,
-        private ProductApiService $products,
-        private CartMergeService $merge
+        private EncoreCartApiService $cart,
+        private EncoreProductService $products,
+        private EncoreCartMergeService $merge
     ) {}
 
     private function tempId(): string

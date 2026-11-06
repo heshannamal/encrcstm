@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Services\Encore;
+namespace App\Services;
 
-class ProfileApiService
+class EncoreProfileApiService
 {
     public function __construct(protected EncoreApiClient $api)
     {

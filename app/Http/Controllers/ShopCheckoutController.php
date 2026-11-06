@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Services\Encore\CartApiService;
-use App\Services\Encore\CartMergeService;
-use App\Services\Encore\EncoreSessionGuard;
-use App\Services\Encore\OrderApiService;
-use App\Services\Encore\PaymentApiService;
-use App\Services\Encore\ProfileApiService;
+use App\Services\EncoreCartApiService;
+use App\Services\EncoreCartMergeService;
+use App\Services\EncoreSessionGuard;
+use App\Services\EncoreOrderApiService;
+use App\Services\EncorePaymentApiService;
+use App\Services\EncoreProfileApiService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
@@ -18,12 +18,12 @@ use Throwable;
 final class ShopCheckoutController extends Controller
 {
     public function __construct(
-        private CartApiService $cart,
-        private CartMergeService $merge,
+        private EncoreCartApiService $cart,
+        private EncoreCartMergeService $merge,
         private EncoreSessionGuard $guard,
-        private OrderApiService $orders,
-        private PaymentApiService $payment,
-        private ProfileApiService $profile
+        private EncoreOrderApiService $orders,
+        private EncorePaymentApiService $payment,
+        private EncoreProfileApiService $profile
     ) {}
 
     private function requireAuth()

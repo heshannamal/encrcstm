@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Services\Encore;
+namespace App\Services;
 
-class CartApiService
+class EncoreCartApiService
 {
     public function __construct(protected EncoreApiClient $api)
     {

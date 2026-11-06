@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Services\Encore;
+namespace App\Services;
 
-class OrderApiService
+class EncoreOrderApiService
 {
     public function __construct(protected EncoreApiClient $api)
     {

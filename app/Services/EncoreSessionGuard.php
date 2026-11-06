@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Encore;
+namespace App\Services;
 
 use Illuminate\Support\Facades\Cache;
 use RuntimeException;
@@ -10,7 +10,7 @@ class EncoreSessionGuard
 {
     protected ?bool $checked = null;
 
-    public function __construct(protected AuthApiService $auth)
+    public function __construct(protected EncoreAuthApiService $auth)
     {
     }
 

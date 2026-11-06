@@ -4,22 +4,22 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Services\Encore\AuthApiService;
-use App\Services\Encore\CartMergeService;
-use App\Services\Encore\EncoreSessionGuard;
-use App\Services\Encore\OrderApiService;
-use App\Services\Encore\ProfileApiService;
+use App\Services\EncoreAuthApiService;
+use App\Services\EncoreCartMergeService;
+use App\Services\EncoreSessionGuard;
+use App\Services\EncoreOrderApiService;
+use App\Services\EncoreProfileApiService;
 use Illuminate\Http\Request;
 use Throwable;
 
 final class ShopAccountController extends Controller
 {
     public function __construct(
-        private AuthApiService $auth,
+        private EncoreAuthApiService $auth,
         private EncoreSessionGuard $guard,
-        private CartMergeService $merge,
-        private ProfileApiService $profileApi,
-        private OrderApiService $orders
+        private EncoreCartMergeService $merge,
+        private EncoreProfileApiService $profileApi,
+        private EncoreOrderApiService $orders
     ) {}
 
     public function loginForm()

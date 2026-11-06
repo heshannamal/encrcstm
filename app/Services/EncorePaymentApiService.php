@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Services\Encore;
+namespace App\Services;
 
-class PaymentApiService
+class EncorePaymentApiService
 {
     public function __construct(
         protected EncoreApiClient $api

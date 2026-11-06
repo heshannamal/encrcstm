@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Services\Encore\ProductApiService;
 use App\Services\EncoreProductService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -12,7 +11,7 @@ use Throwable;
 
 final class ShoppingController extends Controller
 {
-    public function __construct(private ProductApiService $products, private EncoreProductService $sportProducts) {}
+    public function __construct(private EncoreProductService $products) {}
 
     public function catalog(Request $request)
     {
@@ -28,7 +27,7 @@ final class ShoppingController extends Controller
         $styles = [];
 
         try {
-            $rawItems = $this->sportProducts->products((int) $filters['selectedSport'], [
+            $rawItems = $this->products->products((int) $filters['selectedSport'], [
                 'category' => $filters['selectedCategory'],
                 'gender' => $filters['selectedGender'],
                 'style' => $filters['selectedStyle'],
