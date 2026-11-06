@@ -128,6 +128,10 @@ final class EncoreProductService
 
     private function matchesSport(array $item, int $sportId): bool
     {
+        if ($sportId === 18) {
+            return true;
+        }
+
         $sports = data_get($item, 'product_details.product_sport')
             ?? data_get($item, 'productDetails.productSport')
             ?? data_get($item, 'product_details.product_sports')
