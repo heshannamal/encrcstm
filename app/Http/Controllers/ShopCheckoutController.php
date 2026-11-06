@@ -184,7 +184,7 @@ final class ShopCheckoutController extends Controller
             return redirect()->route('shop.checkout')->with('error', 'Complete your billing details first.');
         }
 
-        $card = $request->validate([
+        $validator = \Illuminate\Support\Facades\Validator::make($request->all(), [
             'card_type' => ['required', 'integer', 'in:1,2,3'],
             'card_holder_name' => ['required', 'string', 'max:100'],
             'card_number' => ['required', 'string', 'regex:/^[0-9 ]{12,25}$/'],
@@ -192,6 +192,10 @@ final class ShopCheckoutController extends Controller
             'card_expiry_year' => ['required', 'integer', 'between:'.date('Y').','.((int) date('Y') + 20)],
             'card_csv' => ['required', 'digits_between:3,4'],
         ]);
+        if ($validator->fails()) {
+            return back()->withErrors($validator->errors());
+        }
+        $card = $validator->validated();
 
         $lock = \Illuminate\Support\Facades\Cache::lock('encore:payment:'.hash('sha256', session()->getId()), 60);
         if (!$lock->get()) {
