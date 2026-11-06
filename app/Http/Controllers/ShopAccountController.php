@@ -156,10 +156,14 @@ final class ShopAccountController extends Controller
             'l_name' => ['required', 'string', 'max:255'],
             'phone_number' => ['nullable', 'string', 'max:50'],
         ]);
-        $response = $this->profileApi->updateProfile($data);
-        return ($response['success'] ?? false)
-            ? back()->with('success', 'Profile updated.')
-            : back()->with('error', $response['message'] ?? 'Unable to update profile.');
+        try {
+            $response = $this->profileApi->updateProfile($data);
+            return ($response['success'] ?? false)
+                ? back()->with('success', 'Profile updated.')
+                : back()->with('error', $response['message'] ?? 'Unable to update profile.');
+        } catch (Throwable $exception) {
+            return back()->with('error', 'Profile service is temporarily unavailable. Please try again.');
+        }
     }
 
     public function orderHistory(Request $request)
@@ -167,11 +171,18 @@ final class ShopAccountController extends Controller
         if ($redirect = $this->requireLogin($request)) {
             return $redirect;
         }
-        $response = $this->profileApi->orderHistory();
-        return view('shop.orders', [
-            'orders' => $response['data'] ?? [],
-            'error' => ($response['success'] ?? false) ? null : ($response['message'] ?? 'Unable to load your orders.'),
-        ]);
+        try {
+            $response = $this->profileApi->orderHistory();
+            return view('shop.orders', [
+                'orders' => $response['data'] ?? [],
+                'error' => ($response['success'] ?? false) ? null : ($response['message'] ?? 'Unable to load your orders.'),
+            ]);
+        } catch (Throwable $exception) {
+            return view('shop.orders', [
+                'orders' => [],
+                'error' => 'Order history is temporarily unavailable. Please try again.',
+            ]);
+        }
     }
 
     public function order(Request $request, int $id)
