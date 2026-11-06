@@ -319,53 +319,36 @@ final class EncoreProductService
 
     public function product(int $id): array
     {
-        $response = $this->api->get('v1/products/' . $id);
+        $response = $this->api->get('v1/products/'.$id);
+        $detail = ($response['success'] ?? false) ? $this->asArray($response['data'] ?? []) : [];
 
-        if (!($response['success'] ?? false)) {
-            return $response;
-        }
-
-        $detail = $this->asArray($response['data'] ?? []);
-
-        /*
-         * Some Encore deployments enrich get_products with inventory-specific
-         * product_display_detail values but return the raw product from
-         * /v1/products/{id}. If the detail response has no custom display
-         * fields, copy only those display overrides from the catalogue result.
-         */
-        if (!$this->hasCustomDisplayFields($detail)) {
+        if (!$detail || !$this->hasCustomDisplayFields($detail)) {
             try {
-                $catalogue = $this->products(18);
+                $catalogue = $this->products(18, ['category' => 5]);
+                $displayProduct = collect($catalogue)->first(function ($item) use ($id): bool {
+                    return (int) $this->first($this->asArray($item), [
+                        'id', 'sub_product_id', 'product_id',
+                    ], 0) === $id;
+                });
 
-                if (!empty($catalogue)) {
-                    $displayProduct = collect($catalogue)->first(function ($item) use ($id) {
-                        $item = $this->asArray($item);
-
-                        return (int) $this->first($item, [
-                            'id',
-                            'sub_product_id',
-                            'product_id',
-                        ], 0) === $id;
-                    });
-
-                    if ($displayProduct) {
-                        $detail = $this->mergeCustomDisplayFields(
-                            $detail,
-                            $this->asArray($displayProduct)
-                        );
-                    }
+                if ($displayProduct) {
+                    $detail = $detail
+                        ? $this->mergeCustomDisplayFields($detail, $this->asArray($displayProduct))
+                        : $this->asArray($displayProduct);
                 }
-            } catch (\Throwable $e) {
-                Log::warning('Unable to enrich Encore product detail with display overrides.', [
+            } catch (Throwable $exception) {
+                Log::warning('Unable to enrich Encore product detail with catalog fields', [
                     'product_id' => $id,
-                    'message' => $e->getMessage(),
+                    'error' => $exception->getMessage(),
                 ]);
             }
         }
 
-        $response['data'] = $detail;
+        if (!$detail) {
+            return ['success' => false, 'data' => null, 'message' => 'Product unavailable'];
+        }
 
-        return $response;
+        return ['success' => true, 'data' => $detail];
     }
 
     public function options(int $id): array
