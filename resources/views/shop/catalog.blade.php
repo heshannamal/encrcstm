@@ -2,7 +2,7 @@
 @section('shop-title', 'Apparel Catalog')
 @section('shop-content')
 <section class="ec-store-top">
- <div class="ec-store-heading"><span>ENCORE <em>Custom</em></span><span>Apparel Catalog</span></div>
+ <div class="ec-store-heading"><h1>APPAREL <em>Catalog</em></h1><span>MADE TO ORDER. MADE TO WIN.</span></div>
  <div class="ec-store-breadcrumb"><a href="{{ route('home') }}">Home</a> / Catalog</div>
  <form class="ec-store-filters" method="GET" action="{{ route('shop.catalog') }}">
   <div class="ec-field ec-filter-search"><label for="shopSearch">Search</label><input id="shopSearch" class="ec-input" type="search" name="search" placeholder="Search apparel" value="{{ request('search') }}"></div>
