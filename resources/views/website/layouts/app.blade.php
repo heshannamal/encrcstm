@@ -13,6 +13,7 @@
 </head>
 <body>
     @yield('content')
+    @include('website.partials.feedback')
     @stack('scripts')
 </body>
 </html>
