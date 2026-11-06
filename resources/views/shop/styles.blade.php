@@ -26,3 +26,32 @@
 .ec-qty{width:82px!important}.ec-hide{display:none}
 @media(max-width:980px){.ec-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.ec-filters{grid-template-columns:repeat(3,1fr)}.ec-nav{gap:12px}}
 @media(max-width:700px){.ec-header{height:auto;min-height:70px;flex-wrap:wrap;padding:12px 18px}.ec-brand img{width:145px}.ec-nav{gap:10px}.ec-nav a,.ec-nav button{font-size:10px}.ec-main{padding:24px 0 55px}.ec-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.ec-filters{grid-template-columns:repeat(2,1fr)}.ec-product,.ec-two{grid-template-columns:1fr}.ec-gallery{grid-template-columns:54px minmax(0,1fr)}.ec-panel{padding:18px}.ec-fieldset{grid-template-columns:1fr}.ec-cart-item{grid-template-columns:70px 1fr;gap:10px}.ec-cart-item img{width:70px;height:88px}.ec-footer{flex-wrap:wrap}.ec-summary{position:static}}
+
+/* Shopping navigation follows the approved Encore sport/home header. */
+.ec-shell{--ec-navy:#34434d;--ec-red:#ed0036;--ec-bg:#f3f4f6}
+.ec-header{height:70px;min-height:70px;padding:0 max(5.9vw,24px);background:#34434d;box-shadow:none;border-radius:0;z-index:500;gap:20px}
+.ec-brand{display:flex;align-items:center;flex:0 0 auto}
+.ec-brand img{width:142px;max-height:52px;filter:none}
+.ec-nav{display:flex;align-items:center;justify-content:flex-end;gap:26px;flex-wrap:nowrap}
+.ec-nav .ec-navlink,.ec-nav .ec-signout{font:700 11px/1 'Space Mono',monospace;letter-spacing:.12em;color:#eee;text-transform:uppercase;text-decoration:none;background:none;border:0;padding:9px 0;white-space:nowrap;cursor:pointer}
+.ec-nav .ec-navlink:hover,.ec-nav .ec-navlink.active,.ec-nav .ec-signout:hover{color:#fff}
+.ec-nav form{display:flex;margin:0}
+.ec-nav .ec-navbtn{min-height:47px;padding:0 20px;border-radius:9px;display:inline-flex;align-items:center;justify-content:center;gap:12px;white-space:nowrap;text-decoration:none;text-transform:uppercase;font:700 11px/1 'Space Mono',monospace;letter-spacing:.12em;color:#fff;background:#405362;transition:background .18s}
+.ec-nav .ec-navbtn:hover,.ec-nav .ec-navbtn.active{background:#506473;color:#fff}
+.ec-nav .ec-start{background:#ed0036;padding:0 22px}
+.ec-nav .ec-start:hover{background:#ca002d}
+.ec-burger{display:none;width:42px;height:42px;border:1px solid #65717a;border-radius:6px;background:transparent;cursor:pointer;padding:10px}
+.ec-burger span{display:block;height:2px;background:#fff;margin:5px 0}
+@media(max-width:1150px){
+ .ec-nav{gap:14px}
+ .ec-nav .ec-navbtn{padding:0 12px}
+ .ec-nav .ec-navlink,.ec-nav .ec-signout{font-size:10px}
+}
+@media(max-width:950px){
+ .ec-header{height:70px;padding:0 24px;flex-wrap:nowrap}
+ .ec-burger{display:block;margin-left:auto;flex:0 0 auto}
+ .ec-nav{display:none;position:absolute;top:70px;left:0;right:0;background:#34434d;padding:18px 24px 24px;align-items:stretch;flex-direction:column;gap:10px;box-shadow:0 15px 22px rgba(0,0,0,.18)}
+ .ec-nav.ec-open{display:flex}
+ .ec-nav .ec-navlink,.ec-nav .ec-signout{display:block;padding:12px 4px;text-align:left}
+ .ec-nav .ec-navbtn{justify-content:space-between;min-height:48px}
+}
