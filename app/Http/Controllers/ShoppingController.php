@@ -16,7 +16,7 @@ final class ShoppingController extends Controller
     public function catalog(Request $request)
     {
         $filters = [
-            'selectedCategory' => $request->integer('selectedCategory', 5),
+            'selectedCategory' => $request->integer('selectedCategory', 1),
             'selectedGender' => $request->query('selectedGender', 'All'),
             'selectedSport' => $request->integer('selectedSport', 18),
             'selectedStyle' => $request->integer('selectedStyle', 0),
@@ -108,6 +108,10 @@ final class ShoppingController extends Controller
             'colors' => $optionsResponse['colors'] ?? data_get($optionsResponse, 'data.colors', []),
             'combinations' => $optionsResponse['combinations'] ?? data_get($optionsResponse, 'data.combinations', []),
         ];
+
+        foreach (['sizes', 'colors', 'combinations'] as $key) {
+            $options[$key] = is_array($options[$key]) ? array_values($options[$key]) : [];
+        }
 
         return view('shop.product', compact('product', 'options'));
     }
