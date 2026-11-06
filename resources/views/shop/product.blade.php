@@ -37,7 +37,6 @@
   @if($embellishments->isNotEmpty())
    <div class="ec-detail-choice"><strong>Embellishment</strong><div class="ec-chip-list">@foreach($embellishments->take(8) as $embellishment)<span class="ec-chip">{{ data_get($embellishment,'embellishment_name',data_get($embellishment,'name','Embellishment')) }}</span>@endforeach</div></div>
   @endif
-  <a class="ec-inquire-btn" href="{{ config('site.team_url') }}">Inquire for Custom Order</a>
 
   <form action="{{ route('shop.cart.add') }}" method="POST" class="ec-detail-buy" id="ecProductForm">
    @csrf
@@ -52,7 +51,7 @@
     <div class="ec-field"><label for="ecQuantity">Quantity</label><input class="ec-input" id="ecQuantity" name="quantity" type="number" min="1" max="1" value="1" required></div>
     <div class="ec-field"><label>Stock availability</label><p class="ec-stock-label" id="ecStock">Select a size to check stock.</p></div>
    </div>
-   <div class="ec-flex"><button class="ec-btn" type="submit" id="ecAddButton" disabled>Add to Cart</button><a class="ec-btn light" href="{{ route('shop.cart') }}">View Cart</a></div>
+   <button class="ec-inquire-btn ec-add-to-cart" type="submit" id="ecAddButton" disabled><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.6 13.2a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/></svg><span>Add to Cart</span></button>
   </form>
   <div class="ec-fit-panel"><h2>Fit</h2><div class="ec-fit-track"><span class="ec-fit-indicator"></span></div><div class="ec-fit-labels"><span>Runs Small</span><span>True to Size</span><span>Runs Large</span></div></div>
   <div class="ec-detail-copy">
