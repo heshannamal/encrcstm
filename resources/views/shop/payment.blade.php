@@ -16,11 +16,14 @@
 <aside class="ec-panel ec-summary"><h2>Payment Summary</h2>
 <div class="ec-row"><span>Items</span><strong>{{ data_get($payment,'total_item_qty','0') }}</strong></div>
 <div class="ec-row"><span>Subtotal</span><strong>${{ number_format((float)data_get($payment,'sub_total',0),2) }}</strong></div>
-<div class="ec-row"><span>Shipping</span><strong>${{ number_format((float)data_get($subPayment,'shipping_fee',0),2) }}</strong></div>
-<div class="ec-row"><span>Sales tax</span><strong>${{ number_format((float)data_get($subPayment,'sales_tax',0),2) }}</strong></div>
+<div class="ec-row"><span>Shipping @if(filled(data_get($subPayment,'shipping_fee_percentage')))<small class="ec-muted">({{ data_get($subPayment,'shipping_fee_percentage') }}%)</small>@endif</span><strong>${{ number_format((float)data_get($subPayment,'shipping_fee',0),2) }}</strong></div>
+<div class="ec-row"><span>Sales tax @if(filled(data_get($subPayment,'sales_tax_percentage')))<small class="ec-muted">({{ data_get($subPayment,'sales_tax_percentage') }}%)</small>@endif</span><strong>${{ number_format((float)data_get($subPayment,'sales_tax',0),2) }}</strong></div>
+<div class="ec-row"><span>Invoice total</span><strong>${{ number_format((float)data_get($payment,'invoice_total',0),2) }}</strong></div>
+<div class="ec-row"><span>Other fees</span><strong>${{ number_format((float)data_get($subPayment,'other_fee',0),2) }}</strong></div>
+<div class="ec-row"><span>Balance due</span><strong>${{ number_format((float)data_get($payment,'balance_invoice',0),2) }}</strong></div>
 <div class="ec-row"><span>Processing fee</span><strong>${{ number_format((float)data_get($payment,'processing_fee',0),2) }}</strong></div>
 <div class="ec-row"><strong>Amount to Pay</strong><strong class="ec-price">${{ number_format((float)data_get($payment,'amount_to_pay',0),2) }}</strong></div>
-<a href="{{ route('shop.checkout') }}" class="ec-btn light" style="margin-top:25px">Edit Billing Details</a></aside>
+<p class="ec-muted" style="margin:16px 0 0">Shipping and tax are calculated by the Encore checkout API using your confirmed delivery address. All prices shown are USD.</p><a href="{{ route('shop.checkout') }}" class="ec-btn light" style="margin-top:25px">Edit Billing Details</a></aside>
 </div>
 <script>
 (function(){const form=document.getElementById('ecPaymentForm');form.addEventListener('submit',function(){let b=document.getElementById('ecPayButton');b.disabled=true;b.textContent='Processing payment…'})})();

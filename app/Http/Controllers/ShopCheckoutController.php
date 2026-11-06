@@ -96,6 +96,7 @@ final class ShopCheckoutController extends Controller
             'shipping_first_name' => ['required_unless:use_same_as_billing_address,1', 'nullable', 'string', 'max:255'],
             'shipping_last_name' => ['required_unless:use_same_as_billing_address,1', 'nullable', 'string', 'max:255'],
             'shipping_address' => ['required_unless:use_same_as_billing_address,1', 'nullable', 'string', 'max:255'],
+            'shipping_street' => ['nullable', 'string', 'max:255'],
             'shipping_city' => ['required_unless:use_same_as_billing_address,1', 'nullable', 'string', 'max:255'],
             'shipping_state' => ['required_unless:use_same_as_billing_address,1', 'nullable', 'string', 'max:255'],
             'shipping_postal_code' => ['required_unless:use_same_as_billing_address,1', 'nullable', 'string', 'max:30'],
