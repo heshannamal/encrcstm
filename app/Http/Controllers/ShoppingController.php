@@ -13,72 +13,76 @@ final class ShoppingController extends Controller
 {
     public function __construct(private EncoreProductService $products) {}
 
-    public function catalog(Request $request)
+    public function catalog(Request $request, \App\Services\EncoreCatalogService $catalog)
     {
         $filters = [
             'selectedCategory' => $request->integer('selectedCategory', 1),
-            'selectedGender' => $request->query('selectedGender', 'All'),
+            'selectedGender' => (string) $request->query('selectedGender', 'All'),
             'selectedSport' => $request->integer('selectedSport', 18),
             'selectedStyle' => $request->integer('selectedStyle', 0),
         ];
+
         $items = collect();
+        $grouped = collect();
         $error = null;
+
         $categories = [];
-        $styles = [];
+        $styles = [
+            ['id' => 20, 'product_category_name' => 'Game Uniforms'],
+            ['id' => 8, 'product_category_name' => 'Shorts & Skirts'],
+            ['id' => 11, 'product_category_name' => 'Tops'],
+            ['id' => 9, 'product_category_name' => 'Socks'],
+            ['id' => 2, 'product_category_name' => 'Pants & Sweats'],
+            ['id' => 7, 'product_category_name' => 'Hoodies & Fleece'],
+            ['id' => 1, 'product_category_name' => 'Bags'],
+            ['id' => 17, 'product_category_name' => 'Hats'],
+            ['id' => 5, 'product_category_name' => 'Outerwear'],
+            ['id' => 3, 'product_category_name' => 'Underwear & Bras'],
+            ['id' => 23, 'product_category_name' => 'Compression Bottoms'],
+            ['id' => 22, 'product_category_name' => 'Compression Tops'],
+            ['id' => 21, 'product_category_name' => 'Compression & Leggings'],
+        ];
 
         try {
-            $rawItems = $this->products->products((int) $filters['selectedSport'], [
+            $sportGroups = $catalog->groups((int) $filters['selectedSport'], [
                 'category' => $filters['selectedCategory'],
                 'gender' => $filters['selectedGender'],
                 'style' => $filters['selectedStyle'],
             ]);
 
-            $items = collect($rawItems)
-                ->filter('is_array')
-                ->map(fn (array $raw): array => $this->products->catalogCard($raw))
-                ->filter(fn (array $product): bool => (int) ($product['id'] ?? 0) > 0);
+            $search = mb_strtolower(trim((string) $request->query('search', '')));
+            foreach ($sportGroups as $group) {
+                $category = trim((string) ($group['cat'] ?? 'Other Products'));
+                foreach ($group['items'] ?? [] as $card) {
+                    $id = (int) ($card['id'] ?? 0);
+                    $name = (string) ($card['n'] ?? 'Product');
+                    if ($id <= 0 || ($search !== '' && !str_contains(mb_strtolower($name), $search))) {
+                        continue;
+                    }
 
-            $search = trim((string) $request->query('search', ''));
-            if ($search !== '') {
-                $items = $items->filter(function (array $product) use ($search): bool {
-                    $raw = $product['raw'];
-                    $terms = [
-                        $product['name'],
-                        data_get($raw, 'sub_product_no'),
-                        data_get($raw, 'product_details.product_no'),
-                        data_get($raw, 'display_product_name'),
-                    ];
-                    return str_contains(mb_strtolower(implode(' ', array_filter($terms))), mb_strtolower($search));
-                });
+                    $items->push([
+                        'id' => $id,
+                        'name' => $name,
+                        'price' => (float) ($card['price'] ?? 0),
+                        'price_formatted' => (string) ($card['p'] ?? ''),
+                        'images' => [($card['img'] ?? null) ?: asset('images/product-placeholder.svg')],
+                        'category' => $category,
+                    ]);
+                }
             }
 
-            $items = $items->values();
-            $order = $request->query('sort');
-            if ($order === 'price_asc') {
+            $sort = $request->query('sort');
+            if ($sort === 'price_asc') {
                 $items = $items->sortBy('price')->values();
-            } elseif ($order === 'price_desc') {
+            } elseif ($sort === 'price_desc') {
                 $items = $items->sortByDesc('price')->values();
-            } elseif ($order === 'name') {
+            } elseif ($sort === 'name') {
                 $items = $items->sortBy('name', SORT_NATURAL | SORT_FLAG_CASE)->values();
             }
 
-            try {
-                $stylesResponse = $this->products->productCategories();
-                $styles = data_get($stylesResponse, 'data.data', $stylesResponse['data'] ?? []);
-                $styles = is_array($styles) ? array_values(array_filter($styles, 'is_array')) : [];
-            } catch (Throwable $exception) {
-                Log::notice('Product category metadata unavailable', ['message' => $exception->getMessage()]);
-            }
-
-            try {
-                $categoriesResponse = $this->products->mainCategories();
-                $categories = data_get($categoriesResponse, 'data.data', $categoriesResponse['data'] ?? []);
-                $categories = is_array($categories) ? array_values(array_filter($categories, 'is_array')) : [];
-            } catch (Throwable $exception) {
-                Log::notice('Main category metadata unavailable', ['message' => $exception->getMessage()]);
-            }
+            $grouped = $items->groupBy('category');
         } catch (Throwable $exception) {
-            Log::error('Catalog product loading failed', [
+            Log::error('Shop catalog failed while using sport catalog service', [
                 'exception' => get_class($exception),
                 'message' => $exception->getMessage(),
                 'file' => $exception->getFile(),
@@ -87,17 +91,6 @@ final class ShoppingController extends Controller
             ]);
             $error = 'Products are temporarily unavailable. Please try again.';
         }
-
-        $grouped = $items->groupBy(function ($item): string {
-            $rel = data_get($item, 'raw.style_name')
-                ?? data_get($item, 'raw.product_style_name')
-                ?? data_get($item, 'raw.product_details.product_categories.0.categories.product_category_name')
-                ?? data_get($item, 'raw.product_details.product_categories.0.category.name')
-                ?? data_get($item, 'raw.product_details.product_categories.0.product_category_name')
-                ?? data_get($item, 'raw.category_name')
-                ?? 'Other Products';
-            return (string) $rel;
-        });
 
         return view('shop.catalog', compact('items', 'grouped', 'filters', 'categories', 'styles', 'error'));
     }
