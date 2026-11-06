@@ -341,3 +341,13 @@ h1,h2,h3,h4{margin:0;font-family:var(--disp);font-weight:800;line-height:.95;let
 .kspecs th:last-child,.kspecs td:last-child{border-right:0}
 .switch{border-radius:var(--r)}
 .libero .demo .j{border-radius:var(--r)}
+
+/* Align sport navigation cart action with approved button styling. */
+.nav .rt .ec-nav-cart{display:inline-flex;align-items:center;justify-content:center;gap:9px}
+.nav .rt .ec-nav-cart .ec-cart-icon{display:block;flex:none}
+.nav .rt a.btn.shop{background:#414e59;border-color:#414e59}
+.nav .rt a.btn.shop:hover{background:#4c5a67;box-shadow:none}
+@media(min-width:861px) and (max-width:1220px){
+ .nav .rt{gap:11px}
+ .nav .rt a.btn{font-size:10px;padding:12px 12px}
+}

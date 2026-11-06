@@ -414,3 +414,13 @@ h1,h2,h3{margin:0;font-family:var(--disp);font-weight:800;line-height:.95;letter
 .newsletter{border-radius:var(--r);overflow:hidden}
 .proof-nav button{border-radius:var(--r)}
 .proof-dots i{border-radius:50%}
+
+/* Approved navigation layout with Orders / Profile / Cart shop actions. */
+.nav .ec-nav-cart{display:inline-flex;align-items:center;justify-content:center;gap:9px}
+.nav .ec-nav-cart .ec-cart-icon{display:block;flex:none}
+.nav .links>a.navlink{white-space:nowrap}
+@media(min-width:861px) and (max-width:1160px){
+ .nav .links{gap:12px}
+ .nav .links .nav-cta{gap:7px}
+ .nav .links .nav-cta .btn{font-size:10px;padding:12px 13px}
+}
