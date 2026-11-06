@@ -376,6 +376,23 @@ final class EncoreProductService
         return max(0, (int) data_get($match, 'stock_qty', 0));
     }
 
+    public function catalogCard(array $item): array
+    {
+        $card = $this->card($item);
+        $id = (int) (data_get($item, 'id') ?? data_get($item, 'sub_product_id') ?? 0);
+        $price = $card['price'] === null ? 0.0 : (float) $card['price'];
+        $image = $card['image'] ?: asset('images/product-placeholder.svg');
+
+        return [
+            'id' => $id,
+            'name' => $card['name'],
+            'price' => $price,
+            'price_formatted' => (string) config('services.encore.currency_symbol', '$').number_format($price, 2),
+            'images' => [$image],
+            'raw' => $item,
+        ];
+    }
+
     public function normalizeProduct($item): array
     {
         $item = $this->asArray($item);
