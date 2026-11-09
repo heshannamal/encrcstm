@@ -448,3 +448,64 @@ body.ec-shop-busy{cursor:progress}
 @media(max-width:1100px){.ec-store-reference .ec-store-filters{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:650px){.ec-store-reference .ec-store-filters{grid-template-columns:repeat(2,minmax(0,1fr))}.ec-product-available-colors{margin:6px 9px 12px}}
 @media(prefers-reduced-motion:reduce){.ec-shop-loader{transition:none}.ec-shop-loader-mark{animation:none}}
+
+/* Auth-aware shopping navbar controls share the approved sport-page theme. */
+.ec-shell>.nav.ec-shop-nav .ec-shop-cart-link{
+ display:inline-flex;align-items:center;justify-content:center;
+ width:45px;height:45px;flex:none;border-radius:9px;
+ background:#414e59;border:1px solid #414e59;color:#fff;text-decoration:none;
+ transition:background .25s ease,transform .25s ease;
+}
+.ec-shell>.nav.ec-shop-nav .ec-shop-cart-link:hover{background:#4c5a67;transform:translateY(-1px)}
+.ec-shop-mobile-label{display:none}
+.ec-shell>.nav.ec-shop-nav .ec-shop-account{position:relative;flex:none}
+.ec-shell>.nav.ec-shop-nav .ec-shop-account-trigger{
+ display:flex;align-items:center;gap:8px;color:#f4f5f6;cursor:pointer;
+ padding:5px 2px;list-style:none;user-select:none;
+}
+.ec-shell>.nav.ec-shop-nav .ec-shop-account-trigger::-webkit-details-marker{display:none}
+.ec-shell>.nav.ec-shop-nav .ec-shop-account-trigger::marker{content:""}
+.ec-shell>.nav.ec-shop-nav .ec-shop-avatar{
+ width:39px;height:39px;display:grid;place-items:center;
+ background:#4a5a66;border:1px solid rgba(255,255,255,.25);
+ border-radius:50%;color:#fff;font:700 16px 'Hanken Grotesk',sans-serif;
+ transition:background .25s,border-color .25s;
+}
+.ec-shell>.nav.ec-shop-nav .ec-shop-account-trigger:hover .ec-shop-avatar,
+.ec-shell>.nav.ec-shop-nav .ec-shop-account[open] .ec-shop-avatar{
+ background:#617380;border-color:#e70033;
+}
+.ec-shell>.nav.ec-shop-nav .ec-shop-account-dropdown{
+ position:absolute;right:0;top:calc(100% + 12px);z-index:1200;
+ width:195px;padding:9px;background:#fff;border:1px solid #e3e7ea;
+ border-radius:9px;box-shadow:0 15px 38px rgba(13,29,40,.18);color:#34434d;
+}
+.ec-shell>.nav.ec-shop-nav .ec-shop-account-label{
+ display:block;padding:9px 11px 12px;margin-bottom:5px;border-bottom:1px solid #e7eaed;
+ font:700 12px 'Hanken Grotesk',sans-serif;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.ec-shell>.nav.ec-shop-nav .ec-shop-account-dropdown a,
+.ec-shell>.nav.ec-shop-nav .ec-shop-account-dropdown button{
+ display:block;width:100%;border:0;border-radius:5px;background:transparent;
+ padding:11px;font:600 12px 'Hanken Grotesk',sans-serif;
+ color:#34434d;text-align:left;text-decoration:none;cursor:pointer;
+}
+.ec-shell>.nav.ec-shop-nav .ec-shop-account-dropdown a:hover,
+.ec-shell>.nav.ec-shop-nav .ec-shop-account-dropdown button:hover{background:#f1f3f5;color:#e70033}
+.ec-shell>.nav.ec-shop-nav .ec-shop-account-dropdown form{margin:0}
+.ec-shell>.nav.ec-shop-nav .ec-shop-signin{background:#414e59;border-color:#414e59}
+.ec-shell>.nav.ec-shop-nav .ec-shop-signin:hover{background:#4c5a67;box-shadow:none}
+@media(max-width:1150px) and (min-width:901px){
+ .ec-shell>.nav.ec-shop-nav .rt{gap:13px}
+ .ec-shell>.nav.ec-shop-nav .btn{padding:12px 14px;font-size:10px}
+}
+@media(max-width:900px){
+ .ec-shell>.nav.ec-shop-nav .rt{gap:20px;padding:72px 20px 32px}
+ .ec-shell>.nav.ec-shop-nav .ec-shop-cart-link{width:auto;min-width:130px;gap:10px;padding:0 16px}
+ .ec-shop-mobile-label{display:inline;font:700 12px 'Space Mono',monospace;text-transform:uppercase;letter-spacing:.1em}
+ .ec-shell>.nav.ec-shop-nav .ec-shop-account{width:min(260px,85vw);text-align:center}
+ .ec-shell>.nav.ec-shop-nav .ec-shop-account-trigger{justify-content:center}
+ .ec-shell>.nav.ec-shop-nav .ec-shop-account-dropdown{
+  position:static;margin:8px auto 0;width:100%;box-shadow:0 9px 24px rgba(0,0,0,.13);
+ }
+}
