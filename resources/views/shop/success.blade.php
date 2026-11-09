@@ -1,8 +1,10 @@
 @extends('shop.layout')
-@section('shop-title', 'Order Confirmed')
+@section('shop-title','Order Confirmed')
 @section('shop-content')
-<div class="ec-empty" style="padding:70px 30px"><div style="font-size:50px;color:#219653">✓</div><h1 class="ec-title">Order <span style="color:var(--ec-red)">Confirmed</span></h1>
-<p class="ec-sub">The Encore order API confirmed your order submission. You can review its status in your order history.</p>
-<div class="ec-flex" style="justify-content:center"><a class="ec-btn" href="{{ route('shop.orders') }}">View My Orders</a><a class="ec-btn light" href="{{ route('shop.catalog') }}">Continue Shopping</a></div>
+<section class="ec-shop-banner"><div class="ec-banner-inner"><h1>Order <span>Confirmed</span></h1><p>Thank you for shopping with Encore Custom.</p></div></section>
+<div class="ec-modern-card ec-success-card">
+ <div class="ec-success-check">✓</div><h2>Your order has been received</h2>
+ <p>The Encore order API confirmed your order. You can view its current status and details in your account.</p>
+ <div class="ec-success-actions"><a class="ec-btn ec-proceed" href="{{ route('shop.orders') }}">View My Orders →</a><a class="ec-outline-action" href="{{ route('shop.catalog') }}">Continue Shopping</a></div>
 </div>
 @endsection
