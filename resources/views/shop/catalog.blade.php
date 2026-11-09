@@ -88,25 +88,38 @@ document.querySelectorAll('.ec-catalog-section').forEach(function(section){
 });
 </script>
 @endsection
-@if($error)
+
 @push('scripts')
 <script>
-if(window.EncoreToast){window.EncoreToast(@json($error),'error');}
-
-// Auto-submit category, gender, sport, style, and sorting changes.
 (function(){
- const form=document.getElementById('ecCatalogFilters');
- if(!form)return;
- let changing=false;
+ const form = document.getElementById('ecCatalogFilters');
+ if (!form) return;
+
+ let submitting = false;
  form.querySelectorAll('select').forEach(function(select){
-  select.addEventListener('change',function(){
-   if(changing)return;
-   changing=true;
-   if(window.EncoreLoading)window.EncoreLoading.show('Loading products');
-   form.requestSubmit();
+  select.addEventListener('change', function(){
+   if (submitting) return;
+   submitting = true;
+   if (window.EncoreLoading) window.EncoreLoading.show('Loading products');
+
+   if (typeof form.requestSubmit === 'function') {
+    form.requestSubmit();
+   } else {
+    form.submit();
+   }
   });
+ });
+
+ window.addEventListener('pageshow', function(){
+  submitting = false;
  });
 })();
 </script>
-@endpush
+@if($error)
+<script>
+if (window.EncoreToast) {
+ window.EncoreToast(@json($error), 'error');
+}
+</script>
 @endif
+@endpush
