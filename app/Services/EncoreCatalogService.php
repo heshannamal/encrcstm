@@ -87,6 +87,7 @@ final class EncoreCatalogService
                 'n' => $card['name'],
                 'p' => $card['price'] === null ? '' : config('services.encore.currency_symbol').$card['price'],
                 'img' => $card['image'],
+                'colors' => $this->productColors($raw),
                 'u' => route('shop.product', ['id' => (int) $id]),
             ];
         }
@@ -109,4 +110,57 @@ final class EncoreCatalogService
         }
         return $result;
     }
+
+    private function productColors(array $product): array
+    {
+        $paths = [
+            'display_product_colors',
+            'product_display_detail.product_colors',
+            'product_details.product_colors',
+            'productDetails.productColors',
+            'product_colors',
+            'available_colors',
+            'colors',
+            'color_variants',
+        ];
+
+        $colors = [];
+        foreach ($paths as $path) {
+            $values = data_get($product, $path);
+            if (!is_array($values)) {
+                continue;
+            }
+            if (!array_is_list($values)) {
+                $values = [$values];
+            }
+            foreach ($values as $value) {
+                if (is_string($value)) {
+                    $hex = $value;
+                } elseif (is_array($value)) {
+                    $hex = data_get($value, 'hex')
+                        ?? data_get($value, 'color_hex')
+                        ?? data_get($value, 'hex_code')
+                        ?? data_get($value, 'color.hex')
+                        ?? data_get($value, 'color.color_hex')
+                        ?? data_get($value, 'pantone.hex_code');
+                } else {
+                    continue;
+                }
+                if (!is_string($hex)) {
+                    continue;
+                }
+                $hex = strtoupper(ltrim(trim($hex), '#'));
+                if (!preg_match('/^(?:[0-9A-F]{3}|[0-9A-F]{6})$/D', $hex)) {
+                    continue;
+                }
+                if (strlen($hex) === 3) {
+                    $hex = $hex[0].$hex[0].$hex[1].$hex[1].$hex[2].$hex[2];
+                }
+                $colors['#'.$hex] = '#'.$hex;
+            }
+        }
+
+        return array_slice(array_values($colors), 0, 8);
+    }
+
 }
