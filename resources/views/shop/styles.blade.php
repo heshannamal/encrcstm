@@ -735,3 +735,33 @@ body.ec-shop-busy{cursor:progress}
 @media(max-width:1150px){.ec-account-grid{grid-template-columns:240px minmax(0,1fr)}.ec-account-columns{grid-template-columns:1fr}.ec-checkout-grid{grid-template-columns:1.4fr .9fr}}
 @media(max-width:880px){.ec-account-grid,.ec-checkout-grid{grid-template-columns:1fr}.ec-account-sidebar{min-height:0;position:static;flex-direction:row;flex-wrap:wrap}.ec-account-sidebar form{margin:0;padding:0;border:0}.ec-account-columns{grid-template-columns:1fr 1fr}.ec-modern-summary{position:static}}
 @media(max-width:640px){.ec-shell:has(.ec-shop-banner) .ec-main{padding:0 14px 52px;background-attachment:scroll}.ec-account-columns{grid-template-columns:1fr}.ec-account-intro-art{width:32%;opacity:.56}.ec-account-intro h2{font-size:20px}.ec-account-intro{padding:18px 15px}.ec-profile-details{grid-template-columns:1fr}.ec-account-overview .ec-stats-grid{grid-template-columns:repeat(2,1fr)}.ec-modern-cart-item{grid-template-columns:85px minmax(0,1fr)}.ec-cart-product-image{width:85px;min-height:100px}.ec-cart-product-image img{height:100px}.ec-order-history-row{grid-template-columns:1fr auto}.ec-account-sidebar a,.ec-account-sidebar button{padding:9px;font-size:13px}.ec-sidebar-icon{font-size:18px}.ec-modern-card{padding:18px}.ec-shop-banner{padding-top:26px!important}.ec-account-settings .ec-fieldset{grid-template-columns:1fr}}
+
+/* Checkout structure: separate responsive contact, billing and shipping cards. */
+.ec-checkout-contact-stack{display:flex;flex-direction:column;gap:20px;min-width:0}
+.ec-checkout-contact-stack>.ec-contact-card{padding:27px}
+.ec-checkout-contact-stack .ec-summary-note{border:none;padding:0;margin:0 0 19px}
+.ec-checkout-addresses{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
+.ec-address-form-card{padding:23px;min-width:0}
+.ec-address-form-card .ec-fieldset{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.ec-address-form-card .ec-field label,.ec-contact-card .ec-field label{font-size:12px;font-weight:700;color:#182a3b}
+.ec-address-form-card .ec-field,.ec-contact-card .ec-field{margin:0}
+.ec-address-form-card .ec-stack{gap:12px}
+.ec-address-form-card .ec-input,.ec-address-form-card .ec-select,.ec-contact-card .ec-input{min-width:0;min-height:44px;padding:10px;border-radius:7px;border:1px solid #cdd7e0;color:#1c2e40}
+.ec-address-form-card .ec-card-heading,.ec-contact-card .ec-card-heading{margin-bottom:15px}
+.ec-address-form-card h2,.ec-contact-card h2{font-size:20px}
+.ec-shipping-checkbox{display:flex;align-items:center;gap:12px;margin:13px 0;font-size:13px;font-weight:700;color:#263c4d;cursor:pointer}
+.ec-shipping-checkbox input{width:20px;height:20px;flex:none;accent-color:#e70033;cursor:pointer}
+.ec-shipping-conditional[hidden]{display:none!important}
+.ec-shipping-conditional{padding-top:10px;border-top:1px solid #e5eaee}
+.ec-checkout-summary .ec-card-heading{margin-bottom:0}
+.ec-item-count{border-radius:7px;background:#edf1f4;color:#33414a;padding:7px 12px;font-size:12px;font-weight:800;white-space:nowrap}
+.ec-checkout-mini-item{grid-template-columns:68px minmax(0,1fr) auto}
+.ec-checkout-mini-item img{background:#f3f4f6;object-fit:contain}
+.ec-checkout-mini-item span{font-weight:800}
+.ec-checkout-summary .ec-summary-total{padding-top:23px}
+.ec-checkout-summary .ec-summary-note{line-height:1.55}
+.ec-account-settings .ec-shop-form .ec-field{margin:0}
+.ec-modern-card .ec-fieldset{min-width:0}
+@media(max-width:1200px){.ec-checkout-addresses{grid-template-columns:1fr}}
+@media(max-width:900px){.ec-checkout-grid{grid-template-columns:1fr}.ec-checkout-summary{position:static}}
+@media(max-width:640px){.ec-checkout-contact-stack>.ec-contact-card,.ec-address-form-card{padding:19px}.ec-contact-card .ec-fieldset,.ec-address-form-card .ec-fieldset{grid-template-columns:1fr}.ec-checkout-mini-item{grid-template-columns:60px minmax(0,1fr) auto}.ec-checkout-mini-item span{font-size:12px}}
