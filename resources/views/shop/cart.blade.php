@@ -7,7 +7,7 @@
 @else
 <div class="ec-checkout-grid ec-cart-layout">
  <section class="ec-modern-card ec-cart-list">
-  <div class="ec-card-heading"><h2>Cart Items ({{ count($items) }})</h2><a href="{{ route('shop.catalog') }}">Continue Shopping →</a></div>
+  <div class="ec-card-heading"><h2>Cart Items ({{ count($items) }})</h2><form method="POST" action="{{ route('shop.cart.clear') }}" onsubmit="return confirm('Remove all items from your cart?')">@csrf @method('DELETE')<button class="ec-clear-cart" type="submit">Clear Cart</button></form></div>
   @foreach($items as $item)
   <article class="ec-modern-cart-item">
    <div class="ec-cart-product-image">@if(!empty($item['images'][0]))<img src="{{ $item['images'][0] }}" alt="{{ $item['name'] }}">@endif</div>
@@ -36,13 +36,23 @@
 @endif
 <script>
 document.querySelectorAll('.ec-qty-control').forEach(function(control){
- const input=control.querySelector('input');
+ const input=control.querySelector('input'),form=control.closest('form');
+ let pending=false;
+ function update(){
+  if(pending||!form)return;
+  pending=true;
+  if(window.EncoreLoading)window.EncoreLoading.show('Updating cart');
+  if(form.requestSubmit)form.requestSubmit();else form.submit();
+ }
  control.querySelectorAll('[data-step]').forEach(function(button){
   button.addEventListener('click',function(){
-   const min=Number(input.min||1),max=Number(input.max||9999);
-   input.value=String(Math.min(max,Math.max(min,Number(input.value||min)+Number(button.dataset.step))));
+   const min=Number(input.min||1),max=Number(input.max||99);
+   const next=Math.min(max,Math.max(min,Number(input.value||min)+Number(button.dataset.step)));
+   if(next!==Number(input.value)){input.value=String(next);update();}
   });
  });
+ input.addEventListener('change',update);
+ window.addEventListener('pageshow',function(){pending=false});
 });
 </script>
 @endsection

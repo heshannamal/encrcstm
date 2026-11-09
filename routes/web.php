@@ -20,6 +20,7 @@ Route::get('/cart', [ShopCartController::class, 'index'])->name('shop.cart');
 Route::post('/cart/add', [ShopCartController::class, 'add'])->name('shop.cart.add');
 Route::patch('/cart/{cartId}', [ShopCartController::class, 'update'])->whereNumber('cartId')->name('shop.cart.update');
 Route::delete('/cart/{cartId}', [ShopCartController::class, 'remove'])->whereNumber('cartId')->name('shop.cart.remove');
+Route::delete('/cart', [ShopCartController::class, 'clear'])->name('shop.cart.clear');
 
 Route::get('/login', [ShopAccountController::class, 'loginForm'])->name('shop.login');
 Route::post('/login', [ShopAccountController::class, 'login'])->middleware('throttle:8,1')->name('shop.login.submit');

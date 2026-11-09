@@ -117,4 +117,20 @@ final class ShopCartController extends Controller
             return back()->with('error', 'Could not remove item.');
         }
     }
+    public function clear()
+    {
+        try {
+            $items = $this->items();
+            foreach ($items as $item) {
+                $response = $this->cart->remove((int) $item['cart_id']);
+                if (!($response['success'] ?? false)) {
+                    return back()->with('error', 'Some items could not be removed. Please review your cart.');
+                }
+            }
+            return back()->with('success', 'Your cart has been cleared.');
+        } catch (Throwable $exception) {
+            return back()->with('error', 'Unable to clear your cart. Please try again.');
+        }
+    }
+
 }
