@@ -13,8 +13,36 @@
  <div class="rt" id="links">
   <a class="nl" href="{{ route('sports.show', ['sport' => 'volleyball']) }}#kit">The kit</a>
   <a class="nl" href="{{ route('sports.show', ['sport' => 'volleyball']) }}#proof">Teams</a>
-  <a class="btn catalog" href="{{ route('shop.catalog') }}"><span>Catalog</span><span class="ar">→</span></a>
-  <a class="btn" href="https://dev.encr.co/"><span>Start a kit</span><span class="ar">→</span></a>
+  <a class="btn catalog" href="{{ route('home') }}#sports"><span>Sports</span><span class="ar">→</span></a>
+  <a class="btn" href="{{ config('site.builder_url', 'https://dev.encr.co/') }}"><span>Start a kit</span><span class="ar">→</span></a>
+  @if(session()->has('encore_user_token'))
+   <a class="ec-shop-cart-link" href="{{ route('shop.cart') }}" aria-label="View cart" title="Cart">
+    <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.5 12.8a2 2 0 0 0 2 1.6h9.6a2 2 0 0 0 2-1.6L23 6H6"/></svg>
+    <span class="ec-shop-mobile-label">Cart</span>
+   </a>
+   @php
+    $shopAccount = session('encore_user', []);
+    $shopName = trim((string) (data_get($shopAccount, 'f_name') ?: data_get($shopAccount, 'first_name') ?: data_get($shopAccount, 'name') ?: ''));
+    $shopInitial = mb_strtoupper(mb_substr($shopName !== '' ? $shopName : 'U', 0, 1));
+   @endphp
+   <details class="ec-shop-account" id="ecShopAccount">
+    <summary class="ec-shop-account-trigger" aria-label="Account menu" title="My account">
+     <span class="ec-shop-avatar">{{ $shopInitial }}</span>
+     <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+    </summary>
+    <div class="ec-shop-account-dropdown">
+     <span class="ec-shop-account-label">{{ $shopName !== '' ? $shopName : 'My account' }}</span>
+     <a href="{{ route('shop.orders') }}">Orders</a>
+     <a href="{{ route('shop.profile') }}">Profile</a>
+     <form method="POST" action="{{ route('shop.logout') }}">
+      @csrf
+      <button type="submit">Logout</button>
+     </form>
+    </div>
+   </details>
+  @else
+   <a class="btn ec-shop-signin" href="{{ route('shop.login') }}"><span>Sign In</span><span class="ar">→</span></a>
+  @endif
  </div>
  <button class="burger" type="button" id="burger" aria-label="Toggle navigation" aria-controls="links" aria-expanded="false"><span></span><span></span><span></span></button>
 </nav>
@@ -87,6 +115,21 @@ if(burger&&links){
   link.addEventListener('click',function(){
    links.classList.remove('open');burger.classList.remove('open');burger.setAttribute('aria-expanded','false');
   });
+ });
+}
+const account=document.getElementById('ecShopAccount');
+if(account){
+ document.addEventListener('click',function(event){
+  if(account.open&&!account.contains(event.target))account.open=false;
+ });
+ document.addEventListener('keydown',function(event){
+  if(event.key==='Escape'&&account.open){
+   account.open=false;
+   account.querySelector('summary')?.focus();
+  }
+ });
+ account.querySelectorAll('a').forEach(function(link){
+  link.addEventListener('click',function(){account.open=false;});
  });
 }
 if(!reduce&&'IntersectionObserver' in window){
