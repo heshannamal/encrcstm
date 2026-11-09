@@ -6,10 +6,10 @@
  @include('shop.partials.account-sidebar')
  <div class="ec-account-main">
   <section class="ec-modern-card ec-orders-panel">
-   <div class="ec-card-heading"><h2>Order History</h2><a href="{{ route('shop.catalog') }}">Shop more →</a></div>
+   <div class="ec-card-heading"><h2>Order History</h2><a href="{{ route('shop.catalog') }}">Shop more <span class="ec-arrow" aria-hidden="true">→</span></a></div>
    @php $rows=collect(data_get($orders,'data',$orders)); @endphp
    @if($rows->isEmpty())
-    <div class="ec-empty"><h2>No orders yet</h2><p>Your orders will appear here after checkout.</p><a href="{{ route('shop.catalog') }}" class="ec-btn ec-proceed">Browse Catalog →</a></div>
+    <div class="ec-empty"><h2>No orders yet</h2><p>Your orders will appear here after checkout.</p><a href="{{ route('shop.catalog') }}" class="ec-btn ec-proceed">Browse Catalog <span class="ec-arrow" aria-hidden="true">→</span></a></div>
    @else
     @foreach($rows as $order)
      @php $id=data_get($order,'id',data_get($order,'order_id')); @endphp
@@ -17,7 +17,7 @@
       <div><strong>Order #{{ $id }}</strong><span>{{ data_get($order,'created_at','') }}</span></div>
       <span class="ec-order-status">{{ data_get($order,'status',data_get($order,'payment_status','Processing')) }}</span>
       <strong>{{ data_get($order,'invoice_total',data_get($order,'total','')) }}</strong>
-      @if($id)<a class="ec-edit-btn" href="{{ route('shop.order',$id) }}">Details →</a>@endif
+      @if($id)<a class="ec-edit-btn" href="{{ route('shop.order',$id) }}">Details <span class="ec-arrow" aria-hidden="true">→</span></a>@endif
      </article>
     @endforeach
    @endif

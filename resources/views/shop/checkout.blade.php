@@ -60,7 +60,7 @@
   @empty<p class="ec-summary-note">Your cart summary will be calculated by Encore.</p>@endforelse
   <div class="ec-summary-line ec-summary-total"><span>Cart Subtotal</span><strong>${{ number_format((float)($checkoutSubtotal ?? 0),2) }}</strong></div>
   <p class="ec-summary-note">Shipping and sales tax are calculated automatically by the Encore API on the payment page. No delivery-method selection is required.</p>
-  <button class="ec-btn ec-proceed" type="submit">Continue to Secure Payment →</button>
+  <button class="ec-btn ec-proceed" type="submit">Continue to Secure Payment <span class="ec-arrow" aria-hidden="true">→</span></button>
   <a class="ec-outline-action" href="{{ route('shop.cart') }}">← Back to Cart</a>
   <div class="ec-trust-row"><span>✓ Secure Checkout</span><span>✓ Customer Support</span></div>
  </aside>

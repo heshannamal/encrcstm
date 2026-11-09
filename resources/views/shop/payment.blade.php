@@ -14,7 +14,7 @@
 <div class="ec-field"><label>Card number</label><input type="text" inputmode="numeric" pattern="[0-9 ]{12,25}" name="card_number" class="ec-input" required autocomplete="cc-number"></div>
 <div class="ec-fieldset"><div class="ec-field"><label>Expiry month</label><select class="ec-select" name="card_expiry_month" required>@for($i=1;$i<=12;$i++)<option value="{{ $i }}">{{ str_pad($i,2,'0',STR_PAD_LEFT) }}</option>@endfor</select></div><div class="ec-field"><label>Expiry year</label><select class="ec-select" name="card_expiry_year" required>@for($i=(int)date('Y');$i<=((int)date('Y')+20);$i++)<option value="{{ $i }}">{{ $i }}</option>@endfor</select></div></div>
 <div class="ec-field"><label>CVV</label><input type="password" inputmode="numeric" name="card_csv" maxlength="4" pattern="[0-9]{3,4}" class="ec-input" required autocomplete="cc-csc"></div>
-<button type="submit" id="ecPayButton" class="ec-btn ec-proceed">Pay Securely · ${{ number_format((float)data_get($payment,'amount_to_pay',0),2) }} →</button>
+<button type="submit" id="ecPayButton" class="ec-btn ec-proceed">Pay Securely · ${{ number_format((float)data_get($payment,'amount_to_pay',0),2) }} <span class="ec-arrow" aria-hidden="true">→</span></button>
 <p class="ec-muted">Do not refresh or resubmit during payment processing. If the response is interrupted, check Order History first.</p>
 </form>
 <aside class="ec-modern-card ec-modern-summary"><h2>Order Summary</h2>

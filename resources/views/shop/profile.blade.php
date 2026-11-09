@@ -32,7 +32,7 @@
      <div class="ec-fieldset"><div class="ec-field"><label>Email address</label><input class="ec-input" value="{{ $email }}" readonly aria-describedby="emailHelp"><small id="emailHelp">Your account email is managed by Encore.</small></div>
       <div class="ec-field"><label for="settingPhone">Phone number</label><input id="settingPhone" class="ec-input" name="phone_number" value="{{ $phone }}" autocomplete="tel"></div>
      </div>
-     <button type="submit" class="ec-btn ec-proceed">Save Account Details →</button>
+     <button type="submit" class="ec-btn ec-proceed">Save Account Details <span class="ec-arrow" aria-hidden="true">→</span></button>
     </form>
    </section>
   @else
@@ -48,7 +48,7 @@
     </section>
     <section class="ec-modern-card ec-account-overview">
      <h2>Account Overview</h2><div class="ec-stats-grid">@foreach($stats as $label=>$value)<div><strong>{{ is_numeric($value)?$value:0 }}</strong><span>{{ $label }}</span></div>@endforeach</div>
-     <a class="ec-btn ec-proceed" href="{{ route('shop.orders') }}">View Order History →</a>
+     <a class="ec-btn ec-proceed" href="{{ route('shop.orders') }}">View Order History <span class="ec-arrow" aria-hidden="true">→</span></a>
     </section>
    </div>
    <div class="ec-account-columns ec-address-row">

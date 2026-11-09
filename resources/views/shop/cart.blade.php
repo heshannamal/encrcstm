@@ -3,7 +3,7 @@
 @section('shop-content')
 <section class="ec-shop-banner"><div class="ec-banner-inner"><h1>Your <span>Cart</span></h1><p>Review your items, update quantities and proceed to checkout.</p></div></section>
 @if(empty($items))
-<div class="ec-empty ec-fresh-empty"><h2>Your cart is empty</h2><p>Explore the collection and choose your next kit.</p><a href="{{ route('shop.catalog') }}" class="ec-btn">Browse catalog →</a></div>
+<div class="ec-empty ec-fresh-empty"><h2>Your cart is empty</h2><p>Explore the collection and choose your next kit.</p><a href="{{ route('shop.catalog') }}" class="ec-btn">Browse catalog <span class="ec-arrow" aria-hidden="true">→</span></a></div>
 @else
 <div class="ec-checkout-grid ec-cart-layout">
  <section class="ec-modern-card ec-cart-list">
@@ -36,7 +36,7 @@
  </dialog>
  <aside class="ec-modern-card ec-modern-summary"><h2>Order Summary</h2><div class="ec-summary-line"><span>Subtotal ({{ count($items) }} items)</span><strong>${{ number_format($subtotal,2) }}</strong></div><p class="ec-summary-note">Shipping, sales tax and payment processing are calculated securely by the Encore API during checkout.</p>
   <div class="ec-summary-line ec-summary-total"><strong>Subtotal</strong><strong>${{ number_format($subtotal,2) }}</strong></div>
-  <a class="ec-btn ec-proceed" href="{{ route('shop.checkout') }}">Proceed to Checkout →</a>
+  <a class="ec-btn ec-proceed" href="{{ route('shop.checkout') }}">Proceed to Checkout <span class="ec-arrow" aria-hidden="true">→</span></a>
   <a class="ec-outline-action" href="{{ route('shop.catalog') }}">← Continue Shopping</a>
   <div class="ec-trust-row"><span>✓ Secure checkout</span><span>✓ Encore support</span></div>
  </aside>
