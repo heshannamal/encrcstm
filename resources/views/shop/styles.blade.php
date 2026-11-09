@@ -630,3 +630,108 @@ body.ec-shop-busy{cursor:progress}
 .ec-address-tile strong{display:block;color:#213443;font-size:14px;margin:0 0 7px}
 .ec-address-tile p{margin:4px 0;line-height:1.55;font-size:13px;color:#697986;overflow-wrap:anywhere}
 @media(max-width:650px){.ec-account-address-grid{grid-template-columns:1fr}}
+
+/* 2026 Encore editorial storefront: reference-matched full-page sports backdrop. */
+.ec-shell:has(.ec-shop-banner),.ec-shell:has(.ec-auth-hero){background:#182b38}
+.ec-shell:has(.ec-shop-banner) .ec-main{
+ width:100%;max-width:none;margin:0;padding:0 max(3.2vw,18px) 80px;
+ background:
+ linear-gradient(120deg,rgba(15,30,41,.93),rgba(21,38,51,.8) 52%,rgba(15,28,40,.92)),
+ url('{{ asset('assets/reference/0ca88fee07db45bfe5f9.jpg') }}') center top/cover fixed;
+ position:relative;isolation:isolate;
+}
+.ec-shell:has(.ec-shop-banner) .ec-main:before{
+ content:"";position:absolute;inset:0;pointer-events:none;z-index:-1;
+ background:
+ linear-gradient(130deg,transparent 5%,rgba(255,255,255,.04) 5.1%,transparent 24%),
+ linear-gradient(130deg,transparent 84%,rgba(231,0,51,.24) 84.2%,rgba(231,0,51,.24) 87%,transparent 87.2%);
+}
+.ec-shop-banner,.ec-account-banner{background:transparent!important;box-shadow:none!important;border:0!important;overflow:visible!important;margin:0 auto 20px!important;padding:33px 0 18px!important;max-width:1420px}
+.ec-shop-banner:before,.ec-shop-banner:after{display:none!important}
+.ec-shop-banner h1{font-style:italic;font-size:clamp(38px,4.7vw,64px);text-shadow:0 5px 18px rgba(0,0,0,.18)}
+.ec-shop-banner p{color:#e0e7ed;font-size:16px}
+.ec-checkout-grid,.ec-account-grid,.ec-success-card{max-width:1420px;margin-left:auto;margin-right:auto}
+.ec-checkout-grid{grid-template-columns:minmax(0,1.72fr) minmax(340px,1fr);gap:20px}
+.ec-modern-card{border-radius:16px;box-shadow:0 15px 38px rgba(0,0,0,.17);border-color:rgba(240,243,246,.95)}
+.ec-modern-card h2{color:#0d1d2d;font-size:23px;font-weight:800}
+.ec-modern-summary{top:100px}
+.ec-card-heading{padding-bottom:18px}
+.ec-proceed{min-height:54px;font-size:13px!important;letter-spacing:.035em}
+.ec-cart-list{padding:26px 28px}
+.ec-modern-cart-item{grid-template-columns:150px minmax(0,1fr) auto;gap:20px;padding:17px 0}
+.ec-cart-product-image{width:150px;min-height:145px}
+.ec-cart-product-image img{height:145px;object-fit:contain;background:#f1f3f5}
+.ec-cart-product-body h3{font-size:17px;font-weight:750}
+.ec-cart-unit-price,.ec-cart-line-price{font-size:17px}
+.ec-cart-product-body p{color:#405364}
+.ec-cart-actions{margin-top:12px}
+.ec-account-grid{grid-template-columns:280px minmax(0,1fr);gap:20px}
+.ec-account-sidebar{padding:19px 17px;min-height:490px;top:95px;gap:8px}
+.ec-account-sidebar a,.ec-account-sidebar button{display:flex;align-items:center;gap:14px;font-size:16px;font-weight:600;padding:15px 13px}
+.ec-sidebar-icon{display:grid;place-items:center;width:21px;font-size:22px;line-height:1;flex:none}
+.ec-account-sidebar a.active{background:#e70033;color:white;box-shadow:0 7px 19px rgba(231,0,51,.14)}
+.ec-account-sidebar form{margin-top:18px}
+.ec-account-intro{position:relative;overflow:hidden;isolation:isolate;min-height:148px;padding:20px 28px}
+.ec-account-intro-details{position:relative;z-index:2;min-width:0}
+.ec-account-intro h2{font-size:27px;font-weight:800}
+.ec-account-intro-art{
+ position:absolute;z-index:0;right:0;top:0;bottom:0;width:36%;pointer-events:none;
+ background:
+ linear-gradient(120deg,transparent 10%,rgba(231,0,51,.95) 10.4%,rgba(231,0,51,.95) 15%,transparent 15.4%),
+ linear-gradient(90deg,rgba(22,35,46,.02),rgba(22,35,46,.36)),
+ url('{{ asset('assets/reference/b46204161d649c9f879a.jpg') }}') center/cover;
+ clip-path:polygon(19% 0,100% 0,100% 100%,0 100%);
+}
+.ec-account-avatar{position:relative;z-index:1;width:84px;height:84px;font-size:37px;background:#34434d}
+.ec-account-columns{grid-template-columns:1fr 1fr;gap:18px}
+.ec-profile-details{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:21px 15px}
+.ec-profile-details>div{min-width:0}
+.ec-profile-details span{font-size:12px;font-weight:700;display:block;margin-bottom:7px;color:#253647}
+.ec-profile-details strong{
+ display:block;min-height:42px;background:#f0f3f6;border:1px solid #e4e9ed;
+ border-radius:7px;padding:12px 13px;color:#1e2b3b;font-size:14px;
+ font-weight:500;overflow-wrap:anywhere
+}
+.ec-account-overview .ec-stats-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:26px}
+.ec-account-overview .ec-stats-grid>div{padding:15px 4px}
+.ec-account-overview .ec-stats-grid strong{font-size:28px}
+.ec-account-overview .ec-stats-grid span{font-size:10px;line-height:1.3}
+.ec-account-overview .ec-proceed{margin-top:22px}
+.ec-account-address{padding:24px}
+.ec-account-address .ec-card-heading{margin-bottom:17px}
+.ec-account-address strong{color:#142337;font-size:14px}
+.ec-account-address p{line-height:1.35;margin:5px 0;color:#223345;font-size:14px}
+.ec-edit-btn{display:inline-flex;align-items:center;justify-content:center;padding:8px 13px!important;border:1px solid #cbd4db;border-radius:8px;text-decoration:none!important;color:#253747!important;font-size:12px!important;font-weight:700}
+.ec-edit-btn:hover{border-color:#e70033!important;color:#e70033!important}
+.ec-address-tag{display:inline-flex;margin-top:16px;background:#ffe4e9;color:#cc0030;border-radius:6px;padding:8px 12px;font-size:12px;font-weight:750}
+.ec-account-settings{max-width:820px;padding:30px}
+.ec-account-settings .ec-fieldset{gap:18px}
+.ec-settings-info{color:#667887;font-size:14px;line-height:1.6;margin:-5px 0 24px}
+.ec-account-settings .ec-proceed{max-width:370px;margin-top:13px}
+.ec-account-settings small{display:block;color:#7b8a94;font-size:11px;margin-top:6px}
+.ec-orders-panel{min-height:410px}
+.ec-order-history-row{display:grid;grid-template-columns:minmax(0,1.5fr) auto auto auto;align-items:center;gap:16px;border-bottom:1px solid #e6ebee;padding:18px 0}
+.ec-order-history-row:last-child{border-bottom:none}
+.ec-order-history-row>div span{display:block;font-size:12px;color:#8796a1;margin-top:5px}
+.ec-order-status{font-size:12px;font-weight:700;padding:7px 11px;border-radius:8px;background:#f4f6f8;color:#385266}
+.ec-orders-panel .ec-empty{border:0;padding:55px 20px}
+.ec-orders-panel .ec-empty .ec-proceed{max-width:230px;margin:15px auto}
+.ec-auth-hero{
+ min-height:calc(100vh - 75px);padding:48px 20px 90px;
+ background:
+ linear-gradient(112deg,rgba(15,27,37,.90),rgba(19,32,45,.75),rgba(15,26,38,.9)),
+ url('{{ asset('assets/reference/b46204161d649c9f879a.jpg') }}') center center/cover no-repeat!important;
+}
+.ec-auth-hero:before{background:none!important}
+.ec-auth-card{background:rgba(255,255,255,.98);border-radius:21px;box-shadow:0 28px 72px rgba(0,0,0,.28)}
+.ec-auth-title{font-style:normal}
+.ec-auth-logo{margin-bottom:25px}
+.ec-auth-bottom a{font-weight:800}
+.ec-auth-card .ec-shop-form .ec-input{min-height:49px}
+.ec-auth-card .ec-auth-submit{min-height:54px}
+.ec-shipping-form .ec-modern-card,.ec-modern-payment{padding:30px}
+.ec-checkout-mini-item img{height:80px;object-fit:contain}
+.ec-modern-summary .ec-summary-note{border-top:1px solid #e6eaee;padding-top:18px}
+@media(max-width:1150px){.ec-account-grid{grid-template-columns:240px minmax(0,1fr)}.ec-account-columns{grid-template-columns:1fr}.ec-checkout-grid{grid-template-columns:1.4fr .9fr}}
+@media(max-width:880px){.ec-account-grid,.ec-checkout-grid{grid-template-columns:1fr}.ec-account-sidebar{min-height:0;position:static;flex-direction:row;flex-wrap:wrap}.ec-account-sidebar form{margin:0;padding:0;border:0}.ec-account-columns{grid-template-columns:1fr 1fr}.ec-modern-summary{position:static}}
+@media(max-width:640px){.ec-shell:has(.ec-shop-banner) .ec-main{padding:0 14px 52px;background-attachment:scroll}.ec-account-columns{grid-template-columns:1fr}.ec-account-intro-art{width:32%;opacity:.56}.ec-account-intro h2{font-size:20px}.ec-account-intro{padding:18px 15px}.ec-profile-details{grid-template-columns:1fr}.ec-account-overview .ec-stats-grid{grid-template-columns:repeat(2,1fr)}.ec-modern-cart-item{grid-template-columns:85px minmax(0,1fr)}.ec-cart-product-image{width:85px;min-height:100px}.ec-cart-product-image img{height:100px}.ec-order-history-row{grid-template-columns:1fr auto}.ec-account-sidebar a,.ec-account-sidebar button{padding:9px;font-size:13px}.ec-sidebar-icon{font-size:18px}.ec-modern-card{padding:18px}.ec-shop-banner{padding-top:26px!important}.ec-account-settings .ec-fieldset{grid-template-columns:1fr}}
