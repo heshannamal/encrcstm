@@ -66,6 +66,7 @@ final class ShoppingController extends Controller
                         'price' => (float) ($card['price'] ?? 0),
                         'price_formatted' => (string) ($card['p'] ?? ''),
                         'images' => [($card['img'] ?? null) ?: asset('images/product-placeholder.svg')],
+                        'colors' => $card['colors'] ?? [],
                         'category' => $category,
                     ]);
                 }
