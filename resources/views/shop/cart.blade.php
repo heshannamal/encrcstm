@@ -7,7 +7,7 @@
 @else
 <div class="ec-checkout-grid ec-cart-layout">
  <section class="ec-modern-card ec-cart-list">
-  <div class="ec-card-heading"><h2>Cart Items ({{ count($items) }})</h2><form method="POST" action="{{ route('shop.cart.clear') }}" onsubmit="return confirm('Remove all items from your cart?')">@csrf @method('DELETE')<button class="ec-clear-cart" type="submit">Clear Cart</button></form></div>
+  <div class="ec-card-heading"><h2>Cart Items ({{ count($items) }})</h2><button class="ec-clear-cart" type="button" id="ecClearCartOpen">Clear Cart</button></div>
   @foreach($items as $item)
   <article class="ec-modern-cart-item">
    <div class="ec-cart-product-image">@if(!empty($item['images'][0]))<img src="{{ $item['images'][0] }}" alt="{{ $item['name'] }}">@endif</div>
@@ -26,6 +26,14 @@
   </article>
   @endforeach
  </section>
+ <dialog id="ecClearCartDialog" class="ec-clear-dialog">
+  <form method="dialog"><button type="submit" class="ec-clear-close" aria-label="Close confirmation">×</button></form>
+  <h2>Clear your cart?</h2><p>This will remove all products currently in your cart.</p>
+  <div class="ec-clear-actions">
+   <form method="dialog"><button type="submit" class="ec-outline-action">Keep Items</button></form>
+   <form method="POST" action="{{ route('shop.cart.clear') }}">@csrf @method('DELETE')<button class="ec-btn ec-proceed" type="submit">Clear Cart</button></form>
+  </div>
+ </dialog>
  <aside class="ec-modern-card ec-modern-summary"><h2>Order Summary</h2><div class="ec-summary-line"><span>Subtotal ({{ count($items) }} items)</span><strong>${{ number_format($subtotal,2) }}</strong></div><p class="ec-summary-note">Shipping, sales tax and payment processing are calculated securely by the Encore API during checkout.</p>
   <div class="ec-summary-line ec-summary-total"><strong>Subtotal</strong><strong>${{ number_format($subtotal,2) }}</strong></div>
   <a class="ec-btn ec-proceed" href="{{ route('shop.checkout') }}">Proceed to Checkout →</a>
@@ -35,6 +43,11 @@
 </div>
 @endif
 <script>
+const clearBtn=document.getElementById('ecClearCartOpen'),clearDialog=document.getElementById('ecClearCartDialog');
+if(clearBtn&&clearDialog){
+ clearBtn.addEventListener('click',function(){clearDialog.showModal()});
+ clearDialog.addEventListener('click',function(event){if(event.target===clearDialog)clearDialog.close()});
+}
 document.querySelectorAll('.ec-qty-control').forEach(function(control){
  const input=control.querySelector('input'),form=control.closest('form');
  let pending=false;
