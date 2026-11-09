@@ -67,6 +67,7 @@ final class ShoppingController extends Controller
                         'price_formatted' => (string) ($card['p'] ?? ''),
                         'images' => [($card['img'] ?? null) ?: asset('images/product-placeholder.svg')],
                         'colors' => $card['colors'] ?? [],
+                        'sublimatable' => (bool) ($card['sublimatable'] ?? false),
                         'category' => $category,
                     ]);
                 }
