@@ -344,3 +344,68 @@
  .ec-shell>.ec-shop-nav .burger{display:flex;z-index:41}
 }
 @media(prefers-reduced-motion:reduce){.ec-shell>.ec-shop-nav .rt{transition:none}}
+
+/* Catalog masthead: green-to-slate gradient behind the search, title and filters. */
+.ec-shell:has(.ec-store-reference){--ec-catalog-green:#29463e;--ec-catalog-slate:#333f48}
+.ec-shell:has(.ec-store-reference) .ec-main{padding-top:0}
+.ec-shell .ec-store-top.ec-store-reference{
+ position:relative;isolation:isolate;
+ background:linear-gradient(113deg,#253e36 0%,#315348 35%,#344b47 62%,#333f48 100%);
+ color:#f4f7f5;
+ border-bottom:1px solid rgba(255,255,255,.12);
+ box-shadow:0 14px 36px rgba(30,49,43,.13);
+ padding-top:14px;padding-bottom:16px;
+}
+.ec-shell .ec-store-reference .ec-catalog-toolbar{border-bottom:1px solid rgba(255,255,255,.19)}
+.ec-shell .ec-store-reference .ec-catalog-toolbar-title{color:#fff;text-shadow:0 1px 7px rgba(0,0,0,.09)}
+.ec-shell .ec-store-reference .ec-store-breadcrumb,
+.ec-shell .ec-store-reference .ec-store-breadcrumb a{color:#d9e7df}
+.ec-shell .ec-store-reference .ec-store-breadcrumb a:hover{color:#fff}
+.ec-shell .ec-store-reference .ec-store-filters .ec-field label{color:#e5eee8}
+.ec-shell .ec-store-reference .ec-store-filters .ec-select{
+ background:rgba(255,255,255,.96);color:#34434d;border-color:rgba(255,255,255,.3);
+}
+.ec-shell .ec-store-reference .ec-catalog-results{color:#e1ede7}
+.ec-shell .ec-store-reference .ec-catalog-results a{color:#e4efe9}
+.ec-shell .ec-store-reference .ec-catalog-results a:hover{color:#fff}
+.ec-shell .ec-store-reference .ec-catalog-search{background:#fff;border-color:rgba(255,255,255,.42)}
+.ec-shell .ec-store-reference .ec-catalog-search button{background:#e70033;color:#fff}
+.ec-shell .ec-store-reference .ec-catalog-search button:hover{background:#b4002a}
+.ec-shell .ec-store-reference .ec-filter-apply{background:#e70033;color:#fff}
+.ec-shell .ec-store-reference .ec-filter-apply:hover{background:#b4002a}
+/* The one fixed sport-style navigation remains visible at top and bottom. */
+.ec-shell>.nav.ec-shop-nav{
+ position:fixed;inset:0 0 auto;top:0;left:0;right:0;width:100%;z-index:1100;
+ padding:20px var(--pad);
+ background:linear-gradient(113deg,#253e36 0%,#315348 35%,#344b47 62%,#333f48 100%);
+ border-bottom:1px solid rgba(255,255,255,.08);
+ box-shadow:none;
+ transition:padding .35s var(--ease),background .35s var(--ease),border-color .35s var(--ease),box-shadow .35s var(--ease);
+}
+.ec-shell>.nav.ec-shop-nav.scrolled{
+ position:fixed;top:0;left:0;right:0;
+ padding:11px var(--pad);
+ background:linear-gradient(113deg,rgba(37,62,54,.96),rgba(51,63,72,.96));
+ backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+ box-shadow:0 8px 26px rgba(21,38,35,.19);
+ border-bottom:1px solid rgba(255,255,255,.14);
+}
+.ec-shell>.nav.ec-shop-nav .logo{height:28px;transition:height .35s var(--ease)}
+.ec-shell>.nav.ec-shop-nav.scrolled .logo{height:22px}
+.ec-shell>.nav.ec-shop-nav .rt{gap:26px}
+.ec-shell>.nav.ec-shop-nav .rt a.nl{font-size:12px;letter-spacing:.14em}
+.ec-shell>.nav.ec-shop-nav .btn{border-radius:9px;padding:13px 22px;letter-spacing:.14em}
+.ec-shell>.nav.ec-shop-nav .rt a.nl::after{background:#e70033}
+.ec-shell>.nav.ec-shop-nav .rt a.btn:hover{transform:translateY(-1px)}
+@media(max-width:900px){
+ .ec-shell>.nav.ec-shop-nav .rt{position:fixed;inset:0;background:linear-gradient(145deg,#29463e,#333f48);overflow-y:auto;z-index:39}
+ .ec-shell>.nav.ec-shop-nav .rt.open{transform:translateY(0)}
+ .ec-shell>.nav.ec-shop-nav .burger{z-index:41}
+}
+@media(max-width:650px){
+ .ec-shell .ec-store-top.ec-store-reference{padding-top:10px;padding-bottom:14px}
+ .ec-shell .ec-store-reference .ec-catalog-toolbar{min-height:62px}
+}
+@media(prefers-reduced-motion:reduce){
+ .ec-shell>.nav.ec-shop-nav,.ec-shell>.nav.ec-shop-nav .logo{transition:none}
+}
