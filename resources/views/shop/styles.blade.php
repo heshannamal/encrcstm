@@ -831,3 +831,37 @@ body.ec-shop-busy{cursor:progress}
  .ec-shell .ec-main .ec-btn:hover,
  .ec-shell .ec-main a.ec-outline-action:hover{transform:none}
 }
+
+/* Match the approved sport-page headings and fully animate navbar CTAs. */
+.ec-shell>.nav.ec-shop-nav .btn{
+ font-family:var(--mono),"Space Mono",monospace;
+ font-weight:700;
+ font-size:12px;
+ text-transform:uppercase;
+ letter-spacing:.13em;
+ transition:transform .25s var(--ease),background-color .25s var(--ease),box-shadow .25s var(--ease),border-color .25s var(--ease);
+}
+.ec-shell>.nav.ec-shop-nav .btn .ar{
+ display:inline-block;
+ transform:translateX(0);
+ transition:transform .25s var(--ease);
+ will-change:transform;
+}
+.ec-shell>.nav.ec-shop-nav .btn:hover .ar{transform:translateX(5px)}
+.ec-shell>.nav.ec-shop-nav .btn:focus-visible{
+ outline:2px solid #fff;outline-offset:3px;
+}
+.ec-shell .ec-shop-banner h1{
+ font-family:Archivo,"Arial Black",sans-serif;
+ font-weight:900;
+ font-style:normal;
+ text-transform:uppercase;
+ letter-spacing:-.045em;
+ line-height:1;
+}
+.ec-shell .ec-shop-banner h1 span{color:#e70033}
+@media(prefers-reduced-motion:reduce){
+ .ec-shell>.nav.ec-shop-nav .btn,
+ .ec-shell>.nav.ec-shop-nav .btn .ar{transition:none}
+ .ec-shell>.nav.ec-shop-nav .btn:hover .ar{transform:none}
+}
