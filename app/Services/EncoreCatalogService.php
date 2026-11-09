@@ -88,6 +88,7 @@ final class EncoreCatalogService
                 'p' => $card['price'] === null ? '' : config('services.encore.currency_symbol').$card['price'],
                 'img' => $card['image'],
                 'colors' => $this->productColors($raw),
+                'sublimatable' => $this->isSublimatable($raw),
                 'u' => route('shop.product', ['id' => (int) $id]),
             ];
         }
@@ -122,11 +123,20 @@ final class EncoreCatalogService
             'available_colors',
             'colors',
             'color_variants',
+            'relatedFabric.0.fabric_detail.colors',
+            'related_fabric.0.fabric_detail.colors',
+            'product_details.relatedFabric.0.fabric_detail.colors',
         ];
 
         $colors = [];
         foreach ($paths as $path) {
             $values = data_get($product, $path);
+            if (is_string($values)) {
+                $decoded = json_decode($values, true);
+                if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
+                    $values = $decoded;
+                }
+            }
             if (!is_array($values)) {
                 continue;
             }
@@ -137,7 +147,8 @@ final class EncoreCatalogService
                 if (is_string($value)) {
                     $hex = $value;
                 } elseif (is_array($value)) {
-                    $hex = data_get($value, 'hex')
+                    $hex = data_get($value, 'code')
+                        ?? data_get($value, 'hex')
                         ?? data_get($value, 'color_hex')
                         ?? data_get($value, 'hex_code')
                         ?? data_get($value, 'color.hex')
@@ -161,6 +172,25 @@ final class EncoreCatalogService
         }
 
         return array_slice(array_values($colors), 0, 8);
+    }
+
+    private function isSublimatable(array $product): bool
+    {
+        foreach (['relatedEmbellishments', 'related_embellishments', 'product_details.product_embellishments'] as $path) {
+            $embellishments = data_get($product, $path, []);
+            foreach (is_array($embellishments) ? $embellishments : [] as $embellishment) {
+                if (!is_array($embellishment)) {
+                    continue;
+                }
+                $name = data_get($embellishment, 'embellishment_name')
+                    ?? data_get($embellishment, 'name')
+                    ?? data_get($embellishment, 'embellishment.name');
+                if (is_string($name) && stripos($name, 'sublimation') !== false) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
 }
