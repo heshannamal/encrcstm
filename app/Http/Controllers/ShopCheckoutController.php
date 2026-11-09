@@ -89,19 +89,42 @@ final class ShopCheckoutController extends Controller
                 $billing['country_id'] = data_get($matchedCountry, 'id', '');
             }
             $checkoutItems = [];
-            try {
-                $cartResponse = $this->cart->items((string) session('encore_cart_temp_id', ''));
-                if ($cartResponse['success'] ?? false) {
-                    $products = app(\App\Services\EncoreProductService::class);
-                    $checkoutItems = collect($cartResponse['cart_items'] ?? [])
-                        ->filter('is_array')
-                        ->map(fn ($item) => $products->normalizeCartItem($item))
-                        ->values()->all();
+            $products = app(\App\Services\EncoreProductService::class);
+            $cartResponse = $this->cart->items((string) session('encore_cart_temp_id', ''));
+            $ownedIds = array_fill_keys($ids, true);
+            $rawItems = collect(($cartResponse['success'] ?? false) ? ($cartResponse['cart_items'] ?? []) : [])
+                ->filter('is_array')
+                ->filter(fn ($row) => isset($ownedIds[(int) data_get($row, 'cart_id', 0)]))
+                ->keyBy(fn ($row) => (int) data_get($row, 'cart_id', 0));
+
+            foreach ($ids as $cartId) {
+                if (!$rawItems->has($cartId)) {
+                    $detail = $this->cart->getById($cartId);
+                    if (!($detail['success'] ?? false)) {
+                        throw new \RuntimeException('Unable to retrieve an authenticated cart item.');
+                    }
+                    $raw = data_get($detail, 'data.cart_item')
+                        ?? data_get($detail, 'data.cart')
+                        ?? data_get($detail, 'cart_item')
+                        ?? data_get($detail, 'data');
+                    if (is_array($raw) && !array_is_list($raw)) {
+                        $raw['cart_id'] = $cartId;
+                        $rawItems->put($cartId, $raw);
+                    }
                 }
-            } catch (Throwable $exception) {
-                Log::notice('Checkout product summary unavailable', ['message' => $exception->getMessage()]);
             }
-            $checkoutSubtotal = collect($checkoutItems)->sum('line_total');
+
+            if ($rawItems->count() !== count($ids)) {
+                throw new \RuntimeException('Some authenticated cart items could not be loaded.');
+            }
+
+            $checkoutItems = $rawItems->map(fn ($row) => $products->normalizeCartItem($row))->values()->all();
+            $checkoutSubtotal = (float) collect($checkoutItems)->sum('line_total');
+            if ($checkoutSubtotal <= 0 || collect($checkoutItems)->contains(fn ($row) =>
+                (int) ($row['cart_id'] ?? 0) < 1 || (float) ($row['price'] ?? 0) <= 0
+            )) {
+                throw new \RuntimeException('Checkout subtotal cannot be verified from the cart API.');
+            }
 
             return view('shop.checkout', [
                 'countries' => $countriesResponse['data'] ?? [],
@@ -111,7 +134,10 @@ final class ShopCheckoutController extends Controller
                 'checkoutSubtotal' => $checkoutSubtotal,
             ]);
         } catch (Throwable $exception) {
-            return redirect()->route('shop.cart')->with('error', 'Unable to prepare checkout.');
+            Log::warning('Checkout cart summary unavailable', [
+                'error' => $exception->getMessage(),
+            ]);
+            return redirect()->route('shop.cart')->with('error', 'Could not verify your cart items and subtotal. Please refresh the cart and try again.');
         }
     }
 
