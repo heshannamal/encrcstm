@@ -29,7 +29,29 @@
    </section>
    <section class="ec-modern-card ec-account-overview"><h2>Account Overview</h2><div class="ec-stats-grid">@foreach($stats as $label=>$value)<div><strong>{{ is_numeric($value) ? $value : 0 }}</strong><span>{{ $label }}</span></div>@endforeach</div><a class="ec-btn ec-proceed" href="{{ route('shop.orders') }}">View Order History →</a></section>
   </div>
-  <section class="ec-modern-card ec-account-address" id="saved-addresses"><h2>Saved Billing & Shipping Details</h2><p>Your saved address is used to prefill checkout when available.</p><div class="ec-account-address-line">{{ data_get($c,'address',data_get($c,'billing_address','No saved billing address yet.')) }}</div><a class="ec-outline-action" href="{{ route('shop.checkout') }}">Manage during checkout →</a></section>
+  <section class="ec-modern-card ec-account-address" id="saved-addresses">
+   <h2>Saved Addresses</h2><p>Addresses returned by your Encore customer account are reused when completing checkout.</p>
+   <div class="ec-account-address-grid">
+    <div class="ec-address-tile"><h3>Billing Address</h3>
+     @if(filled(data_get($c,'address')))
+      <strong>{{ trim((string)$first.' '.(string)$last) }}</strong>
+      <p>{{ data_get($c,'address') }}@if(filled(data_get($c,'street'))), {{ data_get($c,'street') }}@endif</p>
+      <p>{{ data_get($c,'city') }}, {{ data_get($c,'state') }} {{ data_get($c,'postal_code') }}</p>
+      <p>{{ data_get($c,'country') }}</p>
+     @else <p>No billing address has been saved yet.</p> @endif
+    </div>
+    <div class="ec-address-tile"><h3>Shipping Address</h3>
+     @if((int)data_get($c,'is_shipping_address_available',0)===1 && filled(data_get($c,'shipping_address')))
+      <strong>{{ trim((string)data_get($c,'shipping_first_name','').' '.(string)data_get($c,'shipping_last_name','')) }}</strong>
+      <p>{{ data_get($c,'shipping_address') }}@if(filled(data_get($c,'shipping_street'))), {{ data_get($c,'shipping_street') }}@endif</p>
+      <p>{{ data_get($c,'shipping_city') }}, {{ data_get($c,'shipping_state') }} {{ data_get($c,'shipping_postal_code') }}</p>
+      <p>{{ data_get($c,'shipping_country') }}</p>
+     @elseif(filled(data_get($c,'address'))) <p>Uses your billing address unless a different delivery address is entered at checkout.</p>
+     @else <p>No shipping address has been saved yet.</p> @endif
+    </div>
+   </div>
+   <a class="ec-outline-action" href="{{ route('shop.checkout') }}">Review during checkout →</a>
+  </section>
  </div>
 </div>
 @endsection
