@@ -424,3 +424,27 @@
  .ec-shell>.nav.ec-shop-nav,.ec-shell>.nav.ec-shop-nav .logo,
  .ec-shell>.nav.ec-shop-nav .rt{transition:none}
 }
+
+/* Encore loading treatment reused from the approved homepage. */
+.ec-shop-loader{
+ position:fixed;inset:0;z-index:9998;display:grid;place-items:center;
+ background:#f6f7f8;opacity:1;visibility:visible;
+ transition:opacity .38s cubic-bezier(.2,.8,.2,1),visibility .38s;
+}
+.ec-shop-loader.gone{opacity:0;visibility:hidden;pointer-events:none}
+.ec-shop-loader-mark{width:56px;height:56px;object-fit:contain;animation:ec-shop-spin 2.4s linear infinite}
+.ec-shop-loader #ecShopLoaderLabel{
+ position:absolute;bottom:14%;left:20px;right:20px;text-align:center;
+ color:#64717b;font:400 11px/1.5 'Space Mono',monospace;
+ letter-spacing:.34em;text-transform:uppercase
+}
+body.ec-shop-busy{cursor:progress}
+@keyframes ec-shop-spin{to{transform:rotate(360deg)}}
+/* Compact auto-submitting filters and actual API color selections. */
+.ec-store-reference .ec-store-filters{grid-template-columns:repeat(4,minmax(110px,1fr)) minmax(90px,.8fr)}
+.ec-product-available-colors{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin:7px 14px 14px;min-height:17px}
+.ec-product-available-colors>span:first-child{font-size:10px;color:#84909c;margin-right:2px}
+.ec-color-swatch{width:12px;height:12px;flex:none;border-radius:50%;background:var(--swatch);border:1px solid rgba(20,35,45,.14);box-shadow:0 0 0 1px rgba(255,255,255,.55)}
+@media(max-width:1100px){.ec-store-reference .ec-store-filters{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:650px){.ec-store-reference .ec-store-filters{grid-template-columns:repeat(2,minmax(0,1fr))}.ec-product-available-colors{margin:6px 9px 12px}}
+@media(prefers-reduced-motion:reduce){.ec-shop-loader{transition:none}.ec-shop-loader-mark{animation:none}}
