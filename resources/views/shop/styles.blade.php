@@ -765,3 +765,15 @@ body.ec-shop-busy{cursor:progress}
 @media(max-width:1200px){.ec-checkout-addresses{grid-template-columns:1fr}}
 @media(max-width:900px){.ec-checkout-grid{grid-template-columns:1fr}.ec-checkout-summary{position:static}}
 @media(max-width:640px){.ec-checkout-contact-stack>.ec-contact-card,.ec-address-form-card{padding:19px}.ec-contact-card .ec-fieldset,.ec-address-form-card .ec-fieldset{grid-template-columns:1fr}.ec-checkout-mini-item{grid-template-columns:60px minmax(0,1fr) auto}.ec-checkout-mini-item span{font-size:12px}}
+
+.ec-clear-cart{border:0;background:none;color:#33414a;font-weight:700;cursor:pointer;font-size:13px;padding:9px 4px}
+.ec-clear-cart:before{content:"⌫";margin-right:8px;font-size:18px;color:#e70033}
+.ec-clear-cart:hover{color:#e70033}
+.ec-clear-dialog{width:min(420px,calc(100vw - 32px));padding:30px;background:#fff;border:1px solid #e0e6eb;border-radius:14px;box-shadow:0 28px 90px rgba(0,0,0,.3);color:#203344}
+.ec-clear-dialog::backdrop{background:rgba(11,23,33,.65);backdrop-filter:blur(4px)}
+.ec-clear-dialog h2{font-size:23px;margin:0 0 10px}
+.ec-clear-dialog p{font-size:14px;line-height:1.6;color:#607381}
+.ec-clear-close{position:absolute;right:16px;top:10px;font-size:25px;background:none;border:0;color:#72818d;cursor:pointer}
+.ec-clear-actions{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:22px}
+.ec-clear-actions .ec-proceed,.ec-clear-actions .ec-outline-action{margin:0;width:100%;min-height:47px;font-size:11px!important}
+.ec-clear-actions form{margin:0}
