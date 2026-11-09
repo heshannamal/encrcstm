@@ -7,6 +7,7 @@
 @endsection
 @section('content')
 <div class="ec-shell">
+@include('shop.loader')
 <nav class="nav ec-shop-nav" id="nav" aria-label="Shopping navigation">
  <a href="{{ route('home') }}" class="homelink" aria-label="Encore Custom home"><img class="logo" src="{{ asset('assets/reference/297053b134d4897782f2.png') }}" alt="Encore Custom"></a>
  <div class="rt" id="links">
@@ -32,6 +33,45 @@ const nav=document.getElementById('nav');
 const burger=document.getElementById('burger');
 const links=document.getElementById('links');
 const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const loading=document.getElementById('ecShopLoader');
+const loadingLabel=document.getElementById('ecShopLoaderLabel');
+let loadingActive=false;
+window.EncoreLoading={
+ show:function(label){
+  if(!loading)return;
+  loadingActive=true;
+  if(loadingLabel)loadingLabel.textContent=label||'Loading';
+  loading.classList.remove('gone');
+  loading.setAttribute('aria-hidden','false');
+  document.body.classList.add('ec-shop-busy');
+ },
+ hide:function(){
+  if(!loading)return;
+  loadingActive=false;
+  loading.classList.add('gone');
+  loading.setAttribute('aria-hidden','true');
+  document.body.classList.remove('ec-shop-busy');
+ }
+};
+function finishLoading(){window.EncoreLoading.hide();}
+window.addEventListener('pageshow',finishLoading);
+window.addEventListener('load',finishLoading,{once:true});
+if(document.readyState==='complete')requestAnimationFrame(finishLoading);
+document.addEventListener('click',function(event){
+ if(event.defaultPrevented||event.button!==0||event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;
+ const anchor=event.target.closest('a[href]');
+ if(!anchor||anchor.hasAttribute('download')||anchor.target==='_blank')return;
+ try{
+  const url=new URL(anchor.href,window.location.href);
+  if(url.origin!==window.location.origin||url.pathname===window.location.pathname&&url.search===window.location.search)return;
+  window.EncoreLoading.show('Loading');
+ }catch(error){}
+},true);
+document.addEventListener('submit',function(event){
+ if(event.defaultPrevented||!event.target.checkValidity())return;
+ window.EncoreLoading.show(event.target.id==='ecCatalogFilters'||event.target.classList.contains('ec-catalog-search')?'Loading products':event.target.id==='ecPaymentForm'?'Processing payment':'Loading');
+},true);
+
 function onScroll(){if(nav)nav.classList.toggle('scrolled',window.scrollY>40);}
 onScroll();
 window.addEventListener('scroll',onScroll,{passive:true});
