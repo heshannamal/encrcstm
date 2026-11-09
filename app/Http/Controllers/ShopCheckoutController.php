@@ -66,10 +66,49 @@ final class ShopCheckoutController extends Controller
             }
             $countriesResponse = $this->profile->countries();
             $customerResponse = $this->profile->customerDetails();
+            $customer = is_array($customerResponse['data'] ?? null) ? $customerResponse['data'] : [];
+            $customer['email'] = data_get($customer, 'email', data_get($customer, 'user_detail.email', data_get(session('encore_user'), 'email', '')));
+            $customer['f_name'] = data_get($customer, 'first_name', data_get($customer, 'f_name', ''));
+            $customer['l_name'] = data_get($customer, 'last_name', data_get($customer, 'l_name', ''));
+            $billing = array_merge([
+                'first_name' => data_get($customer, 'first_name', ''),
+                'last_name' => data_get($customer, 'last_name', ''),
+                'email' => data_get($customer, 'email', ''),
+                'phone' => data_get($customer, 'phone_number', ''),
+                'address' => data_get($customer, 'address', ''),
+                'street' => data_get($customer, 'street', ''),
+                'city' => data_get($customer, 'city', ''),
+                'state' => data_get($customer, 'state', ''),
+                'postal_code' => data_get($customer, 'postal_code', ''),
+                'country_id' => data_get($customer, 'country_id', ''),
+            ], session('encore_checkout_billing', []));
+            if (!filled($billing['country_id'] ?? null) && filled(data_get($customer, 'country'))) {
+                $matchedCountry = collect($countriesResponse['data'] ?? [])->first(fn ($row) =>
+                    mb_strtolower((string) data_get($row, 'name', data_get($row, 'country_name', ''))) === mb_strtolower((string) data_get($customer, 'country'))
+                );
+                $billing['country_id'] = data_get($matchedCountry, 'id', '');
+            }
+            $checkoutItems = [];
+            try {
+                $cartResponse = $this->cart->items((string) session('encore_cart_temp_id', ''));
+                if ($cartResponse['success'] ?? false) {
+                    $products = app(\App\Services\EncoreProductService::class);
+                    $checkoutItems = collect($cartResponse['cart_items'] ?? [])
+                        ->filter('is_array')
+                        ->map(fn ($item) => $products->normalizeCartItem($item))
+                        ->values()->all();
+                }
+            } catch (Throwable $exception) {
+                Log::notice('Checkout product summary unavailable', ['message' => $exception->getMessage()]);
+            }
+            $checkoutSubtotal = collect($checkoutItems)->sum('line_total');
+
             return view('shop.checkout', [
                 'countries' => $countriesResponse['data'] ?? [],
-                'customer' => $customerResponse['data'] ?? [],
-                'billing' => session('encore_checkout_billing', []),
+                'customer' => $customer,
+                'billing' => $billing,
+                'checkoutItems' => $checkoutItems,
+                'checkoutSubtotal' => $checkoutSubtotal,
             ]);
         } catch (Throwable $exception) {
             return redirect()->route('shop.cart')->with('error', 'Unable to prepare checkout.');
