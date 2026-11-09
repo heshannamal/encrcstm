@@ -32,7 +32,6 @@
    <div class="ec-field"><label for="sportFilter">Sport</label><select id="sportFilter" class="ec-select" name="selectedSport"><option value="18" @selected((int)$filters['selectedSport']===18)>All</option>@foreach(config('sports',[]) as $sport)<option value="{{ $sport['id'] }}" @selected((int)$filters['selectedSport']===(int)$sport['id'])>{{ $sport['name'] }}</option>@endforeach</select></div>
    <div class="ec-field"><label for="styleFilter">Style</label><select id="styleFilter" class="ec-select" name="selectedStyle"><option value="0">All</option>@foreach($styles as $style)@php $styleId=data_get($style,'id'); @endphp @if(is_numeric($styleId))<option value="{{ $styleId }}" @selected((int)$filters['selectedStyle']===(int)$styleId)>{{ data_get($style,'product_category_name',data_get($style,'name','Style')) }}</option>@endif @endforeach</select></div>
    <div class="ec-field ec-filter-sort"><label for="sortFilter">Sort</label><select id="sortFilter" class="ec-select" name="sort"><option value="">Featured</option><option value="name" @selected(request('sort')==='name')>A-Z</option><option value="price_asc" @selected(request('sort')==='price_asc')>Price low-high</option><option value="price_desc" @selected(request('sort')==='price_desc')>Price high-low</option></select></div>
-   <button type="submit" class="ec-filter-apply">Apply</button>
   </form>
   <div class="ec-catalog-results"><span>{{ $items->count() }} Items</span><a href="{{ route('shop.catalog') }}">Clear ×</a></div>
  </div>
@@ -48,7 +47,16 @@
    <a class="ec-product-card {{ $loop->index >= 8 ? 'ec-product-extra' : '' }}" href="{{ route('shop.product',['id'=>$product['id']]) }}">
     <div class="ec-product-photo"><img loading="lazy" src="{{ $product['images'][0] ?? asset('images/product-placeholder.svg') }}" alt="{{ $product['name'] }}" onerror="this.onerror=null;this.src='{{ asset('images/product-placeholder.svg') }}'"></div>
     <div class="ec-product-caption"><span class="ec-product-name">{{ $product['name'] }}</span><span class="ec-product-cost">{{ $product['price_formatted'] }}</span></div>
-    <p class="ec-product-info">This product can be customized in your team colors.</p>
+    @if(!empty($product['colors']))
+     <div class="ec-product-available-colors" aria-label="{{ count($product['colors']) }} available colors">
+      <span>Available in</span>
+      @foreach($product['colors'] as $hex)
+       <span class="ec-color-swatch" title="{{ $hex }}" style="--swatch: {{ $hex }}"></span>
+      @endforeach
+     </div>
+    @else
+     <p class="ec-product-info">This product can be customized in your team colors.</p>
+    @endif
    </a>
   @endforeach
  </div>
@@ -82,6 +90,21 @@ document.querySelectorAll('.ec-catalog-section').forEach(function(section){
 @push('scripts')
 <script>
 if(window.EncoreToast){window.EncoreToast(@json($error),'error');}
+
+// Auto-submit category, gender, sport, style, and sorting changes.
+(function(){
+ const form=document.getElementById('ecCatalogFilters');
+ if(!form)return;
+ let changing=false;
+ form.querySelectorAll('select').forEach(function(select){
+  select.addEventListener('change',function(){
+   if(changing)return;
+   changing=true;
+   if(window.EncoreLoading)window.EncoreLoading.show('Loading products');
+   form.requestSubmit();
+  });
+ });
+})();
 </script>
 @endpush
 @endif
