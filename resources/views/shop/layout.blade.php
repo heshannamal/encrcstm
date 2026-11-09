@@ -13,7 +13,11 @@
  <div class="rt" id="links">
   <a class="nl" href="{{ route('sports.show', ['sport' => 'volleyball']) }}#kit">The kit</a>
   <a class="nl" href="{{ route('sports.show', ['sport' => 'volleyball']) }}#proof">Teams</a>
-  <a class="btn catalog" href="{{ route('home') }}#sports"><span>Sports</span><span class="ar">→</span></a>
+  @if(request()->routeIs('shop.cart', 'shop.profile', 'shop.orders', 'shop.order', 'shop.checkout', 'shop.payment', 'shop.success'))
+   <a class="btn catalog" href="{{ route('shop.catalog') }}"><span>Catalog</span><span class="ar">→</span></a>
+  @else
+   <a class="btn catalog" href="{{ route('home') }}#sports"><span>Sports</span><span class="ar">→</span></a>
+  @endif
   <a class="btn" href="{{ config('site.builder_url', 'https://dev.encr.co/') }}"><span>Start a kit</span><span class="ar">→</span></a>
   @if(session()->has('encore_user_token'))
    <a class="ec-shop-cart-link" href="{{ route('shop.cart') }}" aria-label="View cart" title="Cart">

@@ -777,3 +777,57 @@ body.ec-shop-busy{cursor:progress}
 .ec-clear-actions{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:22px}
 .ec-clear-actions .ec-proceed,.ec-clear-actions .ec-outline-action{margin:0;width:100%;min-height:47px;font-size:11px!important}
 .ec-clear-actions form{margin:0}
+
+/* Keep billing and shipping address cards stacked in the checkout column. */
+.ec-shell .ec-shipping-form .ec-checkout-addresses{
+ display:flex;
+ flex-direction:column;
+ gap:20px;
+ width:100%;
+ min-width:0;
+}
+.ec-shell .ec-shipping-form .ec-checkout-addresses>.ec-address-form-card{
+ width:100%;
+ min-width:0;
+}
+/* Same transitions and arrow movement as the approved homepage CTA buttons. */
+.ec-shell .ec-main .ec-btn,
+.ec-shell .ec-main a.ec-outline-action,
+.ec-shell .ec-main button.ec-outline-action,
+.ec-shell .ec-main .ec-update-cart{
+ transition:background-color .25s cubic-bezier(.2,.8,.2,1),color .25s,box-shadow .25s,transform .25s cubic-bezier(.2,.8,.2,1),border-color .25s;
+}
+.ec-shell .ec-main .ec-btn:hover:not(:disabled),
+.ec-shell .ec-main .ec-update-cart:hover:not(:disabled){
+ transform:translateY(-2px);
+ background-color:#b4002a;
+ box-shadow:0 10px 30px -8px rgba(231,0,51,.5);
+}
+.ec-shell .ec-main .ec-proceed:hover:not(:disabled),
+.ec-shell .ec-main .ec-auth-submit:hover:not(:disabled){
+ background:#b4002a!important;
+ box-shadow:0 10px 30px -8px rgba(231,0,51,.5);
+}
+.ec-shell .ec-main a.ec-outline-action:hover,
+.ec-shell .ec-main button.ec-outline-action:hover{
+ transform:translateY(-2px);
+ border-color:#34434d;
+ box-shadow:0 6px 18px rgba(20,35,45,.1);
+}
+.ec-shell .ec-main .ec-btn .ar,
+.ec-shell .ec-main .ec-btn .ec-arrow{
+ display:inline-block;
+ transition:transform .25s cubic-bezier(.2,.8,.2,1);
+}
+.ec-shell .ec-main .ec-btn:hover .ar,
+.ec-shell .ec-main .ec-btn:hover .ec-arrow{transform:translateX(4px)}
+@media(prefers-reduced-motion:reduce){
+ .ec-shell .ec-main .ec-btn,
+ .ec-shell .ec-main a.ec-outline-action,
+ .ec-shell .ec-main button.ec-outline-action,
+ .ec-shell .ec-main .ec-update-cart,
+ .ec-shell .ec-main .ec-btn .ar,
+ .ec-shell .ec-main .ec-btn .ec-arrow{transition:none}
+ .ec-shell .ec-main .ec-btn:hover,
+ .ec-shell .ec-main a.ec-outline-action:hover{transform:none}
+}
