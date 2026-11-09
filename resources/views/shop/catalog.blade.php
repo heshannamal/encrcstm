@@ -47,7 +47,9 @@
    <a class="ec-product-card {{ $loop->index >= 8 ? 'ec-product-extra' : '' }}" href="{{ route('shop.product',['id'=>$product['id']]) }}">
     <div class="ec-product-photo"><img loading="lazy" src="{{ $product['images'][0] ?? asset('images/product-placeholder.svg') }}" alt="{{ $product['name'] }}" onerror="this.onerror=null;this.src='{{ asset('images/product-placeholder.svg') }}'"></div>
     <div class="ec-product-caption"><span class="ec-product-name">{{ $product['name'] }}</span><span class="ec-product-cost">{{ $product['price_formatted'] }}</span></div>
-    @if(!empty($product['colors']))
+    @if($product['sublimatable'] ?? false)
+     <p class="ec-product-info">This product can be sublimated in any color.</p>
+    @elseif(!empty($product['colors']))
      <div class="ec-product-available-colors" aria-label="{{ count($product['colors']) }} available colors">
       <span>Available in</span>
       @foreach($product['colors'] as $hex)
@@ -55,7 +57,7 @@
       @endforeach
      </div>
     @else
-     <p class="ec-product-info">This product can be customized in your team colors.</p>
+     <p class="ec-product-info">View product for color options.</p>
     @endif
    </a>
   @endforeach
