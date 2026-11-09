@@ -139,8 +139,11 @@ final class ShopAccountController extends Controller
         try {
             $a = $this->profileApi->customerDetails();
             $b = $this->profileApi->orderSummary();
-            $customer = $a['data'] ?? [];
-            $summary = $b['data'] ?? [];
+            $customer = is_array($a['data'] ?? null) ? $a['data'] : [];
+            $customer['email'] = data_get($customer, 'email', data_get($customer, 'user_detail.email', data_get($user, 'email', '')));
+            $customer['f_name'] = data_get($customer, 'first_name', data_get($customer, 'f_name', data_get($user, 'f_name', '')));
+            $customer['l_name'] = data_get($customer, 'last_name', data_get($customer, 'l_name', data_get($user, 'l_name', '')));
+            $summary = is_array($b['data'] ?? null) ? $b['data'] : [];
         } catch (Throwable $exception) {
         }
         return view('shop.profile', compact('user', 'customer', 'summary'));
@@ -158,9 +161,17 @@ final class ShopAccountController extends Controller
         ]);
         try {
             $response = $this->profileApi->updateProfile($data);
-            return ($response['success'] ?? false)
-                ? back()->with('success', 'Profile updated.')
-                : back()->with('error', $response['message'] ?? 'Unable to update profile.');
+            if ($response['success'] ?? false) {
+                $user = $request->session()->get('encore_user', []);
+                if (is_array($user)) {
+                    $user['f_name'] = $data['f_name'];
+                    $user['l_name'] = $data['l_name'];
+                    $user['phone_number'] = $data['phone_number'] ?? '';
+                    $request->session()->put('encore_user', $user);
+                }
+                return back()->with('success', 'Profile updated.');
+            }
+            return back()->with('error', $response['message'] ?? 'Unable to update profile.');
         } catch (Throwable $exception) {
             return back()->with('error', 'Profile service is temporarily unavailable. Please try again.');
         }
