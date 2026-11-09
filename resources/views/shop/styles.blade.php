@@ -323,3 +323,24 @@
 @media(prefers-reduced-motion:reduce){
  .ec-shell>.nav,.ec-shell>.nav .logo,.ec-shell>.nav .btn,.ec-shell>.nav .btn .ar,.ec-shell>.nav .links{transition:none}
 }
+
+/* Shopping navbar: original four-link sport navbar over a brand gradient. */
+.ec-shell{padding-top:80px}
+.ec-shell>.ec-shop-nav{background:linear-gradient(112deg,#30483f 0%,#354d47 42%,#34434d 100%);box-shadow:0 2px 12px rgba(22,46,39,.08)}
+.ec-shell>.ec-shop-nav.scrolled{background:linear-gradient(112deg,rgba(44,66,59,.95),rgba(51,63,72,.95));box-shadow:0 8px 28px rgba(20,42,36,.19)}
+.ec-shell>.ec-shop-nav .rt{display:flex;gap:26px;align-items:center}
+.ec-shell>.ec-shop-nav .rt a.nl{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--paper);opacity:.8;position:relative;padding:6px 0;text-decoration:none}
+.ec-shell>.ec-shop-nav .rt a.nl:hover{opacity:1}
+.ec-shell>.ec-shop-nav .rt a.nl::after{content:"";position:absolute;left:0;bottom:0;height:2px;width:0;background:var(--red);transition:width .3s var(--ease)}
+.ec-shell>.ec-shop-nav .rt a.nl:hover::after{width:100%}
+.ec-shell>.ec-shop-nav .btn.catalog{background:#414E59;border-color:#414E59}
+.ec-shell>.ec-shop-nav .btn.catalog:hover{background:#4C5A67;box-shadow:none}
+.ec-shell>.ec-shop-nav .btn:not(.catalog){background:var(--red);border-color:var(--red)}
+.ec-shell>.ec-shop-nav .btn:not(.catalog):hover{background:var(--red-deep)}
+@media(max-width:900px){
+ .ec-shell>.ec-shop-nav .rt{position:fixed;inset:0;display:flex;flex-direction:column;justify-content:center;gap:26px;background:linear-gradient(145deg,#30483f,#34434d);transform:translateY(-100%);transition:transform .5s var(--ease);z-index:39}
+ .ec-shell>.ec-shop-nav .rt.open{transform:translateY(0)}
+ .ec-shell>.ec-shop-nav .rt a.nl{font-size:16px}
+ .ec-shell>.ec-shop-nav .burger{display:flex;z-index:41}
+}
+@media(prefers-reduced-motion:reduce){.ec-shell>.ec-shop-nav .rt{transition:none}}

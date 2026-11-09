@@ -7,7 +7,16 @@
 @endsection
 @section('content')
 <div class="ec-shell">
-@include('website.home.sections.navigation')
+<nav class="nav ec-shop-nav" id="nav" aria-label="Shopping navigation">
+ <a href="{{ route('home') }}" class="homelink" aria-label="Encore Custom home"><img class="logo" src="{{ asset('assets/reference/297053b134d4897782f2.png') }}" alt="Encore Custom"></a>
+ <div class="rt" id="links">
+  <a class="nl" href="{{ route('sports.show', ['sport' => 'volleyball']) }}#kit">The kit</a>
+  <a class="nl" href="{{ route('sports.show', ['sport' => 'volleyball']) }}#proof">Teams</a>
+  <a class="btn catalog" href="{{ route('shop.catalog') }}"><span>Catalog</span><span class="ar">→</span></a>
+  <a class="btn" href="https://dev.encr.co/"><span>Start a kit</span><span class="ar">→</span></a>
+ </div>
+ <button class="burger" type="button" id="burger" aria-label="Toggle navigation" aria-controls="links" aria-expanded="false"><span></span><span></span><span></span></button>
+</nav>
 <main class="ec-main">
  @yield('shop-content')
 </main>
