@@ -1,33 +1,51 @@
 @extends('shop.layout')
-@section('shop-title', 'Your Cart')
+@section('shop-title','Your Cart')
 @section('shop-content')
-<h1 class="ec-title">Your <span style="color:var(--ec-red)">Cart</span></h1>
-<p class="ec-sub">Review your products and quantities before checkout.</p>
-
+<section class="ec-shop-banner"><div class="ec-banner-inner"><h1>Your <span>Cart</span></h1><p>Review your items, update quantities and proceed to checkout.</p></div></section>
 @if(empty($items))
- <div class="ec-empty"><h2>Your cart is empty</h2><p>Explore the collection and choose your next kit.</p><a href="{{ route('shop.catalog') }}" class="ec-btn">Browse catalog</a></div>
+<div class="ec-empty ec-fresh-empty"><h2>Your cart is empty</h2><p>Explore the collection and choose your next kit.</p><a href="{{ route('shop.catalog') }}" class="ec-btn">Browse catalog →</a></div>
 @else
-<div class="ec-two">
- <section class="ec-panel">
- @foreach($items as $item)
-  <div class="ec-row ec-cart-item">
-   @if(!empty($item['images'][0]))<img src="{{ $item['images'][0] }}" alt="{{ $item['name'] }}">@else<div></div>@endif
-   <div><h3 style="margin:0 0 7px;font-size:16px">{{ $item['name'] }}</h3><p class="ec-muted">Size: {{ $item['size_name'] ?? '—' }} @if(!empty($item['color_name'])) · Color: {{ $item['color_name'] }} @endif</p>
-   <p class="ec-price">{{ $item['price_formatted'] }}</p>
-   <form action="{{ route('shop.cart.update',$item['cart_id']) }}" method="POST" class="ec-flex">@csrf @method('PATCH')<label>Qty <input class="ec-input ec-qty" type="number" name="quantity" value="{{ $item['quantity'] }}" min="1" max="{{ max(1,$item['stock_qty']) }}"></label><button class="ec-btn light" type="submit">Update</button></form>
-   <form action="{{ route('shop.cart.remove',$item['cart_id']) }}" method="POST" style="margin-top:12px">@csrf @method('DELETE')<button type="submit" style="border:0;background:none;color:var(--ec-red);cursor:pointer">Remove item</button></form>
-   </div><div class="ec-price">${{ number_format($item['line_total'],2) }}</div>
-  </div>
- @endforeach
+<div class="ec-checkout-grid ec-cart-layout">
+ <section class="ec-modern-card ec-cart-list">
+  <div class="ec-card-heading"><h2>Cart Items ({{ count($items) }})</h2><a href="{{ route('shop.catalog') }}">Continue Shopping →</a></div>
+  @foreach($items as $item)
+  <article class="ec-modern-cart-item">
+   <div class="ec-cart-product-image">@if(!empty($item['images'][0]))<img src="{{ $item['images'][0] }}" alt="{{ $item['name'] }}">@endif</div>
+   <div class="ec-cart-product-body"><h3>{{ $item['name'] }}</h3><p>Size: {{ $item['size_name'] ?? '—' }} @if(!empty($item['color_name'])) <span>· Color: {{ $item['color_name'] }}</span>@endif</p>
+    <strong class="ec-cart-unit-price">{{ $item['price_formatted'] }}</strong>
+    <div class="ec-cart-actions">
+     <form action="{{ route('shop.cart.update', $item['cart_id']) }}" method="POST" class="ec-quantity-form">@csrf @method('PATCH')
+      <label for="cartQty{{ $loop->index }}">Quantity</label><div class="ec-qty-control">
+      <button type="button" data-step="-1" aria-label="Decrease quantity">−</button><input id="cartQty{{ $loop->index }}" type="number" name="quantity" min="1" max="{{ max(1,$item['stock_qty']) }}" value="{{ $item['quantity'] }}"><button type="button" data-step="1" aria-label="Increase quantity">+</button></div>
+      <button class="ec-update-cart" type="submit">Update</button>
+     </form>
+     <form method="POST" action="{{ route('shop.cart.remove', $item['cart_id']) }}">@csrf @method('DELETE')<button type="submit" class="ec-remove-cart">Remove</button></form>
+    </div>
+   </div>
+   <strong class="ec-cart-line-price">${{ number_format((float)$item['line_total'],2) }}</strong>
+  </article>
+  @endforeach
  </section>
- <aside class="ec-panel ec-summary"><h2>Order Summary</h2><div class="ec-row"><span>Subtotal</span><strong>${{ number_format($subtotal,2) }}</strong></div><p class="ec-muted">Taxes, delivery, and payment processing are calculated at checkout.</p><a class="ec-btn" href="{{ route('shop.checkout') }}" style="width:100%">Proceed to Checkout</a><a class="ec-btn light" href="{{ route('shop.catalog') }}" style="width:100%;margin-top:12px">Continue Shopping</a></aside>
+ <aside class="ec-modern-card ec-modern-summary"><h2>Order Summary</h2><div class="ec-summary-line"><span>Subtotal ({{ count($items) }} items)</span><strong>${{ number_format($subtotal,2) }}</strong></div><p class="ec-summary-note">Shipping, sales tax and payment processing are calculated securely by the Encore API during checkout.</p>
+  <div class="ec-summary-line ec-summary-total"><strong>Subtotal</strong><strong>${{ number_format($subtotal,2) }}</strong></div>
+  <a class="ec-btn ec-proceed" href="{{ route('shop.checkout') }}">Proceed to Checkout →</a>
+  <a class="ec-outline-action" href="{{ route('shop.catalog') }}">← Continue Shopping</a>
+  <div class="ec-trust-row"><span>✓ Secure checkout</span><span>✓ Encore support</span></div>
+ </aside>
 </div>
 @endif
+<script>
+document.querySelectorAll('.ec-qty-control').forEach(function(control){
+ const input=control.querySelector('input');
+ control.querySelectorAll('[data-step]').forEach(function(button){
+  button.addEventListener('click',function(){
+   const min=Number(input.min||1),max=Number(input.max||9999);
+   input.value=String(Math.min(max,Math.max(min,Number(input.value||min)+Number(button.dataset.step))));
+  });
+ });
+});
+</script>
 @endsection
 @if($error)
-@push('scripts')
-<script>
-if(window.EncoreToast){window.EncoreToast(@json($error),'error');}
-</script>
-@endpush
+@push('scripts')<script>if(window.EncoreToast)window.EncoreToast(@json($error),'error');</script>@endpush
 @endif
