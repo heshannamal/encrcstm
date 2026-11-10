@@ -55,108 +55,110 @@ final class ShopCheckoutController extends Controller
         if ($redirect = $this->requireAuth()) {
             return $redirect;
         }
-        $merged = $this->merge->claimGuestCart();
-        if (!($merged['success'] ?? false)) {
-            return redirect()->route('shop.cart')->with('error', implode(' ', $merged['warnings'] ?? ['Unable to merge your cart.']));
-        }
+
+        // The cart page uses this same temp ID and get_cart_items endpoint.
+        // Do not require an additional guest-cart merge or per-item lookup to
+        // display the checkout form.
         try {
-            $ids = $this->ownedCartIds();
-            if (!$ids) {
-                return redirect()->route('shop.cart')->with('error', 'Your cart is empty.');
-            }
-            $countriesResponse = $this->profile->countries();
-            $customerResponse = $this->profile->customerDetails();
-            $customer = is_array($customerResponse['data'] ?? null) ? $customerResponse['data'] : [];
-            $customer['email'] = data_get($customer, 'email', data_get($customer, 'user_detail.email', data_get(session('encore_user'), 'email', '')));
-            $customer['f_name'] = data_get($customer, 'first_name', data_get($customer, 'f_name', ''));
-            $customer['l_name'] = data_get($customer, 'last_name', data_get($customer, 'l_name', ''));
-            $billing = array_merge([
-                'first_name' => data_get($customer, 'first_name', ''),
-                'last_name' => data_get($customer, 'last_name', ''),
-                'email' => data_get($customer, 'email', ''),
-                'phone' => data_get($customer, 'phone_number', ''),
-                'address' => data_get($customer, 'address', ''),
-                'street' => data_get($customer, 'street', ''),
-                'city' => data_get($customer, 'city', ''),
-                'state' => data_get($customer, 'state', ''),
-                'postal_code' => data_get($customer, 'postal_code', ''),
-                'country_id' => data_get($customer, 'country_id', ''),
-            ], session('encore_checkout_billing', []));
-            if (!filled($billing['country_id'] ?? null) && filled(data_get($customer, 'country'))) {
-                $matchedCountry = collect($countriesResponse['data'] ?? [])->first(fn ($row) =>
-                    mb_strtolower((string) data_get($row, 'name', data_get($row, 'country_name', ''))) === mb_strtolower((string) data_get($customer, 'country'))
-                );
-                $billing['country_id'] = data_get($matchedCountry, 'id', '');
-            }
-            $products = app(\App\Services\EncoreProductService::class);
-            $cartResponse = $this->cart->items((string) session('encore_cart_temp_id', ''));
-            if (!($cartResponse['success'] ?? false)) {
-                throw new \RuntimeException('Unable to load cart items from Encore.');
-            }
-
-            // Use the same API data and normalization as the working cart page.
-            // A separate get_cart_item_by_id response may be a different shape
-            // and must not invalidate an item already returned by get_cart_items.
-            $rawRows = collect($cartResponse['cart_items'] ?? [])
-                ->filter('is_array')
-                ->filter(fn ($row) => (int) data_get($row, 'cart_id', 0) > 0)
-                ->unique(fn ($row) => (int) data_get($row, 'cart_id'))
-                ->values();
-
-            $owned = array_fill_keys($ids, true);
-            $ownedRows = $rawRows->filter(fn ($row) =>
-                isset($owned[(int) data_get($row, 'cart_id', 0)])
-            );
-            if ($ownedRows->isNotEmpty()) {
-                $rawRows = $ownedRows->values();
-            }
-
-            // Only fetch missing rows when the authenticated cart endpoint lists
-            // IDs which are absent from the regular cart response.
-            if ($rawRows->isEmpty()) {
-                foreach ($ids as $cartId) {
-                    $detail = $this->cart->getById($cartId);
-                    if (!($detail['success'] ?? false)) {
-                        continue;
-                    }
-                    $raw = data_get($detail, 'data.cart_item')
-                        ?? data_get($detail, 'data.cart')
-                        ?? data_get($detail, 'cart_item')
-                        ?? data_get($detail, 'data');
-                    if (is_array($raw) && !array_is_list($raw)) {
-                        $raw['cart_id'] = $cartId;
-                        $rawRows->push($raw);
-                    }
-                }
-            }
-
-            $checkoutItems = $rawRows
-                ->map(fn ($row) => $products->normalizeCartItem($row))
-                ->filter(fn ($row) => (int) ($row['cart_id'] ?? 0) > 0)
-                ->values()->all();
-            $checkoutSubtotal = round((float) collect($checkoutItems)->sum('line_total'), 2);
-
-            if (!$checkoutItems) {
-                Log::warning('Checkout has authenticated cart IDs but no displayable cart rows', [
-                    'cart_id_count' => count($ids),
-                    'get_cart_items_status' => $cartResponse['_http_status'] ?? null,
-                ]);
-            }
-
-            return view('shop.checkout', [
-                'countries' => $countriesResponse['data'] ?? [],
-                'customer' => $customer,
-                'billing' => $billing,
-                'checkoutItems' => $checkoutItems,
-                'cartIds' => $ids,
-                'checkoutSubtotal' => $checkoutSubtotal,
-            ]);
+            $checkoutItems = app(ShopCartController::class)->items();
         } catch (Throwable $exception) {
-            Log::warning('Checkout cart summary unavailable', [
-                'error' => $exception->getMessage(),
+            Log::warning('Checkout cart API retrieval failed', [
+                'exception' => get_class($exception),
+                'message' => $exception->getMessage(),
             ]);
-            return redirect()->route('shop.cart')->with('error', 'Could not verify your cart items and subtotal. Please refresh the cart and try again.');
+            return redirect()->route('shop.cart')->with(
+                'error',
+                'Unable to retrieve your cart from Encore. Please try opening your cart again.'
+            );
         }
+
+        if (!$checkoutItems) {
+            return redirect()->route('shop.cart')->with(
+                'error',
+                'Your cart is empty. Add a product before proceeding to checkout.'
+            );
+        }
+
+        $checkoutSubtotal = round((float) collect($checkoutItems)->sum('line_total'), 2);
+        $cartIds = collect($checkoutItems)
+            ->pluck('cart_id')->map(fn ($id) => (int) $id)
+            ->filter(fn ($id) => $id > 0)->unique()->values()->all();
+
+        try {
+            $countriesResponse = $this->profile->countries();
+            if (!($countriesResponse['success'] ?? false)) {
+                throw new \RuntimeException($countriesResponse['message'] ?? 'Encore countries service returned an error.');
+            }
+            $countries = data_get($countriesResponse, 'data.data')
+                ?? data_get($countriesResponse, 'data.countries')
+                ?? data_get($countriesResponse, 'countries')
+                ?? data_get($countriesResponse, 'data', []);
+            if (!is_array($countries)) {
+                throw new \RuntimeException('Encore returned an invalid country list.');
+            }
+        } catch (Throwable $exception) {
+            Log::warning('Checkout country list API failed', [
+                'exception' => get_class($exception),
+                'message' => $exception->getMessage(),
+            ]);
+            return redirect()->route('shop.cart')->with(
+                'error',
+                'Checkout cannot load the country list from Encore right now. Please try again.'
+            );
+        }
+
+        try {
+            $customerResponse = $this->profile->customerDetails();
+            $customer = is_array($customerResponse['data'] ?? null)
+                ? $customerResponse['data'] : [];
+        } catch (Throwable $exception) {
+            Log::notice('Checkout customer detail API unavailable', [
+                'exception' => get_class($exception),
+                'message' => $exception->getMessage(),
+            ]);
+            $customer = [];
+        }
+
+        $user = session('encore_user', []);
+        $customer['email'] = data_get($customer, 'email')
+            ?: data_get($customer, 'user_detail.email')
+            ?: data_get($user, 'email', '');
+        $customer['f_name'] = data_get($customer, 'first_name')
+            ?: data_get($customer, 'f_name')
+            ?: data_get($user, 'f_name', '');
+        $customer['l_name'] = data_get($customer, 'last_name')
+            ?: data_get($customer, 'l_name')
+            ?: data_get($user, 'l_name', '');
+
+        $billing = array_merge([
+            'first_name' => data_get($customer, 'first_name', data_get($customer, 'f_name', '')),
+            'last_name' => data_get($customer, 'last_name', data_get($customer, 'l_name', '')),
+            'email' => data_get($customer, 'email', ''),
+            'phone' => data_get($customer, 'phone_number', ''),
+            'address' => data_get($customer, 'address', ''),
+            'street' => data_get($customer, 'street', ''),
+            'city' => data_get($customer, 'city', ''),
+            'state' => data_get($customer, 'state', ''),
+            'postal_code' => data_get($customer, 'postal_code', ''),
+            'country_id' => data_get($customer, 'country_id', ''),
+        ], (array) session('encore_checkout_billing', []));
+
+        if (!filled($billing['country_id'] ?? null) && filled(data_get($customer, 'country'))) {
+            $matchedCountry = collect($countries)->first(fn ($row) =>
+                mb_strtolower((string) data_get($row, 'name', data_get($row, 'country_name', '')))
+                === mb_strtolower((string) data_get($customer, 'country'))
+            );
+            $billing['country_id'] = data_get($matchedCountry, 'id', '');
+        }
+
+        return view('shop.checkout', [
+            'countries' => $countries,
+            'customer' => $customer,
+            'billing' => $billing,
+            'checkoutItems' => $checkoutItems,
+            'cartIds' => $cartIds,
+            'checkoutSubtotal' => $checkoutSubtotal,
+        ]);
     }
 
     public function saveBilling(Request $request)
