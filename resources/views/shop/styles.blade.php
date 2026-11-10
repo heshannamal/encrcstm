@@ -1100,3 +1100,52 @@ body.ec-shop-busy{cursor:progress}
 @media(max-width:1100px){.ec-shell .ec-account-grid{grid-template-columns:225px minmax(0,1fr)}.ec-shell .ec-order-history-row{grid-template-columns:1fr auto}}
 @media(max-width:850px){.ec-shell .ec-account-grid,.ec-shell .ec-checkout-grid{grid-template-columns:1fr}.ec-shell .ec-account-sidebar{position:static;min-height:0;flex-direction:row;flex-wrap:wrap}.ec-shell .ec-account-columns{grid-template-columns:1fr 1fr}}
 @media(max-width:640px){.ec-shell:has(.ec-shop-banner) .ec-main{background-attachment:scroll!important}.ec-shell .ec-account-columns{grid-template-columns:1fr}.ec-shell .ec-modern-cart-item{grid-template-columns:85px minmax(0,1fr)}.ec-shell .ec-cart-product-image{width:85px;min-height:95px}.ec-shell .ec-cart-product-image img{height:95px}.ec-shell .ec-order-history-row{grid-template-columns:1fr 1fr}.ec-shell .ec-order-history-row .ec-edit-btn{grid-column:1/-1}.ec-shell .ec-account-sidebar a,.ec-shell .ec-account-sidebar button{font-size:10px;padding:10px}}
+
+/* Payment and confirmation reference compositions. */
+.ec-shell .ec-modern-payment{padding:30px;gap:17px}
+.ec-shell .ec-modern-payment .ec-card-heading{margin-bottom:0}
+.ec-shell .ec-secure-inline{font:700 11px 'Space Mono',monospace;color:#83dfb4;white-space:nowrap}
+.ec-shell .ec-payment-fieldlist{display:flex;flex-direction:column;gap:16px;padding:12px 0 0;border-top:1px solid rgba(235,247,253,.2)}
+.ec-shell .ec-modern-payment .ec-field{display:flex;flex-direction:column;gap:7px}
+.ec-shell .ec-modern-payment .ec-field label{font:700 12px 'Space Mono',monospace;text-transform:uppercase;letter-spacing:.06em}
+.ec-shell .ec-modern-payment .ec-field .ec-input,.ec-shell .ec-modern-payment .ec-field .ec-select{min-height:45px}
+.ec-shell .ec-payment-expiry{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+.ec-shell .ec-card-type-field legend{font:700 13px 'Space Mono',monospace;text-transform:uppercase;letter-spacing:.08em;padding-bottom:10px}
+.ec-shell .ec-card-type-options span{font-weight:800;font-size:14px;min-height:55px}
+.ec-shell .ec-payment-note{display:flex;align-items:center;gap:15px;padding:17px;background:rgba(125,217,170,.09);border:1px solid rgba(123,219,166,.24);border-radius:8px}
+.ec-shell .ec-payment-note>span{color:#8ee3b1;font-size:26px}
+.ec-shell .ec-payment-note p{margin:0;color:#d8e7ed;font-size:12px;line-height:1.65}
+.ec-shell .ec-payment-summary .ec-summary-total{margin-top:10px;padding-top:18px;font-size:21px}
+.ec-shell .ec-payment-summary .ec-price{color:#ff3a62;font-weight:900;font-size:27px}
+.ec-shell .ec-payment-trust{display:flex;align-items:center;gap:26px;justify-content:space-between;margin:22px auto 0;max-width:1420px;border:1px solid rgba(234,248,253,.22);border-radius:11px;padding:21px 29px;background:rgba(225,239,249,.075);color:#dbe9f0;backdrop-filter:blur(13px)}
+.ec-shell .ec-payment-trust strong{font:800 16px Archivo,sans-serif;white-space:nowrap}
+.ec-shell .ec-payment-trust span{font-size:13px;color:#c5d6df}
+.ec-shell .ec-confirmation-wrap{max-width:1320px;margin:0 auto;display:flex;flex-direction:column;gap:18px}
+.ec-shell .ec-confirmation-banner{display:flex;align-items:center;gap:35px;padding:29px 35px}
+.ec-shell .ec-confirmation-banner .ec-success-check{margin:0;flex:none}
+.ec-shell .ec-confirmation-copy h2{font-size:29px;margin:0 0 9px}
+.ec-shell .ec-confirmation-copy p{font-size:15px;line-height:1.65;margin:0}
+.ec-shell .ec-confirmation-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.ec-shell .ec-confirmation-detail{padding:27px}
+.ec-shell .ec-confirmation-detail h2{margin:0 0 14px}
+.ec-shell .ec-confirmation-detail p{font-size:14px;line-height:1.7}
+.ec-shell .ec-confirmation-detail .ec-outline-action{margin-top:22px}
+.ec-shell .ec-confirmation-actions{display:flex;align-items:center;justify-content:center;gap:18px;padding:8px 0}
+.ec-shell .ec-confirmation-actions>a{width:min(300px,100%);margin:0;min-height:50px}
+.ec-shell .ec-confirmation-support{margin:5px auto 30px;text-align:center;color:#c5d8e1;font-size:13px}
+.ec-shell .ec-confirmation-support a{color:#fff}
+.ec-shell .ec-account-settings{max-width:none}
+.ec-shell .ec-account-settings .ec-shop-form{gap:23px}
+.ec-shell .ec-account-settings .ec-fieldset{grid-template-columns:1fr 1fr}
+.ec-shell .ec-account-settings .ec-input{min-height:48px}
+.ec-shell .ec-account-settings small{color:#c5d8e0}
+.ec-shell .ec-account-settings .ec-proceed{max-width:360px}
+.ec-shell .ec-modern-card .ec-row{border-color:rgba(232,244,250,.2);color:#eaf3f8}
+.ec-shell .ec-modern-card .ec-row strong{color:#fff}
+.ec-shell .ec-modern-card .ec-summary-line strong{color:#fff}
+.ec-shell .ec-cart-product-body .ec-qty-control input{background:rgba(222,239,249,.08)}
+.ec-shell .ec-account-overview .ec-proceed{box-shadow:none}
+.ec-shell .ec-clear-cart{color:#f2c8d0}
+.ec-shell .ec-clear-cart:hover{color:#ff5277}
+@media(max-width:900px){.ec-shell .ec-payment-expiry{grid-template-columns:repeat(3,minmax(0,1fr))}.ec-shell .ec-confirmation-grid{grid-template-columns:1fr}.ec-shell .ec-confirmation-banner{gap:20px}}
+@media(max-width:640px){.ec-shell .ec-payment-expiry{grid-template-columns:1fr 1fr}.ec-shell .ec-payment-expiry>.ec-field:last-child{grid-column:1/-1}.ec-shell .ec-confirmation-banner{flex-direction:column;text-align:center}.ec-shell .ec-confirmation-actions{flex-direction:column}.ec-shell .ec-confirmation-actions>a{width:100%}.ec-shell .ec-payment-trust{flex-direction:column;align-items:flex-start}.ec-shell .ec-account-settings .ec-fieldset{grid-template-columns:1fr}.ec-shell .ec-order-filters button{flex:1 1 40%}}
