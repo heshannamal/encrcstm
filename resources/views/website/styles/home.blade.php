@@ -424,3 +424,37 @@ h1,h2,h3{margin:0;font-family:var(--disp);font-weight:800;line-height:.95;letter
  .nav .links .nav-cta{gap:7px}
  .nav .links .nav-cta .btn{font-size:10px;padding:12px 13px}
 }
+
+/* Shared storefront account controls: visible guest cart, signed-in avatar. */
+.nav .links{margin-left:auto;justify-content:flex-end}
+.nav .links .nav-cta{display:inline-flex;align-items:center;gap:10px}
+.nav .links .ec-shop-cart-link{display:inline-flex;align-items:center;justify-content:center;flex:none;gap:8px;min-width:46px;height:46px;padding:0 10px;border:1px solid rgba(255,255,255,.15);border-radius:8px;background:#414e59;color:#fff;text-decoration:none;transition:background .25s ease,transform .25s ease}
+.nav .links .ec-shop-cart-link:hover{background:#4c5a67;transform:translateY(-2px)}
+.nav .links .ec-shop-account{position:relative;flex:none}
+.nav .links .ec-shop-account-trigger{display:flex;align-items:center;justify-content:center;cursor:pointer;list-style:none;user-select:none}
+.nav .links .ec-shop-account-trigger::-webkit-details-marker{display:none}
+.nav .links .ec-shop-account-trigger::marker{content:''}
+.nav .links .ec-shop-avatar{display:grid;place-items:center;width:44px;height:44px;border:1px solid rgba(255,255,255,.55);border-radius:50%;background:rgba(255,255,255,.09);color:#fff;font:700 17px/1 'Hanken Grotesk',Arial,sans-serif;transition:border-color .2s,background .2s,transform .2s}
+.nav .links .ec-shop-account-trigger:hover .ec-shop-avatar,.nav .links .ec-shop-account[open] .ec-shop-avatar{background:#536675;border-color:#e70033;transform:translateY(-2px)}
+.nav .links .ec-shop-account-dropdown{position:absolute;right:0;top:calc(100% + 14px);z-index:1300;width:238px;padding:9px;background:#fff;border:1px solid #e4e8ed;border-radius:12px;box-shadow:0 20px 48px rgba(16,28,39,.22);color:#2e414f}
+.nav .links .ec-shop-account-head{padding:10px 12px 13px;border-bottom:1px solid #e7ebef;margin-bottom:5px}
+.nav .links .ec-shop-account-label{display:block;font:800 14px 'Hanken Grotesk',Arial,sans-serif;color:#293d4c;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.nav .links .ec-shop-account-head small{display:block;margin-top:3px;color:#738391;font-size:11px;overflow-wrap:anywhere}
+.nav .links .ec-shop-account-dropdown a,.nav .links .ec-shop-account-dropdown button{width:100%;display:flex;align-items:center;gap:11px;padding:12px 11px;color:#34434d;border:0;border-radius:7px;background:transparent;font:700 13px 'Hanken Grotesk',Arial,sans-serif;text-align:left;text-decoration:none;cursor:pointer;transition:background .2s,color .2s}
+.nav .links .ec-shop-account-dropdown a:hover,.nav .links .ec-shop-account-dropdown button:hover{background:#f1f4f6;color:#e70033}
+.nav .links .ec-shop-account-dropdown form{margin:0;padding:4px 0 0;border-top:1px solid #edf0f2}
+.nav .links .ec-shop-mobile-label{display:none}
+@media(min-width:901px) and (max-width:1240px){
+ .nav .links{gap:14px}
+ .nav .links .nav-cta{gap:8px}
+ .nav .links .nav-cta .btn{font-size:10px;padding:12px 14px}
+}
+@media(max-width:900px){
+ .nav .links .nav-cta{flex-direction:column;gap:12px}
+ .nav .links .ec-shop-mobile-label{display:inline;font:700 11px 'Space Mono',monospace;text-transform:uppercase}
+ .nav .links .ec-shop-cart-link{width:150px}
+ .nav .links .ec-shop-account-dropdown{position:static;width:min(270px,85vw);margin-top:10px;box-shadow:0 10px 25px rgba(0,0,0,.15)}
+ .nav .links .ec-shop-account{display:flex;flex-direction:column;align-items:center}
+ .nav .links .ec-shop-account-trigger{align-self:center}
+}
+@media(prefers-reduced-motion:reduce){.nav .links .ec-shop-cart-link,.nav .links .ec-shop-avatar{transition:none}}
