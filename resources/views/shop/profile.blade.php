@@ -11,7 +11,7 @@
  $settings=request('tab')==='settings';
  $stats=['Total Orders'=>data_get($summary,'TotalOrders',data_get($summary,'total_orders',0)),'In Packing'=>data_get($summary,'InPacking',data_get($summary,'in_packing',0)),'Delivered'=>data_get($summary,'Delivered',data_get($summary,'delivered',0)),'Refunds'=>data_get($summary,'RefundAndCancel',data_get($summary,'refund_and_cancel',0))];
 @endphp
-<section class="ec-shop-banner ec-account-banner"><div class="ec-banner-inner"><h1>My <span>Account</span></h1><p>Manage your profile, saved addresses and orders in one place.</p></div></section>
+<section class="ec-shop-banner ec-account-banner"><div class="ec-banner-inner">@if($settings)<h1>Account <span>Settings</span></h1><p>Manage your contact information and customer account.</p>@else<h1>My <span>Account</span></h1><p>Manage your profile, saved addresses and orders in one place.</p>@endif</div></section>
 <div class="ec-account-grid">
  @include('shop.partials.account-sidebar')
  <div class="ec-account-main">
@@ -22,7 +22,7 @@
   </section>
   @if($settings)
    <section class="ec-modern-card ec-account-settings">
-    <div class="ec-card-heading"><h2>Account Settings</h2><a href="{{ route('shop.profile') }}">← Back to Profile</a></div>
+    <div class="ec-card-heading"><h2>Personal & Contact Settings</h2><a class="ec-edit-btn" href="{{ route('shop.profile') }}">← Back to Profile</a></div>
     <p class="ec-settings-info">Update the contact details associated with your Encore customer account. Your saved billing and shipping addresses remain visible on the Profile page.</p>
     <form method="POST" action="{{ route('shop.profile.update') }}" class="ec-shop-form">@csrf @method('PATCH')
      <div class="ec-fieldset">
