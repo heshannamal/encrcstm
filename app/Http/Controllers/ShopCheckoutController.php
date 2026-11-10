@@ -327,6 +327,13 @@ final class ShopCheckoutController extends Controller
 
             $request->session()->forget(['encore_checkout_billing', 'encore_billing_saved', 'encore_temp_billing_detail_id', 'encore_cart_merge_pending']);
             $request->session()->put('encore_cart_temp_id', (string) Str::uuid());
+            $confirmedOrder = is_array($orderResponse['data'] ?? null) ? $orderResponse['data'] : [];
+            $request->session()->put('encore_order_confirmation', [
+                'id' => data_get($confirmedOrder, 'order_id', data_get($confirmedOrder, 'id')),
+                'number' => data_get($confirmedOrder, 'order_number', data_get($confirmedOrder, 'reference')),
+                'total' => data_get($confirmedOrder, 'amount_to_pay', data_get($confirmedOrder, 'invoice_total')),
+                'email' => data_get(session('encore_user'), 'email', ''),
+            ]);
             $request->session()->put('encore_order_success', true);
             return redirect()->route('shop.success');
         } catch (Throwable $exception) {
@@ -340,6 +347,8 @@ final class ShopCheckoutController extends Controller
     public function success(Request $request)
     {
         abort_unless($request->session()->pull('encore_order_success', false), 404);
-        return view('shop.success');
+        return view('shop.success', [
+            'confirmation' => $request->session()->pull('encore_order_confirmation', []),
+        ]);
     }
 }
