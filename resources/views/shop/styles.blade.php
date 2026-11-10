@@ -512,7 +512,7 @@ body.ec-shop-busy{cursor:progress}
 
 /* Encore storefront redesign: original sport-page palette and editorial sports theme. */
 .ec-shop-banner{position:relative;isolation:isolate;overflow:hidden;margin:-36px calc((min(1240px,94vw) - 100vw)/2) 28px;padding:38px max(3%,calc((100vw - 1240px)/2));background:#25343e;color:white}
-.ec-shop-banner:before{content:"";position:absolute;inset:0;z-index:-2;background:linear-gradient(95deg,#1b2b37 0%,rgba(25,39,50,.96) 48%,rgba(25,39,50,.65) 100%),url('{{ asset('assets/reference/0ca88fee07db45bfe5f9.jpg') }}') right 40%/cover no-repeat}
+.ec-shop-banner:before{content:"";position:absolute;inset:0;z-index:-2;background:linear-gradient(95deg,#1b2b37 0%,rgba(25,39,50,.96) 48%,rgba(25,39,50,.65) 100%),url('{{ asset('assets/reference/fe710de5b7de040d2fab.jpg') }}') right 40%/cover no-repeat}
 .ec-shop-banner:after{content:"";position:absolute;inset:auto -3% -50% auto;width:18%;height:200%;transform:skew(-35deg);background:rgba(231,0,51,.18);z-index:-1}
 .ec-banner-inner{max-width:1240px;margin:auto}
 .ec-shop-banner h1{font:900 clamp(34px,5vw,66px)/1.02 Archivo,Arial,sans-serif;letter-spacing:-.05em;text-transform:uppercase;color:white;margin:0 0 12px}
@@ -637,7 +637,7 @@ body.ec-shop-busy{cursor:progress}
  width:100%;max-width:none;margin:0;padding:0 max(3.2vw,18px) 80px;
  background:
  linear-gradient(120deg,rgba(15,30,41,.93),rgba(21,38,51,.8) 52%,rgba(15,28,40,.92)),
- url('{{ asset('assets/reference/0ca88fee07db45bfe5f9.jpg') }}') center top/cover fixed;
+ url('{{ asset('assets/reference/fe710de5b7de040d2fab.jpg') }}') center top/cover fixed;
  position:relative;isolation:isolate;
 }
 .ec-shell:has(.ec-shop-banner) .ec-main:before{
@@ -965,7 +965,7 @@ body.ec-shop-busy{cursor:progress}
 .ec-shell:has(.ec-shop-banner) .ec-main{
  background:
  linear-gradient(105deg,rgba(18,35,49,.96),rgba(24,41,55,.87) 53%,rgba(16,31,44,.96)),
- url('{{ asset('assets/reference/0ca88fee07db45bfe5f9.jpg') }}') center top / cover fixed!important;
+ url('{{ asset('assets/reference/fe710de5b7de040d2fab.jpg') }}') center top / cover fixed!important;
  color:#f5f7fa;
 }
 .ec-shell:has(.ec-shop-banner){background:#172a39}
