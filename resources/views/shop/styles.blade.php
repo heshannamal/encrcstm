@@ -1168,3 +1168,122 @@ body.ec-shop-busy{cursor:progress}
  .ec-shell:has(.ec-shop-banner) .ec-modern-summary{position:static}
  .ec-shell:has(.ec-shop-banner) .ec-modern-card h2{font-size:18px}
 }
+
+/* Encore Custom athletic sign-in and registration — approved visual direction. */
+.ec-shell:has(.ec-auth-hero){background:#132634}
+.ec-shell:has(.ec-auth-hero) .ec-main{
+ width:100%;max-width:none;margin:0;flex:1;
+ padding:0!important;background:#152738;
+}
+.ec-shell .ec-auth-hero{
+ position:relative;isolation:isolate;
+ display:flex;align-items:center;justify-content:center;
+ min-height:calc(100svh - 78px);
+ margin:0!important;padding:65px 20px 80px!important;
+ background:linear-gradient(100deg,rgba(11,27,43,.83),rgba(20,38,56,.71) 46%,rgba(10,24,39,.9)),url('{{ asset('assets/reference/b46204161d649c9f879a.jpg') }}') center 39%/cover no-repeat!important;
+ overflow:hidden;
+}
+.ec-shell .ec-auth-hero:before{content:none!important}
+.ec-shell .ec-auth-hero:after{
+ content:"";position:absolute;z-index:-1;pointer-events:none;
+ inset:0;background:
+ linear-gradient(116deg,transparent 4%,rgba(236,0,53,.62) 4.2%,rgba(236,0,53,.62) 6.8%,transparent 7%),
+ linear-gradient(116deg,transparent 89%,rgba(236,0,53,.65) 89.2%,rgba(236,0,53,.65) 92%,transparent 92.2%);
+}
+.ec-shell .ec-auth-scene{
+ position:absolute;inset:0;z-index:-1;pointer-events:none;
+ background:radial-gradient(ellipse 60% 70% at 50% 40%,transparent 0%,rgba(8,18,29,.35) 95%);
+}
+.ec-shell .ec-auth-wrap{width:100%;max-width:680px;margin:auto;position:relative;z-index:1}
+.ec-shell .ec-auth-card{
+ padding:clamp(27px,4.5vw,54px);
+ border-radius:22px;
+ background:linear-gradient(130deg,#fff,#f8faff 68%,#f2f6fc);
+ border:1px solid rgba(255,255,255,.95);
+ box-shadow:0 28px 85px rgba(0,0,0,.35);
+ color:#1c2e3d;
+}
+.ec-shell .ec-auth-brand{display:block;width:max-content;max-width:100%;margin:0 auto 30px}
+.ec-shell .ec-auth-logo{width:255px;max-width:100%;height:auto;max-height:72px;object-fit:contain;margin:0;filter:brightness(0)}
+.ec-shell .ec-auth-title{
+ font:900 clamp(35px,4.3vw,58px)/1.04 Archivo,"Arial Black",sans-serif;
+ color:#243645;text-align:center;letter-spacing:-.045em;
+ margin:0 0 10px;
+}
+.ec-shell .ec-auth-title span{color:#e70033}
+.ec-shell .ec-auth-subtitle{font-size:15px;line-height:1.55;text-align:center;margin:0 0 31px;color:#647485}
+.ec-shell .ec-auth-form{gap:18px}
+.ec-shell .ec-auth-form .ec-field{margin:0;min-width:0}
+.ec-shell .ec-auth-form .ec-field>label{
+ display:block;font:700 13px/1.3 'Hanken Grotesk',Arial,sans-serif;
+ color:#263846;margin-bottom:9px;
+}
+.ec-shell .ec-auth-required{color:#e70033}
+.ec-shell .ec-auth-name-row{display:grid;grid-template-columns:1fr 1fr;gap:15px}
+.ec-shell .ec-auth-control{position:relative;display:flex;align-items:center;min-width:0}
+.ec-shell .ec-auth-control .ec-auth-field-icon{
+ position:absolute;z-index:1;left:15px;display:flex;align-items:center;
+ color:#485d70;pointer-events:none;
+}
+.ec-shell .ec-auth-field-icon svg{width:21px;height:21px;display:block}
+.ec-shell .ec-auth-control .ec-input{
+ width:100%;min-width:0;min-height:54px;
+ padding:13px 15px 13px 48px;
+ color:#142b3c;font:500 15px 'Hanken Grotesk',Arial,sans-serif;
+ border:1px solid #c4d1e1;border-radius:8px;
+ background:linear-gradient(95deg,#edf2fc,#e6eefb)!important;
+ outline:none;box-shadow:none;
+ transition:border-color .2s ease,box-shadow .2s ease,background .2s ease;
+}
+.ec-shell .ec-auth-control .ec-input::placeholder{color:#79889b;opacity:1}
+.ec-shell .ec-auth-control .ec-input:hover{border-color:#aabdd0}
+.ec-shell .ec-auth-control .ec-input:focus{border-color:#e70033;box-shadow:0 0 0 3px rgba(231,0,51,.12)}
+.ec-shell .ec-auth-control.ec-password-wrap .ec-input{padding-right:91px!important}
+.ec-shell .ec-auth-control .ec-password-toggle{
+ position:absolute;right:8px;top:50%;transform:translateY(-50%);
+ display:flex;align-items:center;gap:6px;
+ background:transparent;color:#3a5367;
+ border:0;border-left:1px solid #bfccdc;border-radius:0;
+ font-size:12px;padding:7px 9px;cursor:pointer;
+}
+.ec-shell .ec-auth-control .ec-password-toggle svg{width:19px;height:19px}
+.ec-shell .ec-auth-control .ec-password-toggle:hover{color:#e70033}
+.ec-shell .ec-auth-control .ec-password-toggle:focus-visible{outline:2px solid #e70033;outline-offset:2px;border-radius:4px}
+.ec-shell .ec-auth-form .ec-auth-submit{
+ min-height:57px;margin:10px 0 0;padding:15px 22px;
+ background:#e70033!important;border:0;border-radius:8px;
+ color:#fff;font:800 15px 'Space Mono',monospace!important;
+ letter-spacing:.04em;
+ display:flex;align-items:center;justify-content:center;gap:16px;
+ transition:background .25s ease,box-shadow .25s ease,transform .25s ease;
+}
+.ec-shell .ec-auth-form .ec-auth-submit:hover{background:#c0002e!important;transform:translateY(-2px);box-shadow:0 12px 23px rgba(231,0,51,.25)}
+.ec-shell .ec-auth-form .ec-auth-submit .ec-auth-cta-arrow{display:inline-block;transition:transform .25s ease}
+.ec-shell .ec-auth-form .ec-auth-submit:hover .ec-auth-cta-arrow{transform:translateX(5px)}
+.ec-shell .ec-auth-bottom{
+ display:flex;align-items:center;justify-content:center;flex-wrap:wrap;
+ border-top:1px solid #d9e0e8;padding-top:24px;margin-top:27px;gap:10px;
+ color:#617384;font-size:15px;
+}
+.ec-shell .ec-auth-bottom a{display:inline-flex;align-items:center;gap:6px;color:#e70033;font-weight:800;text-decoration:none;transition:gap .2s ease}
+.ec-shell .ec-auth-bottom a:hover{gap:11px;text-decoration:underline}
+.ec-shell .ec-auth-errors{margin:0 0 22px;padding:13px 17px;border-left:3px solid #e70033;background:#fff1f4;border-radius:5px;color:#a30a2d;font-size:13px;line-height:1.5}
+.ec-shell .ec-auth-errors p{margin:4px 0}
+.ec-shell:has(.ec-auth-hero) .ec-shop-footer{background:#1c2d3c;color:#dee8f0;border-top:1px solid rgba(255,255,255,.13)}
+.ec-shell:has(.ec-auth-hero) .ec-shop-footer a,.ec-shell:has(.ec-auth-hero) .ec-shop-footer p{color:#c7d8e4}
+.ec-shell:has(.ec-auth-hero) .ec-shop-footer h3{color:#fff}
+@media(max-width:650px){
+ .ec-shell .ec-auth-hero{min-height:calc(100svh - 68px);padding:25px 13px 45px!important}
+ .ec-shell .ec-auth-card{border-radius:15px;padding:29px 20px}
+ .ec-shell .ec-auth-brand{margin-bottom:23px}
+ .ec-shell .ec-auth-logo{width:210px}
+ .ec-shell .ec-auth-name-row{grid-template-columns:1fr;gap:15px}
+ .ec-shell .ec-auth-title{font-size:clamp(32px,9vw,43px)}
+ .ec-shell .ec-auth-subtitle{font-size:13px;margin-bottom:25px}
+ .ec-shell .ec-auth-form{gap:14px}
+ .ec-shell .ec-auth-control .ec-input{min-height:50px}
+}
+@media(prefers-reduced-motion:reduce){
+ .ec-shell .ec-auth-control .ec-input,.ec-shell .ec-auth-form .ec-auth-submit,.ec-shell .ec-auth-form .ec-auth-submit .ec-auth-cta-arrow{transition:none}
+ .ec-shell .ec-auth-form .ec-auth-submit:hover,.ec-shell .ec-auth-form .ec-auth-submit:hover .ec-auth-cta-arrow{transform:none}
+}
