@@ -2,24 +2,10 @@
 @section('shop-title', 'Apparel Catalog')
 @section('shop-content')
 <section class="ec-store-top ec-store-reference">
- <div class="ec-catalog-toolbar">
-  <div class="ec-catalog-toolbar-spacer" aria-hidden="true"></div>
-  <form class="ec-catalog-search" method="GET" action="{{ route('shop.catalog') }}" role="search">
-   <input type="hidden" name="selectedCategory" value="{{ $filters['selectedCategory'] }}">
-   <input type="hidden" name="selectedGender" value="{{ $filters['selectedGender'] }}">
-   <input type="hidden" name="selectedSport" value="{{ $filters['selectedSport'] }}">
-   <input type="hidden" name="selectedStyle" value="{{ $filters['selectedStyle'] }}">
-   <label class="ec-visually-hidden" for="ecTopSearch">Search apparel</label>
-   <span class="ec-search-lens" aria-hidden="true"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="10.7" cy="10.7" r="6.9"/><path d="m16 16 5.2 5.2"/></svg></span>
-   <input id="ecTopSearch" name="search" value="{{ request('search') }}" type="search" placeholder="Search products" autocomplete="off">
-   <button type="submit">Search</button>
-  </form>
-  <h1 class="ec-catalog-toolbar-title">APPAREL CATALOG</h1>
- </div>
  <div class="ec-catalog-filterbar">
   <div class="ec-store-breadcrumb"><a href="{{ route('home') }}">Home</a> / Catalog</div>
   <form class="ec-store-filters" method="GET" action="{{ route('shop.catalog') }}" id="ecCatalogFilters">
-   <input type="hidden" name="search" value="{{ request('search') }}">
+
    <div class="ec-field"><label for="catFilter">Category</label><select id="catFilter" class="ec-select" name="selectedCategory">
     <option value="1" @selected((int)$filters['selectedCategory']===1)>Teamwear</option>
     <option value="3" @selected((int)$filters['selectedCategory']===3)>Lifestyle</option>
@@ -32,6 +18,13 @@
    <div class="ec-field"><label for="sportFilter">Sport</label><select id="sportFilter" class="ec-select" name="selectedSport"><option value="18" @selected((int)$filters['selectedSport']===18)>All</option>@foreach(config('sports',[]) as $sport)<option value="{{ $sport['id'] }}" @selected((int)$filters['selectedSport']===(int)$sport['id'])>{{ $sport['name'] }}</option>@endforeach</select></div>
    <div class="ec-field"><label for="styleFilter">Style</label><select id="styleFilter" class="ec-select" name="selectedStyle"><option value="0">All</option>@foreach($styles as $style)@php $styleId=data_get($style,'id'); @endphp @if(is_numeric($styleId))<option value="{{ $styleId }}" @selected((int)$filters['selectedStyle']===(int)$styleId)>{{ data_get($style,'product_category_name',data_get($style,'name','Style')) }}</option>@endif @endforeach</select></div>
    <div class="ec-field ec-filter-sort"><label for="sortFilter">Sort</label><select id="sortFilter" class="ec-select" name="sort"><option value="">Featured</option><option value="name" @selected(request('sort')==='name')>A-Z</option><option value="price_asc" @selected(request('sort')==='price_asc')>Price low-high</option><option value="price_desc" @selected(request('sort')==='price_desc')>Price high-low</option></select></div>
+   <div class="ec-field ec-filter-inline-search">
+    <label for="ecFilterSearch">Search products</label>
+    <div class="ec-filter-search-wrap">
+     <input id="ecFilterSearch" class="ec-input" type="search" name="search" value="{{ request('search') }}" placeholder="Search apparel" autocomplete="off">
+     <button type="submit" class="ec-filter-search-btn" aria-label="Search products"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="10.8" cy="10.8" r="7"></circle><path d="m16 16 5 5"></path></svg></button>
+    </div>
+   </div>
   </form>
   <div class="ec-catalog-results"><span>{{ $items->count() }} Items</span><a href="{{ route('shop.catalog') }}">Clear ×</a></div>
  </div>
@@ -40,7 +33,7 @@
 @forelse($grouped as $category=>$products)
 <section class="ec-catalog-section">
  <button type="button" class="ec-category-toggle" aria-expanded="true" aria-controls="category-{{ $loop->index }}">
-  <span>{{ $category }}</span><span class="ec-category-chevron" aria-hidden="true">⌄</span>
+  <span>{{ $category }}</span><span class="ec-category-chevron" aria-hidden="true"><svg viewBox="0 0 24 24" width="21" height="21" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="m5 9 7 7 7-7"/></svg></span>
  </button>
  <div class="ec-product-grid" id="category-{{ $loop->index }}">
   @foreach($products as $product)

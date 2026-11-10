@@ -8,45 +8,17 @@
 @section('content')
 <div class="ec-shell">
 @include('shop.loader')
-<nav class="nav ec-shop-nav" id="nav" aria-label="Shopping navigation">
- <a href="{{ route('home') }}" class="homelink" aria-label="Encore Custom home"><img class="logo" src="{{ asset('assets/reference/297053b134d4897782f2.png') }}" alt="Encore Custom"></a>
- <div class="rt" id="links">
-  <a class="nl" href="{{ route('sports.show', ['sport' => 'volleyball']) }}#kit">The kit</a>
-  <a class="nl" href="{{ route('sports.show', ['sport' => 'volleyball']) }}#proof">Teams</a>
-  @if(request()->routeIs('shop.cart', 'shop.profile', 'shop.orders', 'shop.order', 'shop.checkout', 'shop.payment', 'shop.success'))
-   <a class="btn catalog" href="{{ route('shop.catalog') }}"><span>Catalog</span><span class="ar">→</span></a>
-  @else
-   <a class="btn catalog" href="{{ route('home') }}#sports"><span>Sports</span><span class="ar">→</span></a>
-  @endif
-  <a class="btn" href="{{ config('site.builder_url', 'https://dev.encr.co/') }}"><span>Start a kit</span><span class="ar">→</span></a>
-  @if(session()->has('encore_user_token'))
-   <a class="ec-shop-cart-link" href="{{ route('shop.cart') }}" aria-label="View cart" title="Cart">
-    <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.5 12.8a2 2 0 0 0 2 1.6h9.6a2 2 0 0 0 2-1.6L23 6H6"/></svg>
-    <span class="ec-shop-mobile-label">Cart</span>
-   </a>
-   @php
-    $shopAccount = session('encore_user', []);
-    $shopName = trim((string) (data_get($shopAccount, 'f_name') ?: data_get($shopAccount, 'first_name') ?: data_get($shopAccount, 'name') ?: ''));
-    $shopInitial = mb_strtoupper(mb_substr($shopName !== '' ? $shopName : 'U', 0, 1));
-   @endphp
-   <details class="ec-shop-account" id="ecShopAccount">
-    <summary class="ec-shop-account-trigger" aria-label="Account menu" title="My account">
-     <span class="ec-shop-avatar">{{ $shopInitial }}</span>
-     <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
-    </summary>
-    <div class="ec-shop-account-dropdown">
-     <span class="ec-shop-account-label">{{ $shopName !== '' ? $shopName : 'My account' }}</span>
-     <a href="{{ route('shop.orders') }}">Orders</a>
-     <a href="{{ route('shop.profile') }}">Profile</a>
-     <form method="POST" action="{{ route('shop.logout') }}">
-      @csrf
-      <button type="submit">Logout</button>
-     </form>
-    </div>
-   </details>
-  @else
-   <a class="btn ec-shop-signin" href="{{ route('shop.login') }}"><span>Sign In</span><span class="ar">→</span></a>
-  @endif
+<nav class="nav ec-shop-nav" id="nav" aria-label="Shop navigation">
+ <a href="{{ route('home') }}#top" class="homelink" aria-label="Encore Custom home"><img class="logo" src="{{ asset('assets/reference/297053b134d4897782f2.png') }}" alt="Encore Custom"></a>
+ <div class="links" id="links">
+  <a class="navlink" href="{{ route('home') }}#sports">Sports</a>
+  <a class="navlink" href="{{ route('home') }}#contact">Contact</a>
+  <span class="nav-cta">
+   <a class="btn catalog" href="https://encr.co/customer_catalog"><span>Catalog</span><span class="ar">→</span></a>
+   <a class="btn shop" href="{{ route('shop.catalog') }}"><span>Shop</span><span class="ar">→</span></a>
+   <a class="btn" href="{{ config('site.builder_url', 'https://dev.encr.co/') }}"><span>Start a kit</span><span class="ar">→</span></a>
+  </span>
+  @include('shop.partials.nav-account')
  </div>
  <button class="burger" type="button" id="burger" aria-label="Toggle navigation" aria-controls="links" aria-expanded="false"><span></span><span></span><span></span></button>
 </nav>
