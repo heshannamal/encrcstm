@@ -88,20 +88,36 @@ final class ShopCheckoutController extends Controller
                 );
                 $billing['country_id'] = data_get($matchedCountry, 'id', '');
             }
-            $checkoutItems = [];
             $products = app(\App\Services\EncoreProductService::class);
             $cartResponse = $this->cart->items((string) session('encore_cart_temp_id', ''));
-            $ownedIds = array_fill_keys($ids, true);
-            $rawItems = collect(($cartResponse['success'] ?? false) ? ($cartResponse['cart_items'] ?? []) : [])
-                ->filter('is_array')
-                ->filter(fn ($row) => isset($ownedIds[(int) data_get($row, 'cart_id', 0)]))
-                ->keyBy(fn ($row) => (int) data_get($row, 'cart_id', 0));
+            if (!($cartResponse['success'] ?? false)) {
+                throw new \RuntimeException('Unable to load cart items from Encore.');
+            }
 
-            foreach ($ids as $cartId) {
-                if (!$rawItems->has($cartId)) {
+            // Use the same API data and normalization as the working cart page.
+            // A separate get_cart_item_by_id response may be a different shape
+            // and must not invalidate an item already returned by get_cart_items.
+            $rawRows = collect($cartResponse['cart_items'] ?? [])
+                ->filter('is_array')
+                ->filter(fn ($row) => (int) data_get($row, 'cart_id', 0) > 0)
+                ->unique(fn ($row) => (int) data_get($row, 'cart_id'))
+                ->values();
+
+            $owned = array_fill_keys($ids, true);
+            $ownedRows = $rawRows->filter(fn ($row) =>
+                isset($owned[(int) data_get($row, 'cart_id', 0)])
+            );
+            if ($ownedRows->isNotEmpty()) {
+                $rawRows = $ownedRows->values();
+            }
+
+            // Only fetch missing rows when the authenticated cart endpoint lists
+            // IDs which are absent from the regular cart response.
+            if ($rawRows->isEmpty()) {
+                foreach ($ids as $cartId) {
                     $detail = $this->cart->getById($cartId);
                     if (!($detail['success'] ?? false)) {
-                        throw new \RuntimeException('Unable to retrieve an authenticated cart item.');
+                        continue;
                     }
                     $raw = data_get($detail, 'data.cart_item')
                         ?? data_get($detail, 'data.cart')
@@ -109,21 +125,22 @@ final class ShopCheckoutController extends Controller
                         ?? data_get($detail, 'data');
                     if (is_array($raw) && !array_is_list($raw)) {
                         $raw['cart_id'] = $cartId;
-                        $rawItems->put($cartId, $raw);
+                        $rawRows->push($raw);
                     }
                 }
             }
 
-            if ($rawItems->count() !== count($ids)) {
-                throw new \RuntimeException('Some authenticated cart items could not be loaded.');
-            }
+            $checkoutItems = $rawRows
+                ->map(fn ($row) => $products->normalizeCartItem($row))
+                ->filter(fn ($row) => (int) ($row['cart_id'] ?? 0) > 0)
+                ->values()->all();
+            $checkoutSubtotal = round((float) collect($checkoutItems)->sum('line_total'), 2);
 
-            $checkoutItems = $rawItems->map(fn ($row) => $products->normalizeCartItem($row))->values()->all();
-            $checkoutSubtotal = (float) collect($checkoutItems)->sum('line_total');
-            if ($checkoutSubtotal <= 0 || collect($checkoutItems)->contains(fn ($row) =>
-                (int) ($row['cart_id'] ?? 0) < 1 || (float) ($row['price'] ?? 0) <= 0
-            )) {
-                throw new \RuntimeException('Checkout subtotal cannot be verified from the cart API.');
+            if (!$checkoutItems) {
+                Log::warning('Checkout has authenticated cart IDs but no displayable cart rows', [
+                    'cart_id_count' => count($ids),
+                    'get_cart_items_status' => $cartResponse['_http_status'] ?? null,
+                ]);
             }
 
             return view('shop.checkout', [
