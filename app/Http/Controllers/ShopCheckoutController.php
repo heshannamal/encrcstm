@@ -148,6 +148,7 @@ final class ShopCheckoutController extends Controller
                 'customer' => $customer,
                 'billing' => $billing,
                 'checkoutItems' => $checkoutItems,
+                'cartIds' => $ids,
                 'checkoutSubtotal' => $checkoutSubtotal,
             ]);
         } catch (Throwable $exception) {
