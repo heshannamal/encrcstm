@@ -138,10 +138,10 @@
 .ec-store-heading h1{margin:0;color:#34434d;font-family:Archivo,sans-serif;font-weight:900;font-size:clamp(27px,3.5vw,45px);letter-spacing:-.045em}
 .ec-store-heading h1 em{font:400 1.25em/.9 Allura,cursive;text-transform:none;letter-spacing:0;color:#ed0036}
 .ec-store-heading>span:last-child{font:700 11px/1.4 'Space Mono',monospace;letter-spacing:.12em;color:#64717b}
-.ec-shop-footer{background:#f8f8f8;border-top:1px solid #e4e7e9;padding:36px max(5vw,25px);display:grid;grid-template-columns:1fr 1.6fr 1fr;gap:22px;align-items:start}
-.ec-shop-footer-col{display:flex;flex-direction:column;align-items:flex-start;gap:10px;color:#657483;font-size:13px}
+.ec-shop-footer{background:rgba(51, 63, 72, .9);border-top:1px solid #e4e7e9;padding:36px max(5vw,25px);display:grid;grid-template-columns:1fr 1.6fr 1fr;gap:22px;align-items:start}
+.ec-shop-footer-col{display:flex;flex-direction:column;align-items:flex-start;gap:10px;color:White;font-size:13px}
 .ec-shop-footer-col h3{font-size:19px;color:#33414a;font-weight:500;margin:0 0 3px}
-.ec-shop-footer-col a{color:#657483;text-decoration:none}
+.ec-shop-footer-col a{color:White;text-decoration:none}
 .ec-shop-footer-col a:hover{color:#ed0036}
 .ec-shop-footer-col p{margin:0;line-height:1.7}
 .ec-shop-footer-center{text-align:center;border-inline:1px solid #e4e7e9;padding:0 22px;color:#657483}

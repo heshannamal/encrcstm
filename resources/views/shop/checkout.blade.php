@@ -59,7 +59,6 @@
   </div>
   @empty<p class="ec-summary-note">Your order contains items. Encore will verify their pricing and totals before payment.</p>@endforelse
   <div class="ec-summary-line ec-summary-total"><span>Cart Subtotal</span><strong>@if(count($checkoutItems ?? []) && ($checkoutSubtotal ?? 0) > 0)${{ number_format((float)$checkoutSubtotal,2) }}@else Calculated at payment @endif</strong></div>
-  <p class="ec-summary-note">Shipping and sales tax are calculated automatically by the Encore API on the payment page. No delivery-method selection is required.</p>
   <button class="ec-btn ec-proceed" type="submit">Continue to Secure Payment <span class="ec-arrow" aria-hidden="true">→</span></button>
   <a class="ec-outline-action" href="{{ route('shop.cart') }}">← Back to Cart</a>
   <div class="ec-trust-row"><span>✓ Secure Checkout</span><span>✓ Customer Support</span></div>
