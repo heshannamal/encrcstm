@@ -936,3 +936,11 @@ body.ec-shop-busy{cursor:progress}
 .ec-shell>.nav.ec-shop-nav .nav-cta .btn:hover .ar{transform:translateX(5px)}
 @media(max-width:1100px){.ec-shell>.nav.ec-shop-nav .links{gap:12px}.ec-shell>.nav.ec-shop-nav .nav-cta .btn{padding:12px 12px;font-size:10px}}
 @media(max-width:900px){.ec-shell>.nav.ec-shop-nav .links{position:fixed;inset:0;background:#333f48;flex-direction:column;justify-content:center;gap:22px;transform:translateY(-100%);transition:transform .5s cubic-bezier(.2,.8,.2,1);z-index:39;overflow-y:auto;padding:95px 20px 35px}.ec-shell>.nav.ec-shop-nav .links.open{transform:translateY(0)}.ec-shell>.nav.ec-shop-nav .nav-cta{flex-direction:column}}
+
+/* Keep the shared account dropdown identical on homepage and shopping pages. */
+.ec-shell>.nav.ec-shop-nav .links .ec-shop-account-dropdown{width:238px;padding:9px;border-radius:12px;box-shadow:0 20px 48px rgba(16,28,39,.22)}
+.ec-shell>.nav.ec-shop-nav .links .ec-shop-account-head{padding:10px 12px 13px;margin-bottom:5px;border-bottom:1px solid #e7ebef}
+.ec-shell>.nav.ec-shop-nav .links .ec-shop-account-label{padding:0;margin:0;border:0;font-weight:800;font-size:14px}
+.ec-shell>.nav.ec-shop-nav .links .ec-shop-account-dropdown a,.ec-shell>.nav.ec-shop-nav .links .ec-shop-account-dropdown button{display:flex;align-items:center;gap:11px;padding:12px 11px;font-weight:700;font-size:13px}
+.ec-shell>.nav.ec-shop-nav .links .ec-shop-account-dropdown form{padding-top:4px;border-top:1px solid #edf0f2}
+@media(max-width:900px){.ec-shell>.nav.ec-shop-nav .links .ec-shop-account-dropdown{position:static;width:min(270px,85vw);margin-top:10px}}
