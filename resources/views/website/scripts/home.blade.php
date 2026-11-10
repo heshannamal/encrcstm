@@ -213,4 +213,19 @@
    t.textContent=msg; t.classList.add('show'); clearTimeout(window.__st); window.__st=setTimeout(function(){t.classList.remove('show');},2500);
   });
  });
+ /* account avatar dropdown */
+ var accountMenu=document.getElementById('ecShopAccount');
+ if(accountMenu){
+  document.addEventListener('click',function(event){
+   if(accountMenu.open && !accountMenu.contains(event.target))accountMenu.open=false;
+  });
+  document.addEventListener('keydown',function(event){
+   if(event.key==='Escape' && accountMenu.open){
+    accountMenu.open=false;
+    var trigger=accountMenu.querySelector('summary');
+    if(trigger)trigger.focus();
+   }
+  });
+ }
+
 })();

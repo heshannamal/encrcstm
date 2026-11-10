@@ -922,3 +922,17 @@ body.ec-shop-busy{cursor:progress}
 .ec-shell .ec-category-toggle[aria-expanded=false] ~ .ec-show-more-wrap{display:none}
 @media(max-width:1140px){.ec-shell .ec-store-reference .ec-catalog-filterbar{grid-template-columns:1fr}.ec-shell .ec-store-reference .ec-store-breadcrumb{padding:0 0 10px}.ec-shell .ec-store-reference .ec-store-filters{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:650px){.ec-shell .ec-store-reference .ec-store-filters{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.ec-shell .ec-store-reference .ec-filter-inline-search{grid-column:1/-1}.ec-shell .ec-catalog-section{padding:7px 9px 14px}.ec-shell .ec-category-toggle{font-size:17px}}
+
+/* Shop and Catalog retain the approved homepage slate actions. */
+.ec-shell>.nav.ec-shop-nav .nav-cta .btn.shop,
+.ec-shell>.nav.ec-shop-nav .nav-cta .btn.catalog{background:#414e59;border-color:#414e59;color:#f4f5f6}
+.ec-shell>.nav.ec-shop-nav .nav-cta .btn.shop:hover,
+.ec-shell>.nav.ec-shop-nav .nav-cta .btn.catalog:hover{background:#4c5a67;box-shadow:none}
+.ec-shell>.nav.ec-shop-nav .nav-cta .btn:not(.shop):not(.catalog){background:#e70033;border-color:#e70033}
+.ec-shell>.nav.ec-shop-nav .nav-cta .btn:not(.shop):not(.catalog):hover{background:#b4002a}
+.ec-shell>.nav.ec-shop-nav .links{margin-left:auto;gap:20px;display:flex;align-items:center}
+.ec-shell>.nav.ec-shop-nav .nav-cta{display:inline-flex;align-items:center;gap:10px}
+.ec-shell>.nav.ec-shop-nav .nav-cta .btn .ar{display:inline-block;transition:transform .25s cubic-bezier(.2,.8,.2,1)}
+.ec-shell>.nav.ec-shop-nav .nav-cta .btn:hover .ar{transform:translateX(5px)}
+@media(max-width:1100px){.ec-shell>.nav.ec-shop-nav .links{gap:12px}.ec-shell>.nav.ec-shop-nav .nav-cta .btn{padding:12px 12px;font-size:10px}}
+@media(max-width:900px){.ec-shell>.nav.ec-shop-nav .links{position:fixed;inset:0;background:#333f48;flex-direction:column;justify-content:center;gap:22px;transform:translateY(-100%);transition:transform .5s cubic-bezier(.2,.8,.2,1);z-index:39;overflow-y:auto;padding:95px 20px 35px}.ec-shell>.nav.ec-shop-nav .links.open{transform:translateY(0)}.ec-shell>.nav.ec-shop-nav .nav-cta{flex-direction:column}}
