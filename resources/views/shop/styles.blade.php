@@ -1149,3 +1149,22 @@ body.ec-shop-busy{cursor:progress}
 .ec-shell .ec-clear-cart:hover{color:#ff5277}
 @media(max-width:900px){.ec-shell .ec-payment-expiry{grid-template-columns:repeat(3,minmax(0,1fr))}.ec-shell .ec-confirmation-grid{grid-template-columns:1fr}.ec-shell .ec-confirmation-banner{gap:20px}}
 @media(max-width:640px){.ec-shell .ec-payment-expiry{grid-template-columns:1fr 1fr}.ec-shell .ec-payment-expiry>.ec-field:last-child{grid-column:1/-1}.ec-shell .ec-confirmation-banner{flex-direction:column;text-align:center}.ec-shell .ec-confirmation-actions{flex-direction:column}.ec-shell .ec-confirmation-actions>a{width:100%}.ec-shell .ec-payment-trust{flex-direction:column;align-items:flex-start}.ec-shell .ec-account-settings .ec-fieldset{grid-template-columns:1fr}.ec-shell .ec-order-filters button{flex:1 1 40%}}
+
+/* Continue the approved slate theme through the footer on redesigned routes. */
+.ec-shell:has(.ec-shop-banner) .ec-shop-footer{
+ background:#1b2c39!important;
+ color:#e1ebf1;
+ border-top:1px solid rgba(227,241,249,.19);
+}
+.ec-shell:has(.ec-shop-banner) .ec-shop-footer h3{color:#f1f6f9}
+.ec-shell:has(.ec-shop-banner) .ec-shop-footer a,
+.ec-shell:has(.ec-shop-banner) .ec-shop-footer p{color:#c1d2de}
+.ec-shell:has(.ec-shop-banner) .ec-shop-footer a:hover{color:#fff}
+.ec-shell:has(.ec-shop-banner) .ec-shop-footer-center small{color:#9db3c1}
+.ec-shell:has(.ec-shop-banner) .ec-shop-footer-center img{filter:none}
+.ec-shell:has(.ec-shop-banner) .ec-cart-list .ec-card-heading,
+.ec-shell:has(.ec-shop-banner) .ec-checkout-summary .ec-card-heading{margin-bottom:14px}
+@media(max-width:640px){
+ .ec-shell:has(.ec-shop-banner) .ec-modern-summary{position:static}
+ .ec-shell:has(.ec-shop-banner) .ec-modern-card h2{font-size:18px}
+}
