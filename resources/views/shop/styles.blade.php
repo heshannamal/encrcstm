@@ -944,3 +944,19 @@ body.ec-shop-busy{cursor:progress}
 .ec-shell>.nav.ec-shop-nav .links .ec-shop-account-dropdown a,.ec-shell>.nav.ec-shop-nav .links .ec-shop-account-dropdown button{display:flex;align-items:center;gap:11px;padding:12px 11px;font-weight:700;font-size:13px}
 .ec-shell>.nav.ec-shop-nav .links .ec-shop-account-dropdown form{padding-top:4px;border-top:1px solid #edf0f2}
 @media(max-width:900px){.ec-shell>.nav.ec-shop-nav .links .ec-shop-account-dropdown{position:static;width:min(270px,85vw);margin-top:10px}}
+
+/* Mirror the homepage navbar's shrink, glass, and magnetic button motion. */
+.ec-shell>.nav.ec-shop-nav.scrolled{
+ background:rgba(51,63,72,.9);
+ border-bottom:1px solid var(--edge);
+ box-shadow:0 7px 28px rgba(18,26,33,.14);
+}
+.ec-shell>.nav.ec-shop-nav .logo{height:30px;transition:height .35s var(--ease)}
+.ec-shell>.nav.ec-shop-nav.scrolled .logo{height:24px}
+.ec-shell>.nav.ec-shop-nav .nav-cta .btn{
+ transition:transform .25s var(--ease),background .25s var(--ease),box-shadow .25s var(--ease),border-color .25s var(--ease);
+ will-change:transform;
+}
+@media(prefers-reduced-motion:reduce){
+ .ec-shell>.nav.ec-shop-nav .nav-cta .btn{transition:none;will-change:auto}
+}

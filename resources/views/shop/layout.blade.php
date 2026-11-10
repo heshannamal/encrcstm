@@ -79,6 +79,20 @@ document.addEventListener('submit',function(event){
 function onScroll(){if(nav)nav.classList.toggle('scrolled',window.scrollY>40);}
 onScroll();
 window.addEventListener('scroll',onScroll,{passive:true});
+/* Reproduce the approved homepage magnetic hover on shopping navbar buttons. */
+if(!reduce && window.matchMedia('(hover: hover) and (pointer: fine)').matches){
+ nav?.querySelectorAll('.nav-cta .btn').forEach(function(button){
+  button.addEventListener('mousemove',function(event){
+   const rect=button.getBoundingClientRect();
+   const x=(event.clientX-rect.left-rect.width/2)*.18;
+   const y=(event.clientY-rect.top-rect.height/2)*.28;
+   button.style.transform='translate('+x+'px,'+y+'px)';
+  });
+  button.addEventListener('mouseleave',function(){button.style.transform='';});
+  button.addEventListener('blur',function(){button.style.transform='';});
+ });
+}
+
 if(burger&&links){
  burger.setAttribute('aria-expanded','false');
  burger.setAttribute('aria-controls','links');
