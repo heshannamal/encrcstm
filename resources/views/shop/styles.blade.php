@@ -960,3 +960,143 @@ body.ec-shop-busy{cursor:progress}
 @media(prefers-reduced-motion:reduce){
  .ec-shell>.nav.ec-shop-nav .nav-cta .btn{transition:none;will-change:auto}
 }
+
+/* ENCORE APPROVED DARK STOREFRONT — account, orders, cart and checkout */
+.ec-shell:has(.ec-shop-banner) .ec-main{
+ background:
+ linear-gradient(105deg,rgba(18,35,49,.96),rgba(24,41,55,.87) 53%,rgba(16,31,44,.96)),
+ url('{{ asset('assets/reference/0ca88fee07db45bfe5f9.jpg') }}') center top / cover fixed!important;
+ color:#f5f7fa;
+}
+.ec-shell:has(.ec-shop-banner){background:#172a39}
+.ec-shell:has(.ec-shop-banner) .ec-main:before{
+ background:linear-gradient(112deg,transparent 75%,rgba(226,0,48,.11) 75.15%,transparent 84%)!important;
+}
+.ec-shell .ec-shop-banner{max-width:1440px!important;padding:34px 0 18px!important}
+.ec-shell .ec-shop-banner h1{font:900 clamp(37px,4.8vw,68px)/1.04 Archivo,"Arial Black",sans-serif!important;letter-spacing:-.035em!important;color:#fff!important;text-shadow:0 3px 15px rgba(0,0,0,.12)}
+.ec-shell .ec-shop-banner h1 span{color:#f00038!important}
+.ec-shell .ec-shop-banner p{font-size:16px;color:#d5e0e7}
+.ec-shell:has(.ec-shop-banner) .ec-modern-card{
+ color:#f1f6f9;
+ background:linear-gradient(130deg,rgba(76,94,109,.46),rgba(35,56,72,.72) 76%);
+ border:1px solid rgba(214,231,241,.23);
+ box-shadow:0 16px 40px rgba(9,21,30,.18),inset 0 1px rgba(255,255,255,.06);
+ backdrop-filter:blur(17px);
+ -webkit-backdrop-filter:blur(17px);
+ border-radius:12px;
+}
+.ec-shell:has(.ec-shop-banner) .ec-modern-card h2,
+.ec-shell:has(.ec-shop-banner) .ec-modern-card h3{color:#f5f7fa;font-family:Archivo,'Arial Black',sans-serif;font-weight:800;text-transform:uppercase;letter-spacing:.005em}
+.ec-shell:has(.ec-shop-banner) .ec-modern-card h2{font-size:21px}
+.ec-shell:has(.ec-shop-banner) .ec-card-heading{border-bottom-color:rgba(226,237,243,.22)}
+.ec-shell:has(.ec-shop-banner) .ec-card-heading>a{color:#f1f5f9}
+.ec-shell:has(.ec-shop-banner) .ec-modern-card p,
+.ec-shell:has(.ec-shop-banner) .ec-summary-note,
+.ec-shell:has(.ec-shop-banner) .ec-settings-info{color:#c3d0da}
+.ec-shell:has(.ec-shop-banner) .ec-edit-btn{
+ color:#f4f7f8!important;border-color:rgba(229,242,249,.38)!important;
+ background:rgba(255,255,255,.035);
+}
+.ec-shell:has(.ec-shop-banner) .ec-edit-btn:hover{border-color:#e70033!important;color:#fff!important;background:rgba(231,0,51,.16)}
+.ec-shell:has(.ec-shop-banner) .ec-outline-action{
+ background:rgba(255,255,255,.025);
+ border-color:rgba(237,247,250,.67);color:#eff7fb;
+}
+.ec-shell:has(.ec-shop-banner) .ec-outline-action:hover{background:rgba(255,255,255,.13);color:#fff}
+.ec-shell:has(.ec-shop-banner) .ec-proceed{background:#ed0036!important;border:0;color:#fff!important}
+.ec-shell:has(.ec-shop-banner) .ec-proceed:hover{background:#bb002c!important}
+.ec-shell:has(.ec-shop-banner) .ec-modern-card .ec-input,
+.ec-shell:has(.ec-shop-banner) .ec-modern-card .ec-select,
+.ec-shell:has(.ec-shop-banner) .ec-modern-card input:not([type=checkbox]):not([type=radio]):not([type=hidden]){
+ background:rgba(241,248,251,.075);border:1px solid rgba(222,239,247,.32);
+ color:#f7fbfe;box-shadow:none;
+}
+.ec-shell:has(.ec-shop-banner) .ec-modern-card input::placeholder{color:#a8b9c5}
+.ec-shell:has(.ec-shop-banner) .ec-modern-card select option{color:#203747;background:#e9eef3}
+.ec-shell:has(.ec-shop-banner) .ec-modern-card label,
+.ec-shell:has(.ec-shop-banner) .ec-profile-details span{color:#cfdbe4}
+.ec-shell:has(.ec-shop-banner) .ec-summary-line,
+.ec-shell:has(.ec-shop-banner) .ec-modern-summary .ec-row,
+.ec-shell:has(.ec-shop-banner) .ec-order-history-row,
+.ec-shell:has(.ec-shop-banner) .ec-checkout-mini-item{border-color:rgba(223,238,246,.23);color:#f1f6f9}
+.ec-shell:has(.ec-shop-banner) .ec-modern-summary .ec-price,.ec-shell:has(.ec-shop-banner) .ec-cart-unit-price,.ec-shell:has(.ec-shop-banner) .ec-cart-line-price{color:#ff315b}
+.ec-shell .ec-account-grid{grid-template-columns:270px minmax(0,1fr);gap:23px}
+.ec-shell .ec-account-sidebar{min-height:320px;padding:14px;gap:4px}
+.ec-shell .ec-account-sidebar a,.ec-shell .ec-account-sidebar button{
+ color:#edf5fa;padding:17px 16px;text-transform:uppercase;letter-spacing:.07em;font:700 12px 'Space Mono',monospace;
+ border-radius:8px;
+}
+.ec-shell .ec-account-sidebar a:hover,.ec-shell .ec-account-sidebar button:hover{background:rgba(255,255,255,.13);color:#fff}
+.ec-shell .ec-account-sidebar a.active{background:#e70033;color:#fff}
+.ec-shell .ec-account-sidebar form{border-color:rgba(237,247,250,.22)}
+.ec-shell .ec-account-intro{min-height:150px}
+.ec-shell .ec-account-intro h2{font-size:27px}
+.ec-shell .ec-account-intro p{color:#d8e3eb}
+.ec-shell .ec-account-intro span{border:1px solid rgba(235,247,252,.25);background:rgba(255,255,255,.07);color:#dbe8f1}
+.ec-shell .ec-account-avatar{background:#e5ecf0;color:#2b4150;border:1px solid rgba(255,255,255,.5)}
+.ec-shell .ec-account-intro-art{opacity:.58}
+.ec-shell .ec-account-columns{gap:17px}
+.ec-shell .ec-profile-details strong{
+ color:#f4f9fb;background:rgba(225,242,250,.065);border:1px solid rgba(232,245,251,.19);
+}
+.ec-shell .ec-stats-grid>div:nth-child(n){
+ border:1px solid rgba(255,255,255,.17);
+ background:rgba(204,222,232,.1);
+}
+.ec-shell .ec-stats-grid>div:nth-child(2){background:rgba(246,190,71,.16)}
+.ec-shell .ec-stats-grid>div:nth-child(3){background:rgba(59,202,134,.17)}
+.ec-shell .ec-stats-grid>div:nth-child(4){background:rgba(232,90,113,.18)}
+.ec-shell .ec-stats-grid strong{color:#fff}
+.ec-shell .ec-stats-grid span{color:#dae5ec;text-transform:uppercase;letter-spacing:.02em}
+.ec-shell .ec-account-address strong{color:#fff}
+.ec-shell .ec-account-address p{color:#dce8f0}
+.ec-shell .ec-address-tag{background:rgba(231,0,51,.2);color:#ffcbd5}
+.ec-shell .ec-orders-panel{min-height:480px}
+.ec-shell .ec-order-filters{display:flex;gap:7px;flex-wrap:wrap;padding:17px 0 21px}
+.ec-shell .ec-order-filters button{
+ border:1px solid rgba(218,238,247,.21);border-radius:7px;
+ background:rgba(223,241,251,.065);color:#e6eff4;padding:11px 13px;
+ cursor:pointer;font:700 11px 'Space Mono',monospace;
+ transition:background .22s,border-color .22s,transform .22s;
+}
+.ec-shell .ec-order-filters button:hover{background:rgba(232,243,249,.17);transform:translateY(-1px)}
+.ec-shell .ec-order-filters button.is-active{background:#e70033;border-color:#e70033}
+.ec-shell .ec-order-history-row{grid-template-columns:minmax(0,1.5fr) auto auto auto;min-height:96px;padding:20px 5px}
+.ec-shell .ec-order-history-row[hidden]{display:none!important}
+.ec-shell .ec-order-row-main strong{display:block;font-size:18px;color:#fff}
+.ec-shell .ec-order-row-main span{display:block;color:#b8cbd6;font-size:12px}
+.ec-shell .ec-order-row-kicker{font:700 10px 'Space Mono',monospace!important;letter-spacing:.12em;margin-bottom:7px}
+.ec-shell .ec-order-status{border:1px solid rgba(244,236,210,.19);background:rgba(228,169,56,.16);color:#fce2a6}
+.ec-shell .ec-order-amount{color:#fff;font-size:16px}
+.ec-shell .ec-order-filter-empty{padding:35px;text-align:center;color:#d5e1e8}
+.ec-shell .ec-modern-cart-item{grid-template-columns:130px minmax(0,1fr) auto;align-items:center;border-color:rgba(223,237,246,.23)}
+.ec-shell .ec-cart-product-image{width:130px;min-height:130px;background:rgba(255,255,255,.08)}
+.ec-shell .ec-cart-product-image img{height:130px;object-fit:contain}
+.ec-shell .ec-cart-product-body h3{font:800 18px Archivo,sans-serif;color:#fff}
+.ec-shell .ec-cart-product-body p{color:#cbd9e3}
+.ec-shell .ec-qty-control{border-color:rgba(233,243,249,.4)}
+.ec-shell .ec-qty-control button{background:rgba(231,241,248,.15);color:#fff}
+.ec-shell .ec-qty-control input{background:rgba(231,241,248,.06);color:#fff}
+.ec-shell .ec-update-cart{border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.08)}
+.ec-shell .ec-remove-cart,.ec-shell .ec-clear-cart{color:#ff557a}
+.ec-shell .ec-trust-row{color:#d7e6ef}
+.ec-shell .ec-shipping-form .ec-checkout-addresses{display:flex;flex-direction:column;gap:18px}
+.ec-shell .ec-shipping-form .ec-checkout-addresses>.ec-address-form-card{width:100%}
+.ec-shell .ec-checkout-mini-item{grid-template-columns:65px minmax(0,1fr) auto}
+.ec-shell .ec-checkout-mini-item strong,.ec-shell .ec-checkout-mini-item span{color:#fff}
+.ec-shell .ec-checkout-mini-item small{color:#c3d0d9}
+.ec-shell .ec-checkout-mini-item img{background:rgba(255,255,255,.1)}
+.ec-shell .ec-item-count{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#eaf2f7}
+.ec-shell .ec-card-type-options span{background:rgba(255,255,255,.07);border-color:rgba(235,245,250,.24);color:#fff}
+.ec-shell .ec-card-type-options input:checked+span{background:rgba(6,125,78,.23);border-color:#63cd94;color:#fff}
+.ec-shell .ec-modern-payment .ec-muted{color:#cbdce6}
+.ec-shell .ec-modern-payment .ec-field label{color:#e4edf3}
+.ec-shell .ec-success-card{max-width:920px}
+.ec-shell .ec-success-check{background:rgba(75,213,125,.14);border:2px solid #7ce7a8;color:#83f0ad}
+.ec-shell .ec-empty h2{color:#fff}
+.ec-shell .ec-success-card p{color:#c8d9e4}
+.ec-shell .ec-clear-dialog{background:#263b4c;color:#f3f8fb;border:1px solid rgba(220,240,250,.3)}
+.ec-shell .ec-clear-dialog p{color:#cfdae2}
+@media(max-width:1100px){.ec-shell .ec-account-grid{grid-template-columns:225px minmax(0,1fr)}.ec-shell .ec-order-history-row{grid-template-columns:1fr auto}}
+@media(max-width:850px){.ec-shell .ec-account-grid,.ec-shell .ec-checkout-grid{grid-template-columns:1fr}.ec-shell .ec-account-sidebar{position:static;min-height:0;flex-direction:row;flex-wrap:wrap}.ec-shell .ec-account-columns{grid-template-columns:1fr 1fr}}
+@media(max-width:640px){.ec-shell:has(.ec-shop-banner) .ec-main{background-attachment:scroll!important}.ec-shell .ec-account-columns{grid-template-columns:1fr}.ec-shell .ec-modern-cart-item{grid-template-columns:85px minmax(0,1fr)}.ec-shell .ec-cart-product-image{width:85px;min-height:95px}.ec-shell .ec-cart-product-image img{height:95px}.ec-shell .ec-order-history-row{grid-template-columns:1fr 1fr}.ec-shell .ec-order-history-row .ec-edit-btn{grid-column:1/-1}.ec-shell .ec-account-sidebar a,.ec-shell .ec-account-sidebar button{font-size:10px;padding:10px}}
