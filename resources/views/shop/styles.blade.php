@@ -911,7 +911,7 @@ body.ec-shop-busy{cursor:progress}
 .ec-shell .ec-store-reference .ec-filter-search-wrap input{flex:1;min-width:0;width:100%;height:100%;border:0;background:transparent;outline:0;padding:0 10px;font-size:12px}
 .ec-shell .ec-store-reference .ec-filter-search-btn{width:42px;min-width:42px;background:#34434d;border:0;color:#fff;display:grid;place-items:center;cursor:pointer;transition:background .2s}
 .ec-shell .ec-store-reference .ec-filter-search-btn:hover{background:#e70033}
-.ec-shell .ec-catalog-section{background:#f4f5f6;padding:9px 19px 23px;border:1px solid #eceff1;border-radius:6px;margin:10px 0 19px}
+.ec-shell .ec-catalog-section{margin:10px 0 19px}
 .ec-shell .ec-category-toggle{background:#eceef0;border:0;border-radius:4px;padding:12px 14px;margin:0 0 13px;display:flex;align-items:center;justify-content:space-between;color:#34434d;font-size:21px;cursor:pointer;transition:background-color .2s}
 .ec-shell .ec-category-toggle:hover{background:#e3e6e9}
 .ec-shell .ec-category-chevron{display:grid;place-items:center;width:32px;height:32px;border-radius:7px;background:#dfe3e6;color:#34434d;transition:transform .25s,background-color .25s}
